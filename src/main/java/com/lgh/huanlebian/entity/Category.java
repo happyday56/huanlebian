@@ -1,9 +1,12 @@
 package com.lgh.huanlebian.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 
 /**
  * Created by Administrator on 2016/5/2.
@@ -11,16 +14,31 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    /**
+     * 父项
+     */
+    @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    private Category parent;
+
     /**
      * 标题
      */
     @Column(length = 20)
     private String title;
+    /**
+     * 分类路径，如孕早期（yzq）
+     * 根据标题首字母生产
+     */
+    @Column(length = 50)
+    private String path;
     /**
      * 关键字
      */
@@ -33,9 +51,8 @@ public class Category {
     private String description;
 
     /**
-     * 分类路径，如孕早期（yzq）
-     * 根据标题首字母生产
+     * 排序号
      */
-    @Column(length = 50)
-    private String path;
+    private Integer sort;
+
 }

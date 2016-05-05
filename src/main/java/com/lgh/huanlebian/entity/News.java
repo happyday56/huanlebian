@@ -20,6 +20,12 @@ public class News {
     private Long id;
 
     /**
+     * 分类
+     */
+    @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    private Category category;
+
+    /**
      * 标题
      */
     @Column(length = 200)
@@ -53,11 +59,6 @@ public class News {
     @Column(length = 500)
     private String description;
 
-    /**
-     * 分类
-     */
-    @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    private Category category;
 
     /**
      * 上传时间
