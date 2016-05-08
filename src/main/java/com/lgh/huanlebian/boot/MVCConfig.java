@@ -21,7 +21,7 @@ import java.util.List;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan("com.lgh.huanlebain.controller")
+@ComponentScan("com.lgh.huanlebian.controller")
 public class MVCConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
@@ -63,7 +63,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         ThymeleafViewResolver resolver = new ThymeleafViewResolver();
         SpringTemplateEngine engine = new SpringTemplateEngine();
         ServletContextTemplateResolver rootTemplateResolver = new ServletContextTemplateResolver();
-        rootTemplateResolver.setPrefix("/");
+        rootTemplateResolver.setPrefix("/WEB-INF/content/");
         rootTemplateResolver.setSuffix(".html");
         rootTemplateResolver.setCharacterEncoding("UTF-8");
 
@@ -76,10 +76,6 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
         resolver.setOrder(100);
         resolver.setCharacterEncoding("UTF-8");
         resolver.setContentType("text/html;charset=utf-8");
-        //        resolver.setViewNames(new String[]{"*.html"});
-//        resolver.setExcludedViewNames(new String[]{
-//                "content/**"
-//        });
         return resolver;
     }
 
