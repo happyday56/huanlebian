@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="keywords" th:content="${page.keywords}" content=""/>
+    <meta name="description" th:content="${page.description}" content=""/>
+    <link rel="stylesheet" type="text/css" href="resources/css/common.css" th:href="@{/resources/css/common.css}"/>
+</head>
+<title th:text="${page.title}"></title>
+<body>
+<div>
+    <div>循环测试</div>
+    <div id="top" th:each="item:${page.topNav}">
+        <a th:href="${item.url}" th:text="${item.title}"></a>
+    </div>
+
+    <div>条件测试</div>
+    <div id="news" th:each="item:${page.newsList}">
+        <a th:if="${item.url=='b'}" th:href="${item.url + '?t=1&p=2'}" th:text="${item.title}"></a>
+    </div>
+</div>
+</body>
+</html>

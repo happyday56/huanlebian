@@ -5,14 +5,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 分类
- * Created by lgh on 2016/5/10.
+ * Created by lgh on 2016/5/11.
  */
 @Getter
 @Setter
 @AllArgsConstructor
-@Deprecated
-public class WebCategoryModel {
+public class WebCategoryListModel {
     private String title;
     private String url;
 }
