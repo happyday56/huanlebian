@@ -16,7 +16,7 @@
 
     <div>条件测试</div>
     <div id="news" th:each="item:${page.newsList}">
-        <a th:if="${item.url=='b'}" th:href="${item.url + '?t=1&p=2'}" th:text="${item.title}"></a>
+        <a th:if="${item.url=='b'}" th:href="${item.url} + 't'" th:text="${item.title}"></a>
     </div>
 </div>
 </body>

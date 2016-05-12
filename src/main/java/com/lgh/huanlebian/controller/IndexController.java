@@ -43,7 +43,7 @@ public class IndexController {
 
         List<WebCategoryListModel> webCategoryListModels = new ArrayList<>();
         for (Category category : categories) {
-            webCategoryListModels.add(new WebCategoryListModel(category.getTitle(), category.getPath()));
+            webCategoryListModels.add(new WebCategoryListModel(category.getTitle(), "d/" + category.getPath()));
         }
         webCategoryPageModel.setTopNav(webCategoryListModels);
 

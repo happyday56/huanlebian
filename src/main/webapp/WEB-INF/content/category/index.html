@@ -2,77 +2,32 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <meta name="keywords" th:content="${keywords}" content=""/>
-    <meta name="description" th:content="${description}" content=""/>
-
-
+    <meta name="keywords" th:content="${page.keywords}" content=""/>
+    <meta name="description" th:content="${page.description}" content=""/>
     <link rel="stylesheet" type="text/css" href="resources/css/common.css" th:href="@{/resources/css/common.css}"/>
-
 </head>
 <title></title>
 <body>
-
-
 <!-- channelNav -->
-<div class="channelNav2">
-    <div class="main">
-        <a href="http://www.pcbaby.com.cn/" target="_blank">首页</a><a href="http://baike.pcbaby.com.cn/" target="_blank">百科</a><a
-            href="http://huaiyun.pcbaby.com.cn/" target="_blank">怀孕</a><a href="http://chanhou.pcbaby.com.cn/"
-                                                                          target="_blank">产后</a><a
-            href="http://yuer.pcbaby.com.cn/" target="_blank">育儿</a><a href="http://life.pcbaby.com.cn/"
-                                                                       target="_blank">生活</a><a
-            href="http://edu.pcbaby.com.cn/" target="_blank">早教</a><a href="http://www.pcbaby.com.cn/shipu/"
-                                                                      target="_blank">营养</a><a
-            href="http://baike.pcbaby.com.cn/recipe/" target="_blank">食谱</a><a href="http://product.pcbaby.com.cn/"
-                                                                               target="_blank">用品</a><a
-            href="http://product.pcbaby.com.cn/zx/pc/" target="_blank">评测</a><a href="http://try.pcbaby.com.cn/"
-                                                                                target="_blank">试用</a><a
-            href="http://best.pcbaby.com.cn/" target="_blank">聚超值</a><a href="http://kuaiwen.pcbaby.com.cn/"
-                                                                        target="_blank">快问</a><a
-            href="http://zhuanjia.pcbaby.com.cn/" target="_blank">专家</a><a href="http://zhuanjia.pcbaby.com.cn/jtye/"
-                                                                           target="_blank">家庭育儿</a><a
-            href="http://www.pcbaby.com.cn/huodong/" target="_blank">活动</a><a
-            href="http://www.pcbaby.com.cn/mykids/daren/" target="_blank">达人</a><a href="http://bbs.pcbaby.com.cn/"
-                                                                                   target="_blank">论坛</a><a
-            href="http://www.pcbaby.com.cn/tools/" target="_blank">工具</a><a
-            href="http://pp.pcbaby.com.cn/cate/30/1.html" target="_blank">图说</a><a class="last"
-                                                                                   href="http://special.pcbaby.com.cn/"
-                                                                                   target="_blank">专题</a>
-    </div>
-</div>
-<!-- top  -->
+<div class="channelNav2" th:include="fragments/top::top"></div>
+<!-- top ads  -->
 <div class="main">
-    <div class="ivy990 ivy-tonglan">
-        <u id="pckids.yyjk.sy.zu.tl1." class="adpos"></u>
-    </div>
+    top ads
 </div>
 <!-- 频道导航 -->
 <div class="head">
     <div class="main">
         <a href="http://www.pcbaby.com.cn/" target="_blank"><em class="head-title"></em></a>
-        <a href="http://yuer.pcbaby.com.cn/"><em class="head-channel">育儿</em></a>
+        <a href="http://yuer.pcbaby.com.cn/"><em class="head-channel" th:text="${page.categoryName}"></em></a>
         <a href="javascript:addFavorite2();" id="aFavorite" class="head-favorite">收藏<em></em></a>
-        <div class="search">
-            <div id="s-form" class="form">
 
-            </div>
-            <div class="hot-word" style="display:none">
-                <a target="_blank" href="http://huaiyun.pcbaby.com.cn/yqzt/0912/878482.html">宝宝取名</a>
-                <a target="_blank" href="http://baike.pcbaby.com.cn/shenghuo.html">生活百科</a>
-                <a target="_blank" href="http://baike.pcbaby.com.cn/etaqzy/">安全座椅</a>
-            </div>
-        </div>
     </div>
 </div>
 <!-- 导航 -->
 <div class="nav shadow">
     <div class="main">
-        <div class="subNav fl">
-            <a target="_blank" href="http://yuer.pcbaby.com.cn/">频道首页</a>
-            <a target="_blank" href="http://yuer.pcbaby.com.cn/xinshenger/">新生儿</a>
-            <a target="_blank" href="http://yuer.pcbaby.com.cn/yinger/">0-1岁</a>
-            <a target="_blank" href="http://yuer.pcbaby.com.cn/youer/">1-3岁</a>
-            <a target="_blank" href="http://yuer.pcbaby.com.cn/xuelingqian/">3-6岁</a>
+        <div class="subNav fl" th:each="item:${page.topNav}">
+            <a target="_blank" th:href="${item.url}" th:text="${item.title}"></a>
         </div>
         <div class="th-b fr">
             <a title="孕育周刊" target="_blank" href="http://baike.pcbaby.com.cn/tools/zhoukan.html">周刊</a>
@@ -4002,5 +3957,6 @@ ABC&#160;KIDS运动鞋
     </div>
 </div>
 
+<div th:include="fragments/bot::bot"></div>
 </body>
 </html>

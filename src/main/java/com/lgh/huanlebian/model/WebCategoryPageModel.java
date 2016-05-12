@@ -12,6 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 public class WebCategoryPageModel extends WebBasePageModel {
+    private String categoryName;
     private List<WebCategoryListModel> topNav;
     private List<WebNewsListModel> newsList;
 }
