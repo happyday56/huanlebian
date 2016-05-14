@@ -1,6 +1,8 @@
 package com.lgh.huanlebian.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -13,6 +15,8 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class News {
 
     @Id
@@ -24,6 +28,12 @@ public class News {
      */
     @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
     private Category category;
+
+    /**
+     * 种类
+     */
+    @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    private Kind kind;
 
     /**
      * 标题

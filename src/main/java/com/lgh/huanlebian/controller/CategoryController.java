@@ -31,16 +31,16 @@ public class CategoryController {
     private CategoryRepository categoryRepository;
 
     /**
-     * 分类首页
+     * 一级分类
      *
-     * @param categoryPath 分类路径
+     * @param one   分类路径
      * @param model
      * @return
      */
-    @RequestMapping(value = "/{categoryPath}", method = RequestMethod.GET)
-    public String index(@PathVariable("categoryPath") String categoryPath, Model model) {
+    @RequestMapping(value = "/{one}", method = RequestMethod.GET)
+    public String one(@PathVariable("one") String one, Model model) {
 
-        Category parentCategory = categoryRepository.findByPath(categoryPath);
+        Category parentCategory = categoryRepository.findByPath(one);
         if (parentCategory != null) {
             WebCategoryPageModel webCategoryPageModel = new WebCategoryPageModel();
             webCategoryPageModel.setTitle(parentCategory.getTitle());
@@ -58,6 +58,31 @@ public class CategoryController {
 
             model.addAttribute("page", webCategoryPageModel);
         }
+        return "category/index";
+    }
+
+    /**
+     * 二级分类
+     *
+     * @param two
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/{one}/{two}", method = RequestMethod.GET)
+    public String two(@PathVariable("two") String two, Model model) {
+        return "category/index";
+    }
+
+    /**
+     * 二级分类和种类
+     *
+     * @param two
+     * @param kind  种类路径
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/{one}/{two}/{kind}", method = RequestMethod.GET)
+    public String three(@PathVariable("two") String two, @PathVariable("kind") String kind, Model model) {
         return "category/index";
     }
 }

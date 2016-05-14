@@ -2,7 +2,6 @@ package com.lgh.huanlebian.controller;
 
 import com.lgh.huanlebian.entity.Category;
 import com.lgh.huanlebian.model.WebCategoryListModel;
-import com.lgh.huanlebian.model.WebCategoryModel;
 import com.lgh.huanlebian.model.WebCategoryPageModel;
 import com.lgh.huanlebian.model.WebNewsListModel;
 import com.lgh.huanlebian.repository.CategoryRepository;
