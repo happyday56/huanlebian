@@ -1,9 +1,11 @@
 package com.lgh.huanlebian.service.impl;
 
 import com.lgh.huanlebian.entity.Category;
+import com.lgh.huanlebian.entity.Kind;
 import com.lgh.huanlebian.entity.SystemConfig;
 import com.lgh.huanlebian.model.CommonVersion;
 import com.lgh.huanlebian.repository.CategoryRepository;
+import com.lgh.huanlebian.repository.KindRepository;
 import com.lgh.huanlebian.repository.SystemConfigRepository;
 import com.lgh.huanlebian.service.JdbcService;
 import org.apache.commons.logging.Log;
@@ -38,6 +40,9 @@ public class WebBootService implements ApplicationListener<ContextRefreshedEvent
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    KindRepository kindRepository;
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         if (event.getApplicationContext().getParent() != null) {
@@ -57,6 +62,8 @@ public class WebBootService implements ApplicationListener<ContextRefreshedEvent
                         //系统分类
                         try {
                             initCategory();
+
+                            initKind();
                         } catch (Exception e) {
                             log.info("upgrade to " + CommonVersion.Version101.ordinal() + " error", e);
                         }
@@ -104,5 +111,16 @@ public class WebBootService implements ApplicationListener<ContextRefreshedEvent
         list.add(new Category(0L, parentCategory, "3-6岁", "xuelingqian", "学龄前,学龄前儿童护理,儿童饮食,小儿常见病,儿童心理,儿童行为习惯,幼儿园,幼小衔接,学龄前教育", "欢乐变母婴网学龄前频道，全方位介绍了学龄前儿童护理、儿童饮食、小儿常见病、儿童心理、幼儿园、学龄前教育等知识和育儿技巧。让爸爸妈妈成为育儿专家！", 4));
         categoryRepository.save(list);
 
+    }
+
+    public void initKind() {
+        List<Kind> list = new ArrayList<>();
+        list.add(new Kind(0L,"准备","zhunbei"));
+        list.add(new Kind(0L,"生育","shengyu"));
+        list.add(new Kind(0L,"遗传","yichuan"));
+        list.add(new Kind(0L,"食谱","shipu"));
+        list.add(new Kind(0L,"喂养","weiyang"));
+        list.add(new Kind(0L,"护理","huli"));
+        list.add(new Kind(0L,"疾病","jibing"));
     }
 }
