@@ -51,48 +51,32 @@
     <u id="pckids.yyjk.sy.jdtsftl." class="adpos"></u>
 </div>
 <div class="tab1 border shadow clearfix">
+    <!-- slide -->
     <div id="slide01" class="tab" onmouseover="this.className='tab tab-active';" onmouseout="this.className='tab';">
-        <div class="c">
-            <div class="pic">
-                <a href="http://yuer.pcbaby.com.cn/290/zt2906046.html" target="_blank" class="fl">
-                    <img src="http://www1.pclady.com.cn/images/blank.gif" width="660" height="340"
-                         alt="爱与陪伴 拯救职场妈妈玻璃心"/>
-                </a>
-<span class="picTit">
-<em><a href="http://yuer.pcbaby.com.cn/290/zt2906046.html" target="_blank">爱与陪伴 拯救职场妈妈玻璃心</a></em>
-</span>
+
+        <th:block th:each="item:${p.slideList}">
+            <div class="c">
+                <div class="pic">
+                    <a th:href="${item.url}" target="_blank" class="fl">
+                        <img th:src="${item.imageUrl}" width="660" height="340"
+                             th:alt="${item.title}"/>
+                    </a>
+                <span class="picTit">
+                <em><a href="http://yuer.pcbaby.com.cn/290/zt2906046.html" target="_blank">爱与陪伴 拯救职场妈妈玻璃心</a></em>
+                </span>
+                </div>
             </div>
-        </div>
-        <div class="c">
-            <div class="pic">
-                <a href="http://special.pcbaby.com.cn/289/zt2894493.html" target="_blank" class="fl">
-                    <img src="http://www1.pclady.com.cn/images/blank.gif" width="660" height="340"
-                         alt="第50期：台湾辣妈张维尼 我与四宝的餐桌故事_妈咪私享家"/>
-                </a>
-<span class="picTit">
-<em><a href="http://special.pcbaby.com.cn/289/zt2894493.html" target="_blank">张维尼与四宝的餐桌故事</a></em>
-</span>
-            </div>
-        </div>
-        <div class="c">
-            <div class="pic">
-                <a href="http://yuer.pcbaby.com.cn/288/2884548.html" target="_blank" class="fl">
-                    <img src="http://img0.pcbaby.com.cn/pcbaby/yuer/yinger/bbshuimian/1604/660-0426-01.jpg" width="660"
-                         height="340" alt="白天睡眠巧安排 宝宝睡得更香"/>
-                </a>
-<span class="picTit">
-<em><a href="http://yuer.pcbaby.com.cn/288/2884548.html" target="_blank">白天睡眠巧安排 宝宝睡得更香</a></em>
-</span>
-            </div>
-        </div>
+        </th:block>
+
+
         <div class="control" id="slide01_control">
             <a href="javascript:void(0)"></a>
             <a href="javascript:void(0)"></a>
             <a href="javascript:void(0)"></a>
         </div>
-        <a href="javascript:;" class="btn btnL" onClick="slide01.prev();return false;" onmouseover="slide01.stop();"
+        <a href="javascript:;" class="btn btnL" onclick="slide01.prev();return false;" onmouseover="slide01.stop();"
            onmouseout="slide01.play();"></a>
-        <a href="javascript:;" class="btn btnR" onClick="slide01.next();return false;" onmouseover="slide01.stop();"
+        <a href="javascript:;" class="btn btnR" onclick="slide01.next();return false;" onmouseover="slide01.stop();"
            onmouseout="slide01.play();"></a>
     </div>
     <div class="th-b fr">

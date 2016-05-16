@@ -16,7 +16,7 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Slider {
+public class Slide {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,11 +44,6 @@ public class Slider {
      * 跳转地址
      */
     @Column(length = 200)
-    private String targetUrl;
+    private String url;
 
-
-    /**
-     * 排序号
-     */
-    private Integer sort;
 }

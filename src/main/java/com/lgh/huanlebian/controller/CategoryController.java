@@ -1,9 +1,13 @@
 package com.lgh.huanlebian.controller;
 
 import com.lgh.huanlebian.entity.Category;
+import com.lgh.huanlebian.entity.Slide;
 import com.lgh.huanlebian.model.WebCategoryListModel;
 import com.lgh.huanlebian.model.WebCategoryPageModel;
+import com.lgh.huanlebian.model.WebSlideListModel;
 import com.lgh.huanlebian.repository.CategoryRepository;
+import com.lgh.huanlebian.repository.SlideRepository;
+import com.lgh.huanlebian.service.SlideService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +34,12 @@ public class CategoryController {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private SlideRepository slideRepository;
+
+    @Autowired
+    SlideService slideService;
+
     /**
      * 一级分类
      *
@@ -40,21 +50,28 @@ public class CategoryController {
     @RequestMapping(value = "/{one}", method = RequestMethod.GET)
     public String one(@PathVariable("one") String one, Model model) {
 
-        Category parentCategory = categoryRepository.findByPath(one);
-        if (parentCategory != null) {
+        Category oneCategory = categoryRepository.findByPath(one);
+        if (oneCategory != null) {
             WebCategoryPageModel webCategoryPageModel = new WebCategoryPageModel();
-            webCategoryPageModel.setTitle(parentCategory.getTitle());
-            webCategoryPageModel.setKeywords(parentCategory.getKeywords());
-            webCategoryPageModel.setDescription(parentCategory.getDescription());
+            webCategoryPageModel.setTitle(oneCategory.getTitle());
+            webCategoryPageModel.setKeywords(oneCategory.getKeywords());
+            webCategoryPageModel.setDescription(oneCategory.getDescription());
 
-            webCategoryPageModel.setCategoryName(parentCategory.getTitle());
+            webCategoryPageModel.setCategoryName(oneCategory.getTitle());
 
-            List<Category> categories = categoryRepository.findAllByParent(parentCategory);
+            List<Category> categories = categoryRepository.findAllByParent(oneCategory);
             List<WebCategoryListModel> webCategoryListModels = new ArrayList<>();
             for (Category category : categories) {
                 webCategoryListModels.add(new WebCategoryListModel(category.getTitle(), category.getPath()));
             }
             webCategoryPageModel.setTopNav(webCategoryListModels);
+
+            List<WebSlideListModel> webSlideListModels = new ArrayList<>();
+            List<Slide> slides = slideService.findTopSlideList(oneCategory);
+            for (Slide slide : slides) {
+                webSlideListModels.add(new WebSlideListModel(slide.getTitle(), slide.getImageUrl(), slide.getUrl()));
+            }
+            webCategoryPageModel.setSlideList(webSlideListModels);
 
             model.addAttribute("page", webCategoryPageModel);
         }
