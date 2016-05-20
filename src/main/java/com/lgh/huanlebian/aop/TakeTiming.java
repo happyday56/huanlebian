@@ -35,7 +35,7 @@ public class TakeTiming {
         Date beginTime = new Date();
         Object object = proceedingJoinPoint.proceed();
         Date endTime = new Date();
-        log.info(proceedingJoinPoint.getTarget().getClass().toString() + " use " + (endTime.getTime() - beginTime.getTime()) + " milliseconds");
+        log.info(proceedingJoinPoint.getTarget().getClass().toString() + " use " + (endTime.getTime() - beginTime.getTime()) + "ms");
         return object;
     }
 }
