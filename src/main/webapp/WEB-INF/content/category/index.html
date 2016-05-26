@@ -19,7 +19,8 @@
     <div class="main">
         <a href="http://www.pcbaby.com.cn/" target="_blank"><em class="head-title"></em></a>
         <a href="http://yuer.pcbaby.com.cn/"><em class="head-channel" th:text="${page.categoryName}"></em></a>
-        <a href="javascript:addFavorite2();" id="aFavorite" class="head-favorite">收藏<em></em></a>
+        <a href="javascript:joinFavorite('http://www.huanlebian.com/','健康育儿_育儿知识大全_欢乐变母婴网');" id="aFavorite"
+           class="head-favorite">收藏<em></em></a>
 
     </div>
 </div>
@@ -30,22 +31,17 @@
             <a target="_blank" th:href="${item.url}" th:text="${item.title}"></a>
         </div>
         <div class="th-b fr">
-            <a title="孕育周刊" target="_blank" href="http://baike.pcbaby.com.cn/tools/zhoukan.html">周刊</a>
+            <a title="孕育周刊" target="_blank" href="">周刊</a>
             <em></em>
-            <a title="育儿专题" target="_blank" href="http://yuer.pcbaby.com.cn/yuer_zt/">专题</a>
+            <a title="育儿专题" target="_blank" href="">专题</a>
             <em></em>
-            <a title="潮童" target="_blank" href="http://life.pcbaby.com.cn/chaotong/">ABC KIDS潮童</a>
+            <a title="潮童" target="_blank" href="">ABC KIDS潮童</a>
             <em></em>
-            <a title="宝宝取名" target="_blank" href="http://huaiyun.pcbaby.com.cn/yqzt/0912/878482.html">取名</a>
+            <a title="宝宝取名" target="_blank" href="">取名</a>
         </div>
     </div>
 </div>
-<script>
-    var aFavorite = document.getElementById("aFavorite");
-    aFavorite.id = "pFavorite";
-    aFavorite.href = "javascript:void(0)";
-    aFavorite.setAttribute("data", "{'type':'3','id':'http://yuer.pcbaby.com.cn/','title':'健康育儿_育儿知识大全_太平洋亲子网','intro':'','picurl':''}");
-</script>
+
 <!-- tab1 -->
 <div class="ivy990 main">
     <u id="pckids.yyjk.sy.jdtsftl." class="adpos"></u>
@@ -54,7 +50,7 @@
     <!-- slide -->
     <div id="slide01" class="tab" onmouseover="this.className='tab tab-active';" onmouseout="this.className='tab';">
 
-        <th:block th:each="item:${p.slideList}">
+        <th:block th:each="item:${page.slideList}">
             <div class="c">
                 <div class="pic">
                     <a th:href="${item.url}" target="_blank" class="fl">
@@ -218,11 +214,7 @@
         <script>showIvyViaJs("pckids.yyjk.sy.youce1.")</script>
     </div>
 </div>
-<div class="main">
-    <div class="ivytls">
-        <script>showIvyViaJs("pckids.yyjk.sy.tl2.")</script>
-    </div>
-</div>
+ 
 <div class="main tab3 clearfix tab3-1">
     <div class="left660 fl border shadow">
         <div class="th clearfix nbb">
@@ -582,11 +574,7 @@
         </div>
     </div>
 </div>
-<div class="main">
-    <div class="ivytls">
-        <script>showIvyViaJs("pckids.yyjk.sy.tl3.")</script>
-    </div>
-</div>
+
 <div class="tab4 main border shadow">
     <div class="clearfix">
         <p class="tabTit fl">美图欣赏</p>

@@ -2,9 +2,7 @@ package com.lgh.huanlebian.controller;
 
 import com.lgh.huanlebian.entity.Category;
 import com.lgh.huanlebian.entity.Slide;
-import com.lgh.huanlebian.model.WebCategoryListModel;
-import com.lgh.huanlebian.model.WebCategoryPageModel;
-import com.lgh.huanlebian.model.WebSlideListModel;
+import com.lgh.huanlebian.model.*;
 import com.lgh.huanlebian.repository.CategoryRepository;
 import com.lgh.huanlebian.repository.SlideRepository;
 import com.lgh.huanlebian.service.SlideService;
@@ -73,6 +71,10 @@ public class CategoryController {
             }
             webCategoryPageModel.setSlideList(webSlideListModels);
 
+            //子项列表
+            List<WebSubNewsListModel> webSubNewsListModels = new ArrayList<>();
+            webCategoryPageModel.setSubNewsList(webSubNewsListModels);
+
             model.addAttribute("page", webCategoryPageModel);
         }
         return "category/index";
@@ -87,7 +89,38 @@ public class CategoryController {
      */
     @RequestMapping(value = "/{one}/{two}", method = RequestMethod.GET)
     public String two(@PathVariable("two") String two, Model model) {
-        return "category/index";
+
+        Category secondCategory = categoryRepository.findByPath(two);
+        if (secondCategory != null) {
+            WebSecondCategoryPageModel webSecondCategoryPageModel = new WebSecondCategoryPageModel();
+            webSecondCategoryPageModel.setTitle(secondCategory.getTitle());
+            webSecondCategoryPageModel.setKeywords(secondCategory.getKeywords());
+            webSecondCategoryPageModel.setDescription(secondCategory.getDescription());
+
+            webSecondCategoryPageModel.setCategoryName(secondCategory.getTitle());
+
+            List<Category> categories = categoryRepository.findAllByParent(secondCategory);
+            List<WebCategoryListModel> webCategoryListModels = new ArrayList<>();
+            for (Category category : categories) {
+                webCategoryListModels.add(new WebCategoryListModel(category.getTitle(), category.getPath()));
+            }
+            webSecondCategoryPageModel.setTopNav(webCategoryListModels);
+
+            List<WebSlideListModel> webSlideListModels = new ArrayList<>();
+            List<Slide> slides = slideService.findTopSlideList(secondCategory);
+            for (Slide slide : slides) {
+                webSlideListModels.add(new WebSlideListModel(slide.getTitle(), slide.getImageUrl(), slide.getUrl()));
+            }
+            webSecondCategoryPageModel.setSlideList(webSlideListModels);
+
+            //子项列表
+            List<WebNewsListModel> webSubNewsListModels = new ArrayList<>();
+            webSecondCategoryPageModel.setWebNewsList(webSubNewsListModels);
+
+            model.addAttribute("page", webSecondCategoryPageModel);
+        }
+
+        return "category/secondindex";
     }
 
     /**

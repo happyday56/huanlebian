@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * Created by lgh on 2016/5/16.
@@ -36,16 +37,17 @@ public class SlideServiceImpl implements SlideService {
         hql.append("select slide from Slide slide ");
         if (category != null) {
             if (category.getParent() == null)//one
-                hql.append(" where slide.category in (:category)");
+                hql.append(" where slide.category in (select category from Category category where category.parent=:category)");
             else
                 hql.append(" where slide.category=:category");
         }
         hql.append(" order by slide.id desc");
 
+
         Query query = entityManager.createQuery(hql.toString());
         if (category != null) {
             if (category.getParent() == null) {//one
-                query.setParameter("category", categoryRepository.findAllByParent(category));
+                query.setParameter("category", category);
             } else
                 query.setParameter("category", category);
         }

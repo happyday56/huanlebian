@@ -6,19 +6,16 @@ import lombok.Setter;
 import java.util.List;
 
 /**
- * Created by lgh on 2016/5/10.
+ * Created by lgh on 2016/5/26.
  */
 
 @Getter
 @Setter
-public class WebCategoryPageModel extends WebBasePageModel {
+public class WebSecondCategoryPageModel extends WebBasePageModel {
     private String categoryName;
     private List<WebCategoryListModel> topNav;
     private List<WebSlideListModel> slideList;
-    /**
-     * 子分类信息列表
-     */
-    private List<WebSubNewsListModel> subNewsList;
 
+    private List<WebNewsListModel> webNewsList;
 
 }
