@@ -48,8 +48,8 @@ public class IndexController {
 
 
         List<WebNewsListModel> webNewsListModels = new ArrayList<>();
-        webNewsListModels.add(new WebNewsListModel("开心", "a"));
-        webNewsListModels.add(new WebNewsListModel("快乐", "b"));
+        webNewsListModels.add(new WebNewsListModel("开心", "a","",""));
+        webNewsListModels.add(new WebNewsListModel("快乐", "b","",""));
 //        webCategoryPageModel.setNewsList(webNewsListModels);
 
         model.addAttribute("page", webCategoryPageModel);

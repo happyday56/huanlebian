@@ -15,5 +15,7 @@ public class WebNewsListModel {
 
     private String title;
     private String url;
+    private String imageUrl;
+    private String summary;
 
 }

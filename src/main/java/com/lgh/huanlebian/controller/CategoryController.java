@@ -1,10 +1,15 @@
 package com.lgh.huanlebian.controller;
 
 import com.lgh.huanlebian.entity.Category;
+import com.lgh.huanlebian.entity.CategoryKind;
+import com.lgh.huanlebian.entity.News;
 import com.lgh.huanlebian.entity.Slide;
 import com.lgh.huanlebian.model.*;
+import com.lgh.huanlebian.repository.CategoryKindRepository;
 import com.lgh.huanlebian.repository.CategoryRepository;
+import com.lgh.huanlebian.repository.NewsRepository;
 import com.lgh.huanlebian.repository.SlideRepository;
+import com.lgh.huanlebian.service.NewsService;
 import com.lgh.huanlebian.service.SlideService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -36,7 +41,16 @@ public class CategoryController {
     private SlideRepository slideRepository;
 
     @Autowired
+    CategoryKindRepository categoryKindRepository;
+
+    @Autowired
+    NewsRepository newsRepository;
+
+    @Autowired
     SlideService slideService;
+
+    @Autowired
+    NewsService newsService;
 
     /**
      * 一级分类
@@ -60,7 +74,7 @@ public class CategoryController {
             List<Category> categories = categoryRepository.findAllByParent(oneCategory);
             List<WebCategoryListModel> webCategoryListModels = new ArrayList<>();
             for (Category category : categories) {
-                webCategoryListModels.add(new WebCategoryListModel(category.getTitle(), category.getPath()));
+                webCategoryListModels.add(new WebCategoryListModel(category.getTitle(), "/d/" + one + "/" + category.getPath()));
             }
             webCategoryPageModel.setTopNav(webCategoryListModels);
 
@@ -88,7 +102,7 @@ public class CategoryController {
      * @return
      */
     @RequestMapping(value = "/{one}/{two}", method = RequestMethod.GET)
-    public String two(@PathVariable("two") String two, Model model) {
+    public String two(@PathVariable("one") String one, @PathVariable("two") String two, Model model) {
 
         Category secondCategory = categoryRepository.findByPath(two);
         if (secondCategory != null) {
@@ -99,10 +113,10 @@ public class CategoryController {
 
             webSecondCategoryPageModel.setCategoryName(secondCategory.getTitle());
 
-            List<Category> categories = categoryRepository.findAllByParent(secondCategory);
+            List<CategoryKind> categoryKinds = categoryKindRepository.findAllByCategory(secondCategory);
             List<WebCategoryListModel> webCategoryListModels = new ArrayList<>();
-            for (Category category : categories) {
-                webCategoryListModels.add(new WebCategoryListModel(category.getTitle(), category.getPath()));
+            for (CategoryKind categoryKind : categoryKinds) {
+                webCategoryListModels.add(new WebCategoryListModel(categoryKind.getTitle(), "/d/" + one + "/" + two + "/" + categoryKind.getKind().getPath()));
             }
             webSecondCategoryPageModel.setTopNav(webCategoryListModels);
 
@@ -115,6 +129,10 @@ public class CategoryController {
 
             //子项列表
             List<WebNewsListModel> webSubNewsListModels = new ArrayList<>();
+            List<News> newsList = newsService.getTopByCategory(secondCategory, 10);
+            for (News news : newsList) {
+                webSubNewsListModels.add(new WebNewsListModel(news.getTitle(), "", news.getPictureUrl(), news.getSummary()));
+            }
             webSecondCategoryPageModel.setWebNewsList(webSubNewsListModels);
 
             model.addAttribute("page", webSecondCategoryPageModel);
