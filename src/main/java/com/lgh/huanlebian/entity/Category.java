@@ -16,6 +16,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = "path")})
 public class Category {
 
     @Id

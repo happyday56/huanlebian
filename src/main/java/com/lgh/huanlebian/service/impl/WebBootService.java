@@ -1,9 +1,11 @@
 package com.lgh.huanlebian.service.impl;
 
 import com.lgh.huanlebian.entity.Category;
+import com.lgh.huanlebian.entity.CategoryKind;
 import com.lgh.huanlebian.entity.Kind;
 import com.lgh.huanlebian.entity.SystemConfig;
 import com.lgh.huanlebian.model.CommonVersion;
+import com.lgh.huanlebian.repository.CategoryKindRepository;
 import com.lgh.huanlebian.repository.CategoryRepository;
 import com.lgh.huanlebian.repository.KindRepository;
 import com.lgh.huanlebian.repository.SystemConfigRepository;
@@ -43,6 +45,9 @@ public class WebBootService implements ApplicationListener<ContextRefreshedEvent
     @Autowired
     KindRepository kindRepository;
 
+    @Autowired
+    CategoryKindRepository categoryKindRepository;
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         if (event.getApplicationContext().getParent() != null) {
@@ -54,6 +59,8 @@ public class WebBootService implements ApplicationListener<ContextRefreshedEvent
                 systemConfigRepository.save(databaseVession);
             }
 
+//            initKind();
+//            initCategoryKind();
 
             //系统升级
             baseService.systemUpgrade("DatabaseVersion", CommonVersion.class, CommonVersion.Version101, (upgrade) -> {
@@ -64,6 +71,8 @@ public class WebBootService implements ApplicationListener<ContextRefreshedEvent
                             initCategory();
 
                             initKind();
+
+                            initCategoryKind();
                         } catch (Exception e) {
                             log.info("upgrade to " + CommonVersion.Version101.ordinal() + " error", e);
                         }
@@ -115,12 +124,30 @@ public class WebBootService implements ApplicationListener<ContextRefreshedEvent
 
     public void initKind() {
         List<Kind> list = new ArrayList<>();
-        list.add(new Kind(0L,"准备","zhunbei"));
-        list.add(new Kind(0L,"生育","shengyu"));
-        list.add(new Kind(0L,"遗传","yichuan"));
-        list.add(new Kind(0L,"食谱","shipu"));
-        list.add(new Kind(0L,"喂养","weiyang"));
-        list.add(new Kind(0L,"护理","huli"));
-        list.add(new Kind(0L,"疾病","jibing"));
+        list.add(new Kind(0L, "准备", "zhunbei"));
+        list.add(new Kind(0L, "生育", "shengyu"));
+        list.add(new Kind(0L, "遗传", "yichuan"));
+        list.add(new Kind(0L, "食谱", "shipu"));
+        list.add(new Kind(0L, "喂养", "weiyang"));
+        list.add(new Kind(0L, "护理", "huli"));
+        list.add(new Kind(0L, "疾病", "jibing"));
+        kindRepository.save(list);
+    }
+
+
+    public void initCategoryKind() {
+        List<CategoryKind> list = new ArrayList<>();
+        Category category = categoryRepository.findByPath("xinshenger");
+        Kind kind = kindRepository.findByPath("weiyang");
+        list.add(new CategoryKind(category, kind,"新生儿喂养"));
+
+        kind = kindRepository.findByPath("huli");
+        list.add(new CategoryKind(category, kind,"新生儿护理"));
+
+        kind = kindRepository.findByPath("jibing");
+        list.add(new CategoryKind(category, kind,"新生儿疾病"));
+
+
+        categoryKindRepository.save(list);
     }
 }
