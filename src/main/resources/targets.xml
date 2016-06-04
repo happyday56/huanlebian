@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectroot>
+    <projects>
+        <!-- 新生儿喂养 -->
+        <project enabled="true" category="1" name="donews互联网">
+            <target encode="utf-8" timeout="8000">
+                <multi_url>
+                    <single_url href="http://yuer.pcbaby.com.cn/xinshenger/weiyang/"></single_url>
+                </multi_url>
+                <wildcard_url href="http://yuer.pcbaby.com.cn/xinshenger/weiyang/index_(*).html"
+                              startpos="1" endpos="1"/>
+                <target_filter root="" suffix="_all" key="class" value="aList-title"/>
+            </target>
+            <processes>
+                <process flow="false" table="" field="title">
+                    <process_regex_filter><![CDATA[<h1 class=\"artTit\">(.+?)</h1>]]></process_regex_filter>
+                </process>
+                <process flow="false" table="" field="content">
+                    <process_tag_filter pos="1" key="class" value="artText"/>
+                </process>
+            </processes>
+        </project>
+
+
+    </projects>
+</projectroot>
