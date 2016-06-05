@@ -49,6 +49,7 @@ public class SpliderServiceImpl implements SpliderService {
     @Autowired
     private NewsFilterRepository newsFilterRepository;
 
+
     @Transactional
     @Scheduled(initialDelay = 1000,fixedDelay = 1000 *1000)
     public void start() throws Exception {
