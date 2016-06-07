@@ -50,6 +50,7 @@ public class News {
      * 内容
      */
     @Lob
+    @Basic(fetch = FetchType.LAZY)
     private String content;
 
     /**

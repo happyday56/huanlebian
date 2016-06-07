@@ -2,7 +2,7 @@
 <projectroot>
     <projects>
         <!-- 新生儿喂养 -->
-        <project enabled="true" category="1" name="donews互联网">
+        <project enabled="true" category="1" name="">
             <target encode="utf-8" timeout="8000">
                 <multi_url>
                     <single_url href="http://yuer.pcbaby.com.cn/xinshenger/weiyang/"></single_url>
