@@ -18,7 +18,12 @@ public class Project {
     /**
      * 所属分类 必要的 插入数据库时使用
      */
-    private Long category;
+    private String category;
+
+    /**
+     * 种类
+     */
+    private String kind;
     /**
      * 项目名称
      */
@@ -43,13 +48,22 @@ public class Project {
         this.enabled = enabled;
     }
 
-    public Long getCategory() {
+    public String getCategory() {
         return category;
     }
 
     @XmlAttribute(name = "category")
-    public void setCategory(Long category) {
+    public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    @XmlAttribute(name = "kind")
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
     public String getName() {

@@ -1,12 +1,10 @@
 package com.lgh.huanlebian.service.impl;
 
-import com.lgh.huanlebian.entity.News;
-import com.lgh.huanlebian.entity.NewsFilter;
+import com.lgh.huanlebian.entity.*;
+import com.lgh.huanlebian.entity.pk.CategoryKindPK;
 import com.lgh.huanlebian.model.xml.*;
 import com.lgh.huanlebian.model.xml.Process;
-import com.lgh.huanlebian.repository.CategoryRepository;
-import com.lgh.huanlebian.repository.NewsFilterRepository;
-import com.lgh.huanlebian.repository.NewsRepository;
+import com.lgh.huanlebian.repository.*;
 import com.lgh.huanlebian.service.SpliderService;
 import com.lgh.huanlebian.utils.FileUtil;
 import net.htmlparser.jericho.Element;
@@ -40,18 +38,23 @@ public class SpliderServiceImpl implements SpliderService {
     private static Log logger = LogFactory.getLog(SpliderServiceImpl.class);
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    CategoryRepository categoryRepository;
 
     @Autowired
-    private NewsRepository newsRepository;
+    NewsRepository newsRepository;
 
 
     @Autowired
-    private NewsFilterRepository newsFilterRepository;
+    NewsFilterRepository newsFilterRepository;
 
+    @Autowired
+    KindRepository kindRepository;
+
+    @Autowired
+    CategoryKindRepository categoryKindRepository;
 
     @Transactional
-    @Scheduled(initialDelay = 1000,fixedDelay = 1000 *1000)
+    @Scheduled(initialDelay = 1000, fixedDelay = 1000 * 1000)
     public void start() throws Exception {
 
         Date uploadTime = new Date(System.currentTimeMillis());
@@ -78,7 +81,15 @@ public class SpliderServiceImpl implements SpliderService {
         List<Project> listProject = root.getProjects();
         for (Project project : listProject) {
             Boolean enabled = project.getEnabled();
-            Long categoryId = project.getCategory();
+            String categoryPath = project.getCategory();
+            String kindPath = project.getKind();
+
+            Category category = categoryRepository.findByPath(categoryPath);
+            Kind kind = kindRepository.findByPath(kindPath);
+            
+            CategoryKind categoryKind = categoryKindRepository.findCategoryAndKind(category, kind);
+            categoryKindRepository.save(categoryKind);
+
 //            Category category = getCategory(categories, categoryId);
 //            if (category == null) {
 //                logger.error("have no categoryId " + categoryId);
@@ -122,7 +133,8 @@ public class SpliderServiceImpl implements SpliderService {
                             //设置时间间隔
 
                             uploadTime = new Date(uploadTime.getTime() + 60 * 1000);
-//                            news.setCategory(category);
+                            news.setCategory(category);
+                            news.setKind(kind);
                             news.setUploadTime(uploadTime);
                             news.setViews(0L);
                             blogSpliders.add(news);
