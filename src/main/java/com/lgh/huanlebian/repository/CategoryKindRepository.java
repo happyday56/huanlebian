@@ -17,5 +17,5 @@ public interface CategoryKindRepository extends JpaRepository<CategoryKind, Cate
 
     List<CategoryKind> findAllByCategory(Category category);
 
-    CategoryKind findCategoryAndKind(Category category, Kind kind);
+    CategoryKind findByCategoryAndKind(Category category, Kind kind);
 }

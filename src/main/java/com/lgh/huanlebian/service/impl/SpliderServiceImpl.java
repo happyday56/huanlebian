@@ -1,7 +1,6 @@
 package com.lgh.huanlebian.service.impl;
 
 import com.lgh.huanlebian.entity.*;
-import com.lgh.huanlebian.entity.pk.CategoryKindPK;
 import com.lgh.huanlebian.model.xml.*;
 import com.lgh.huanlebian.model.xml.Process;
 import com.lgh.huanlebian.repository.*;
@@ -35,7 +34,7 @@ import java.util.regex.Pattern;
 @Service
 public class SpliderServiceImpl implements SpliderService {
 
-    private static Log logger = LogFactory.getLog(SpliderServiceImpl.class);
+    private static Log log = LogFactory.getLog(SpliderServiceImpl.class);
 
     @Autowired
     CategoryRepository categoryRepository;
@@ -60,9 +59,9 @@ public class SpliderServiceImpl implements SpliderService {
         Date uploadTime = new Date(System.currentTimeMillis());
 
         File file = new File(this.getClass().getResource("/").getPath() + "targets.xml");
-//        logger.info(file.exists());
+//        log.info(file.exists());
         if (!file.exists()) {
-            logger.error("not find targets.xml");
+            log.error("not find targets.xml");
             return;
         }
         //读取项目配置的XML文件
@@ -77,23 +76,24 @@ public class SpliderServiceImpl implements SpliderService {
         List<NewsFilter> blogFilters = new ArrayList<>();
         //用于过滤
         List<String> listTitles = new ArrayList<>();
-        logger.info("config file loading finished,start spridering");
+        log.info("config file loading finished,start spridering");
         List<Project> listProject = root.getProjects();
         for (Project project : listProject) {
             Boolean enabled = project.getEnabled();
             String categoryPath = project.getCategory();
             String kindPath = project.getKind();
+            String name = project.getName();
 
             Category category = categoryRepository.findByPath(categoryPath);
             Kind kind = kindRepository.findByPath(kindPath);
-            
-            CategoryKind categoryKind = categoryKindRepository.findCategoryAndKind(category, kind);
-            categoryKindRepository.save(categoryKind);
 
-//            Category category = getCategory(categories, categoryId);
-//            if (category == null) {
-//                logger.error("have no categoryId " + categoryId);
-//                continue;
+//            CategoryKind categoryKind = categoryKindRepository.findByCategoryAndKind(category, kind);
+//            if (categoryKind == null) {
+//                categoryKind = new CategoryKind();
+//                categoryKind.setCategory(category);
+//                categoryKind.setKind(kind);
+//                categoryKind.setTitle(name);
+//                categoryKindRepository.save(categoryKind);
 //            }
 
             String projectName = project.getName();
@@ -101,25 +101,25 @@ public class SpliderServiceImpl implements SpliderService {
             //判断是否进行抓取
             if (enabled) {
 
-                logger.info(projectName + " start doTarget....");
+                log.info(projectName + " start doTarget....");
                 // 获取项目处理目标，分析后，返回需要处理的具体页面
                 Target target = project.getTarget();
                 List<String> listUrl = null;
                 if (target == null)
-                    logger.error("xml have no target");
+                    log.error("xml have no target");
                 else {
                     try {
                         listUrl = doTarget(target);
                     } catch (Exception exp) {
-                        logger.error("doTarget error " + exp.getMessage());
+                        log.error("doTarget error " + exp.getMessage());
                     }
                 }
 
                 totalCount += listUrl.size();
 
-                logger.info("doTarget finished,url length:" + listUrl.size());
+                log.info("doTarget finished,url length:" + listUrl.size());
 
-                logger.info("start web page");
+                log.info("start web page");
                 List<Process> processes = project.getProcesses();
                 for (String doFinalUrl : listUrl) {
                     try {
@@ -152,18 +152,18 @@ public class SpliderServiceImpl implements SpliderService {
 //
 //                        }
                     } catch (Exception exp) {
-                        logger.error("web url:" + listUrl + exp.getMessage());
+                        log.error("web url:" + listUrl + exp.getMessage());
                         errorCount++;
                     }
                 }
-                logger.info("project " + projectName + " finined");
+                log.info("project " + projectName + " finined");
             } else {
-                logger.error("project " + projectName + " no open,so no do");
+                log.error("project " + projectName + " no open,so no do");
             }
         }
 
         for (News news : blogSpliders) {
-            logger.info(news.getTitle());
+            log.info(news.getTitle());
         }
 
         //插入数据
@@ -171,7 +171,7 @@ public class SpliderServiceImpl implements SpliderService {
         newsFilterRepository.save(blogFilters);
 
 
-        logger.info("total：" + totalCount + " success：" + blogSpliders.size() + " error：" + errorCount + " repeat：" + repeatCount);
+        log.info("total：" + totalCount + " success：" + blogSpliders.size() + " error：" + errorCount + " repeat：" + repeatCount);
 
     }
 
@@ -304,7 +304,7 @@ public class SpliderServiceImpl implements SpliderService {
             result.setDescription(tag.getAttributeValue("content"));
         }
 
-//            logger.info("描述：" + result.getDescription());
+//            log.info("描述：" + result.getDescription());
         boolean cached = false;
         // 缓存的处理后内容 下个处理使用其内容
         String cacheProcessConent = "";
@@ -339,7 +339,7 @@ public class SpliderServiceImpl implements SpliderService {
                     if (pos == postCount) {
                         processContent = element.getContent().toString();
 //                            processSummary = element.getContent().getTextExtractor().toString().substring(0,250);
-//                            logger.info(processSummary);
+//                            log.info(processSummary);
                         break;
                     }
                     postCount++;

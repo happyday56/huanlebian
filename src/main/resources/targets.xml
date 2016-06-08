@@ -2,7 +2,7 @@
 <projectroot>
     <projects>
         <!-- 新生儿喂养 -->
-        <project enabled="true" category="xinshenger" kind="weiyang" name="">
+        <project enabled="true" category="xinshenger" kind="weiyang" name="新生儿喂养">
             <target encode="utf-8" timeout="8000">
                 <multi_url>
                     <single_url href="http://yuer.pcbaby.com.cn/xinshenger/weiyang/"></single_url>
