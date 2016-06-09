@@ -13,10 +13,10 @@ import java.util.List;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-    @Query("select c.id from Category c where c.parent=?1")
+    @Query("select c.id from Category c where c.parent=?1 order by c.sort")
     List<Long> findIdsByParent(Category parent);
 
-    List<Category> findAllByParent(Category parent);
+    List<Category> findAllByParentOrderBySortAsc(Category parent);
 
     Category findByPath(String path);
 

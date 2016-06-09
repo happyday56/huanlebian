@@ -7,7 +7,6 @@ import com.lgh.huanlebian.repository.*;
 import com.lgh.huanlebian.service.SpliderService;
 import com.lgh.huanlebian.utils.FileUtil;
 import net.htmlparser.jericho.Element;
-import net.htmlparser.jericho.HTMLElementName;
 import net.htmlparser.jericho.Source;
 import net.htmlparser.jericho.StartTag;
 import org.apache.commons.logging.Log;
@@ -123,7 +122,7 @@ public class SpliderServiceImpl implements SpliderService {
                 List<Process> processes = project.getProcesses();
                 for (String doFinalUrl : listUrl) {
                     try {
-                        News news = doProcess(doFinalUrl, processes);
+                        News news = doProcesses(doFinalUrl, processes);
                         //内容存入list中 标题不能重复
                         if (news != null
                                 && !StringUtils.isEmpty(news.getTitle())
@@ -280,17 +279,16 @@ public class SpliderServiceImpl implements SpliderService {
      * @param listProcess
      * @throws IOException
      */
-    private News doProcess(String doFinalUrl,
-                           List<Process> listProcess) throws IOException {
+    private News doProcesses(String doFinalUrl, List<Process> listProcess) throws IOException {
         News result = new News();
 
         URL url = new URL(doFinalUrl);
         Source source = new Source(url);
-        String sourceHtml = "";
-        List<Element> elements = source.getAllElements(HTMLElementName.HTML);
-        for (Element element : elements) {
-            sourceHtml = element.getContent().toString();
-        }
+
+//        List<Element> elements = source.getAllElements(HTMLElementName.HTML);
+//        for (Element element : elements) {
+//            sourceHtml = element.getContent().toString();
+//        }
 
         //处理description和keywords
         // 获取关键字
@@ -304,142 +302,150 @@ public class SpliderServiceImpl implements SpliderService {
             result.setDescription(tag.getAttributeValue("content"));
         }
 
-//            log.info("描述：" + result.getDescription());
-        boolean cached = false;
-        // 缓存的处理后内容 下个处理使用其内容
-        String cacheProcessConent = "";
-
-
         for (Process process : listProcess) {
-            //处理后的内容
-            String processContent = "";
+            doProcess(source, process, result);
+        }
 
-            // 以标签方式获取
-            Process_Tag_Filter tag_filter = process.getProcess_tag_filter();
-            if (tag_filter != null) {
-                String key = tag_filter.getKey();
-//                            Element element = source.getElementById(tag_filter
-//                                    .getValue());
-//                            processContent = element.getContent().toString();
+        return result;
+    }
 
-                //不管id class name 统一采用属性方式获取
-                List<Element> listElement;
-                if (cached) { //有缓存从缓存处理
-                    Source s = new Source(cacheProcessConent);
-                    listElement = s.getAllElements(
-                            key, tag_filter.getValue(), false);
-                } else {
-                    listElement = source.getAllElements(
-                            key, tag_filter.getValue(), false);
-                }
+    /**
+     * 处理单个process 一个process对应的一个字段 （标题 内容 图片）
+     * 步骤:
+     * 1.以正则方式获取内容
+     * 2.以标签方式获取
+     * 3.对以1或2方式获取的内容进行过滤
+     * 4.把处理内容保存到实体中
+     *
+     * @param source
+     * @param process
+     * @param result
+     */
+    private void doProcess(Source source, Process process, News result) {
+        String sourceHtml = source.getSource().toString();
+        //处理后的内容
+        String processContent = "";
 
-                Integer pos = tag_filter.getPos();
-                Integer postCount = 1;
-                for (Element element : listElement) {
-                    if (pos == postCount) {
-                        processContent = element.getContent().toString();
-//                            processSummary = element.getContent().getTextExtractor().toString().substring(0,250);
-//                            log.info(processSummary);
-                        break;
+        //1.以正则方式获取内容
+        String regex_filter = process.getProcess_regex_filter();
+        if (!StringUtils.isEmpty(regex_filter)) {
+            Pattern p = Pattern.compile(regex_filter);
+            Matcher matcher = p.matcher(sourceHtml);//有缓存从缓存处理
+            if (matcher.find()) {
+                processContent = matcher.group(1);
+            }
+        }
+
+        //2.以标签方式获取
+        Process_Tag_Filter process_tag_filter = process.getProcess_tag_filter();
+        if (process_tag_filter != null) {
+            String key = process_tag_filter.getKey();
+            String value = process_tag_filter.getValue();
+
+            //不管id class name 统一采用属性方式获取
+            List<Element> listElement = source.getAllElements(key, value, false);
+            Integer pos = process_tag_filter.getPos();
+            Integer postCount = 1;
+            for (Element element : listElement) {
+                if (pos == postCount) {
+                    processContent = element.getContent().toString();
+                    //进行获取子层级处理(5层)
+                    Integer childrenLevel = process_tag_filter.getChildrenLevel();
+                    if (!StringUtils.isEmpty(processContent) && childrenLevel != null && childrenLevel > 0) {
+                        Source source1 = new Source(processContent);
+                        if (childrenLevel == 1)
+                            processContent = source1.getChildElements().get(0).getContent().toString();
+                        else if (childrenLevel == 2)
+                            processContent = source1.getChildElements().get(0).getChildElements().get(0).getContent().toString();
+                        else if (childrenLevel == 3)
+                            processContent = source1.getChildElements().get(0).getChildElements().get(0).getChildElements().get(0).getContent().toString();
+                        else if (childrenLevel == 4)
+                            processContent = source1.getChildElements().get(0).getChildElements().get(0).getChildElements().get(0).getChildElements().get(0).getContent().toString();
+                        else if (childrenLevel == 5)
+                            processContent = source1.getChildElements().get(0).getChildElements().get(0).getChildElements().get(0).getChildElements().get(0).getChildElements().get(0).getContent().toString();
+
                     }
-                    postCount++;
+                    break;
                 }
+                postCount++;
             }
+        }
 
+        //3.对以1或2方式获取的内容进行过滤
+        if (process.getProcess_clean() != null)
+            processContent = doProcessClean(processContent, process.getProcess_clean());
 
-            // 以正则方式获取
-            String regex_filter = process.getProcess_regex_filter();
-            if (!StringUtils.isEmpty(regex_filter)) {
-                Pattern p = Pattern.compile(regex_filter);
-                Matcher matcher = p.matcher(cached ? cacheProcessConent : sourceHtml);//有缓存从缓存处理
-                if (matcher.find()) {
-                    processContent = matcher.group(1);
+        //4.把处理内容保存到实体中（标题 内容 图片）
+        String field = process.getField();
+        if (field.equals("title"))
+            result.setTitle(processContent);
+        else if (field.equals("content")) {
+            result.setContent(processContent);
+
+            //处理内容的同时处理简介summary
+            if (!StringUtils.isEmpty(processContent)) {
+                Source sourceSummary = new Source(processContent);
+                String processSummary = sourceSummary.getTextExtractor().toString();
+                if (processSummary.length() > 150) processSummary = processSummary.substring(0, 150);
+                if (processSummary.lastIndexOf("。") > 0) {
+                    processSummary = processSummary.substring(0, processSummary.lastIndexOf("。") + 1);
+                } else if (processSummary.lastIndexOf("！") > 0) {
+                    processSummary = processSummary.substring(0, processSummary.lastIndexOf("！") + 1);
                 }
+                if (StringUtils.isEmpty(processSummary)) processSummary = result.getTitle();
+                result.setSummary(processSummary);
             }
+        } else if (field.equals("pictureUrl")) {
+            //                //此内容会被下面的pictureUrl覆盖
+//                StartTag startTag = sourceSummary.getFirstStartTag("img");
+//                if (startTag != null) {
+//                    String pictureUrl = startTag.getAttributeValue("src");
+//                    result.setPictureUrl(pictureUrl != null && pictureUrl.length() <= 200 ? pictureUrl : "");
+//                } else {
+//                    result.setPictureUrl("");
+//                }
+            result.setPictureUrl(processContent); //todo 图片需要下载
+        }
+    }
 
-
-            List<Clean_Tag> clean_tags = process.getProcess_clean();
-            if (clean_tags != null && clean_tags.size() > 0) {
-                Source source1 = new Source(processContent);
-                StringBuilder strB = new StringBuilder();
-                for (Element element : source1.getChildElements()) {
-                    //判断是否是clear
-                    boolean isClearTag = false;
-                    for (Clean_Tag clean_tag : clean_tags) {
-                        if ("attribute".equals(clean_tag.getType())) {
-                            if (element.getAttributes().getValue(clean_tag.getKey()) != null &&
-                                    element.getAttributes().getValue(clean_tag.getKey()).equals(clean_tag.getValue())) {
-                                isClearTag = true;
-                                break;
-                            }
-                        }
-
-                        if ("tag".equals(clean_tag.getType()) && element.getName().equals(clean_tag.getValue())) {
+    /**
+     * 对内容进行清理
+     * 只处理一级的标签 TODO: 2016/6/9  太单一
+     *
+     * @param content
+     * @param clean_tags
+     */
+    private String doProcessClean(String content, List<Clean_Tag> clean_tags) {
+        if (clean_tags != null && clean_tags.size() > 0) {
+            Source source = new Source(content);
+            StringBuilder strB = new StringBuilder();
+            for (Element element : source.getChildElements()) {
+                //默认不清理
+                boolean isClearTag = false;
+                for (Clean_Tag clean_tag : clean_tags) {
+                    if ("attribute".equals(clean_tag.getType())) {
+                        if (element.getAttributes().getValue(clean_tag.getKey()) != null &&
+                                element.getAttributes().getValue(clean_tag.getKey()).equals(clean_tag.getValue())) {
                             isClearTag = true;
                             break;
                         }
                     }
 
-                    if (!isClearTag && !element.isEmpty()) {
-                        strB.append(element.toString());
-                    }
-                }
-                processContent = strB.toString();
-
-            }
-
-            //是否缓存内容
-            boolean flow = process.getFlow();
-            if (flow) {
-                cached = true;
-                cacheProcessConent = processContent;
-            } else {
-                if (result == null) result = new News();
-                String field = process.getField();
-                if (field.equals("title"))
-                    result.setTitle(processContent);
-                else if (field.equals("content")) {
-
-                    result.setContent(processContent);
-
-                    if (!StringUtils.isEmpty(processContent)) {
-                        Source sourceSummary = new Source(processContent);
-
-                        String processSummary = sourceSummary.getTextExtractor().toString();
-                        if (processSummary.length() > 150) processSummary = processSummary.substring(0, 150);
-                        if (processSummary.lastIndexOf("。") > 0) {
-                            processSummary = processSummary.substring(0, processSummary.lastIndexOf("。") + 1);
-                        } else if (processSummary.lastIndexOf("！") > 0) {
-                            processSummary = processSummary.substring(0, processSummary.lastIndexOf("！") + 1);
-                        }
-                        if (StringUtils.isEmpty(processSummary)) processSummary = result.getTitle();
-                        result.setSummary(processSummary);
-
-
-                        StartTag startTag = sourceSummary.getFirstStartTag("img");
-                        if (startTag != null) {
-                            String pictureUrl = startTag.getAttributeValue("src");
-                            result.setPictureUrl(pictureUrl != null && pictureUrl.length() <= 200 ? pictureUrl : "");
-                        } else {
-                            result.setPictureUrl("");
-                        }
+                    if ("tag".equals(clean_tag.getType()) && element.getName().equals(clean_tag.getValue())) {
+                        isClearTag = true;
+                        break;
                     }
                 }
 
+                //不清理才添加到返回数据中
+                if (!isClearTag && !element.isEmpty()) {
+                    strB.append(element.toString());
+                }
             }
+            content = strB.toString();
         }
-
-        return result;
+        return content;
     }
-//
-//    private Category getCategory(List<Category> categories, Long categoryId) {
-//        for (Category category : categories) {
-//            if (categoryId.equals(category.getId())) {
-//                return category;
-//            }
-//        }
-//        return null;
-//    }
 
 
 //    public void doPicture() {

@@ -9,6 +9,7 @@ import com.lgh.huanlebian.repository.CategoryKindRepository;
 import com.lgh.huanlebian.repository.CategoryRepository;
 import com.lgh.huanlebian.repository.NewsRepository;
 import com.lgh.huanlebian.repository.SlideRepository;
+import com.lgh.huanlebian.service.CategoryService;
 import com.lgh.huanlebian.service.NewsService;
 import com.lgh.huanlebian.service.SlideService;
 import org.apache.commons.logging.Log;
@@ -52,6 +53,9 @@ public class CategoryController {
     @Autowired
     NewsService newsService;
 
+    @Autowired
+    CategoryService categoryService;
+
     /**
      * 一级分类
      *
@@ -70,11 +74,12 @@ public class CategoryController {
             webCategoryPageModel.setDescription(oneCategory.getDescription());
 
             webCategoryPageModel.setCategoryName(oneCategory.getTitle());
+            webCategoryPageModel.setCategoryUrl(categoryService.getURI(one));
 
-            List<Category> categories = categoryRepository.findAllByParent(oneCategory);
+            List<Category> categories = categoryRepository.findAllByParentOrderBySortAsc(oneCategory);
             List<WebCategoryListModel> webCategoryListModels = new ArrayList<>();
             for (Category category : categories) {
-                webCategoryListModels.add(new WebCategoryListModel(category.getTitle(), "/d/" + one + "/" + category.getPath()));
+                webCategoryListModels.add(new WebCategoryListModel(category.getTitle(), categoryService.getURI(one, category.getPath())));
             }
             webCategoryPageModel.setTopNav(webCategoryListModels);
 
@@ -112,11 +117,12 @@ public class CategoryController {
             webSecondCategoryPageModel.setDescription(secondCategory.getDescription());
 
             webSecondCategoryPageModel.setCategoryName(secondCategory.getTitle());
+            webSecondCategoryPageModel.setCategoryUrl(categoryService.getURI(one, two));
 
             List<CategoryKind> categoryKinds = categoryKindRepository.findAllByCategory(secondCategory);
             List<WebCategoryListModel> webCategoryListModels = new ArrayList<>();
             for (CategoryKind categoryKind : categoryKinds) {
-                webCategoryListModels.add(new WebCategoryListModel(categoryKind.getTitle(), "/d/" + one + "/" + two + "/" + categoryKind.getKind().getPath()));
+                webCategoryListModels.add(new WebCategoryListModel(categoryKind.getTitle(), categoryService.getURI(one, two, categoryKind.getKind().getPath())));
             }
             webSecondCategoryPageModel.setTopNav(webCategoryListModels);
 

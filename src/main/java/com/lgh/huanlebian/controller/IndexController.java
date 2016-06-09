@@ -38,7 +38,7 @@ public class IndexController {
         webCategoryPageModel.setKeywords("关键字1");
         webCategoryPageModel.setDescription("描述1");
 
-        List<Category> categories = categoryRepository.findAllByParent(null);
+        List<Category> categories = categoryRepository.findAllByParentOrderBySortAsc(null);
 
         List<WebCategoryListModel> webCategoryListModels = new ArrayList<>();
         for (Category category : categories) {

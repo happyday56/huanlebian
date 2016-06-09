@@ -19,6 +19,13 @@ public class Process_Tag_Filter {
      */
     private String value;
 
+
+    /**
+     * 自己层次
+     * 如果上面获取的数据太外面，可以进行找子项处理
+     */
+    private Integer childrenLevel;
+
     public Integer getPos() {
         return pos;
     }
@@ -46,5 +53,12 @@ public class Process_Tag_Filter {
         this.value = value;
     }
 
+    public Integer getChildrenLevel() {
+        return childrenLevel;
+    }
 
+    @XmlAttribute(name = "childrenLevel")
+    public void setChildrenLevel(Integer childrenLevel) {
+        this.childrenLevel = childrenLevel;
+    }
 }

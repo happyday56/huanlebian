@@ -11,6 +11,7 @@ import java.util.List;
 public class Process {
     /**
      * 代表处理流程 true 下一个处理使用此缓存的内容，此内容不用存入数据库 如获取具体div中的内容
+     * 暂时没用
      */
     private Boolean flow;
     /**

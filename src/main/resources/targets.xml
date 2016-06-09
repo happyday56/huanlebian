@@ -16,7 +16,13 @@
                     <process_regex_filter><![CDATA[<h1 class=\"artTit\">(.+?)</h1>]]></process_regex_filter>
                 </process>
                 <process flow="false" table="" field="content">
-                    <process_tag_filter pos="1" key="class" value="artText"/>
+                    <process_tag_filter pos="1" key="class" value="artText" childrenLevel="3"/>
+                    <process_clean>
+                        <clean_tag type="attribute" key="class" value="pageNumber"/>
+                    </process_clean>
+                </process>
+                <process flow="false" table="" field="pictureUrl">
+                    <process_regex_filter><![CDATA[#src=\"(.+?)\"]]></process_regex_filter>
                 </process>
             </processes>
         </project>

@@ -13,6 +13,7 @@ import java.util.List;
 @Setter
 public class WebCategoryPageModel extends WebBasePageModel {
     private String categoryName;
+    private String categoryUrl;
     private List<WebCategoryListModel> topNav;
     private List<WebSlideListModel> slideList;
     /**
