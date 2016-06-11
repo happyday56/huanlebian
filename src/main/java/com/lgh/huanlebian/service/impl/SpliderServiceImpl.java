@@ -4,7 +4,9 @@ import com.lgh.huanlebian.entity.*;
 import com.lgh.huanlebian.model.xml.*;
 import com.lgh.huanlebian.model.xml.Process;
 import com.lgh.huanlebian.repository.*;
+import com.lgh.huanlebian.service.CommonConfigService;
 import com.lgh.huanlebian.service.SpliderService;
+import com.lgh.huanlebian.service.StaticResourceService;
 import com.lgh.huanlebian.utils.FileUtil;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
@@ -19,10 +21,14 @@ import org.springframework.util.StringUtils;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -50,6 +56,12 @@ public class SpliderServiceImpl implements SpliderService {
 
     @Autowired
     CategoryKindRepository categoryKindRepository;
+
+    @Autowired
+    StaticResourceService staticResourceService;
+
+    @Autowired
+    CommonConfigService commonConfigService;
 
     @Transactional
     @Scheduled(initialDelay = 1000, fixedDelay = 1000 * 1000)
@@ -279,7 +291,7 @@ public class SpliderServiceImpl implements SpliderService {
      * @param listProcess
      * @throws IOException
      */
-    private News doProcesses(String doFinalUrl, List<Process> listProcess) throws IOException {
+    private News doProcesses(String doFinalUrl, List<Process> listProcess) throws IOException, URISyntaxException {
         News result = new News();
 
         URL url = new URL(doFinalUrl);
@@ -321,7 +333,7 @@ public class SpliderServiceImpl implements SpliderService {
      * @param process
      * @param result
      */
-    private void doProcess(Source source, Process process, News result) {
+    private void doProcess(Source source, Process process, News result) throws IOException, URISyntaxException {
         String sourceHtml = source.getSource().toString();
         //处理后的内容
         String processContent = "";
@@ -380,6 +392,8 @@ public class SpliderServiceImpl implements SpliderService {
         if (field.equals("title"))
             result.setTitle(processContent);
         else if (field.equals("content")) {
+            //内容中有图片进行下载处理
+//            processContent = doContentPicture(processContent);
             result.setContent(processContent);
 
             //处理内容的同时处理简介summary
@@ -404,7 +418,9 @@ public class SpliderServiceImpl implements SpliderService {
 //                } else {
 //                    result.setPictureUrl("");
 //                }
-            result.setPictureUrl(processContent); //todo 图片需要下载
+            //下载并处理图片
+//            processContent = downloadPicture(processContent);
+            result.setPictureUrl(processContent.replace(commonConfigService.getResourcesUri(), ""));
         }
     }
 
@@ -447,6 +463,41 @@ public class SpliderServiceImpl implements SpliderService {
         return content;
     }
 
+
+    /**
+     * 下载图片并保存到本地
+     *
+     * @param pictureUrl
+     * @return
+     * @throws IOException
+     * @throws URISyntaxException
+     */
+    private String downloadPicture(String pictureUrl) throws IOException, URISyntaxException {
+        String suffix = "";
+        if (pictureUrl.lastIndexOf(".") >= 0) {
+            suffix = pictureUrl.substring(pictureUrl.lastIndexOf("."));
+        }
+        String newFileName = UUID.randomUUID().toString().replace("-", "") + suffix;
+        String newPath = StaticResourceService.news + "/" + newFileName;
+
+
+        URL url = new URL(pictureUrl);
+        URLConnection urlConnection = url.openConnection();
+        staticResourceService.uploadResource(newPath, urlConnection.getInputStream());
+        return staticResourceService.getResource(newPath).toString();
+    }
+
+
+    private String doContentPicture(String content) throws IOException, URISyntaxException {
+        Pattern pattern = Pattern.compile("<img.*?src=\"([^\"]*)\"[^>]*>");
+        Matcher matcher = pattern.matcher(content);
+        while (matcher.find()) {
+            String pictureUrl = matcher.group(1);
+            String newPictureUrl = downloadPicture(pictureUrl);
+            content = content.replace(pictureUrl, newPictureUrl);
+        }
+        return content;
+    }
 
 //    public void doPicture() {
 //        List<News> blogs = newsRepository.findAll();
