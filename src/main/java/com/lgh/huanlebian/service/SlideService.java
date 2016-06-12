@@ -13,8 +13,10 @@ public interface SlideService {
     /**
      * 获取幻灯片前几条数据
      * 获取前3条
+     *
      * @param category 分类
+     * @param top
      * @return
      */
-    List<Slide> findTopSlideList(Category category);
+    List<Slide> findTopSlideList(Category category, Integer top);
 }

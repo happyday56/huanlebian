@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lgh on 2016/5/27.
@@ -21,7 +23,7 @@ public class NewsServiceImpl implements NewsService {
     EntityManager entityManager;
 
     public List<News> getTopByCategory(Category category, Integer top) {
-        List<News> newsList = new ArrayList<>();
+        List<News> result = new ArrayList<>();
         StringBuilder hql = new StringBuilder();
         hql.append("select news from News news where news.category=:category order by news.id");
         Query query = entityManager.createQuery(hql.toString());
@@ -29,9 +31,42 @@ public class NewsServiceImpl implements NewsService {
         query.setMaxResults(top);
         List list = query.getResultList();
         for (Object o : list) {
-            newsList.add((News) o);
+            result.add((News) o);
         }
-        return newsList;
+        return result;
     }
 
+    public List<News> getTopByCategoryGroup(Category category, Integer top) {
+        List<News> result = new ArrayList<>();
+        StringBuilder hql = new StringBuilder();
+        hql.append("select news from News news where news.category=:category order by news.views");
+        Query query = entityManager.createQuery(hql.toString());
+        query.setParameter("category", category);
+        query.setMaxResults(top);
+        List list = query.getResultList();
+        for (Object o : list) {
+            result.add((News) o);
+        }
+        return result;
+    }
+
+    /**
+     * 废弃
+     *
+     * @return
+     */
+    public List<News> getTopByCategoryGroup() {
+        List<News> result = new ArrayList<>();
+
+//        StringBuilder hql = new StringBuilder();
+//        hql.append("select news.category,news from News news group by news.category order by news.category,news.views");
+//        Query query = entityManager.createQuery(hql.toString());
+//        query.setMaxResults(5);
+//        List list = query.getResultList();
+//        for (Object o : list) {
+//            Object[] item = (Object[]) o;
+//            result.add((News) item[1]);
+//        }
+        return result;
+    }
 }

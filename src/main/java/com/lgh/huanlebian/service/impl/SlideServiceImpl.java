@@ -31,7 +31,7 @@ public class SlideServiceImpl implements SlideService {
     CategoryRepository categoryRepository;
 
     @Override
-    public List<Slide> findTopSlideList(Category category) {
+    public List<Slide> findTopSlideList(Category category,Integer top) {
         List<Slide> slides = new ArrayList<>();
         StringBuilder hql = new StringBuilder();
         hql.append("select slide from Slide slide ");
@@ -52,7 +52,7 @@ public class SlideServiceImpl implements SlideService {
                 query.setParameter("category", category);
         }
 
-        query.setMaxResults(3);
+        query.setMaxResults(top);
         List list = query.getResultList();
         for (Object object : list) {
             slides.add((Slide) object);

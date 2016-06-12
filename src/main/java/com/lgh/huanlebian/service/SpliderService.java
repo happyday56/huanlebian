@@ -9,4 +9,7 @@ public interface SpliderService {
 
     @Transactional
     void start() throws Exception;
+
+    @Transactional
+    void doSlide();
 }

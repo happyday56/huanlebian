@@ -11,4 +11,8 @@ import java.util.List;
 public interface NewsService {
 
     List<News> getTopByCategory(Category category, Integer top);
+
+    List<News> getTopByCategoryGroup(Category category, Integer top);
+
+    List<News> getTopByCategoryGroup();
 }

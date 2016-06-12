@@ -27,6 +27,7 @@ import java.util.List;
  * 分类
  * Created by Administrator on 2016/5/8.
  */
+@SuppressWarnings("SpringJavaAutowiringInspection")
 @Controller
 @RequestMapping("/d")
 public class CategoryController {
@@ -89,7 +90,7 @@ public class CategoryController {
             webCategoryPageModel.setTopNav(webCategoryListModels);
 
             List<WebSlideListModel> webSlideListModels = new ArrayList<>();
-            List<Slide> slides = slideService.findTopSlideList(oneCategory);
+            List<Slide> slides = slideService.findTopSlideList(oneCategory, 5);
             for (Slide slide : slides) {
                 webSlideListModels.add(new WebSlideListModel(slide.getTitle(), slide.getImageUrl(), slide.getUrl()));
             }
@@ -124,25 +125,32 @@ public class CategoryController {
             webSecondCategoryPageModel.setCategoryName(secondCategory.getTitle());
             webSecondCategoryPageModel.setCategoryUrl(uriService.getCategoryURI(one, two));
 
+            //种类部分
             List<CategoryKind> categoryKinds = categoryKindRepository.findAllByCategory(secondCategory);
             List<WebCategoryListModel> webCategoryListModels = new ArrayList<>();
             for (CategoryKind categoryKind : categoryKinds) {
-                webCategoryListModels.add(new WebCategoryListModel(categoryKind.getTitle(), uriService.getCategoryURI(one, two, categoryKind.getKind().getPath())));
+                webCategoryListModels.add(new WebCategoryListModel(categoryKind.getTitle()
+                        , uriService.getCategoryURI(one, two, categoryKind.getKind().getPath())));
             }
             webSecondCategoryPageModel.setTopNav(webCategoryListModels);
 
+            //轮播部分
             List<WebSlideListModel> webSlideListModels = new ArrayList<>();
-            List<Slide> slides = slideService.findTopSlideList(secondCategory);
+            List<Slide> slides = slideService.findTopSlideList(secondCategory, 5);
             for (Slide slide : slides) {
-                webSlideListModels.add(new WebSlideListModel(slide.getTitle(), slide.getImageUrl(), slide.getUrl()));
+                webSlideListModels.add(new WebSlideListModel(slide.getTitle()
+                        , staticResourceService.getResource(slide.getImageUrl()).toString(), slide.getUrl()));
             }
             webSecondCategoryPageModel.setSlideList(webSlideListModels);
+
+
 
             //子项列表
             List<WebNewsListModel> webSubNewsListModels = new ArrayList<>();
             List<News> newsList = newsService.getTopByCategory(secondCategory, 10);
             for (News news : newsList) {
-                webSubNewsListModels.add(new WebNewsListModel(news.getTitle(), "", news.getPictureUrl(), news.getSummary()));
+                webSubNewsListModels.add(new WebNewsListModel(news.getTitle(), uriService.getNewURI(news.getId())
+                        , staticResourceService.getResource(news.getPictureUrl()).toString(), news.getSummary()));
             }
             webSecondCategoryPageModel.setWebNewsList(webSubNewsListModels);
 

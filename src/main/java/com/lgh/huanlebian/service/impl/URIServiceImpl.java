@@ -32,4 +32,9 @@ public class URIServiceImpl implements URIService {
         }
         return "/d";
     }
+
+    @Override
+    public String getNewURI(Long id) {
+        return "/v/news/" + id + ".html";
+    }
 }

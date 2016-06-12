@@ -4,9 +4,7 @@ import com.lgh.huanlebian.entity.*;
 import com.lgh.huanlebian.model.xml.*;
 import com.lgh.huanlebian.model.xml.Process;
 import com.lgh.huanlebian.repository.*;
-import com.lgh.huanlebian.service.CommonConfigService;
-import com.lgh.huanlebian.service.SpliderService;
-import com.lgh.huanlebian.service.StaticResourceService;
+import com.lgh.huanlebian.service.*;
 import com.lgh.huanlebian.utils.FileUtil;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
@@ -62,6 +60,11 @@ public class SpliderServiceImpl implements SpliderService {
 
     @Autowired
     CommonConfigService commonConfigService;
+
+    @Autowired
+    SlideRepository slideRepository;
+    @Autowired
+    NewsService newsSerice;
 
     @Transactional
     @Scheduled(initialDelay = 1000, fixedDelay = 1000 * 1000)
@@ -419,7 +422,7 @@ public class SpliderServiceImpl implements SpliderService {
 //                    result.setPictureUrl("");
 //                }
             //下载并处理图片
-//            processContent = downloadPicture(processContent);
+            processContent = downloadPicture(processContent);
             result.setPictureUrl(processContent.replace(commonConfigService.getResourcesUri(), ""));
         }
     }
@@ -499,19 +502,26 @@ public class SpliderServiceImpl implements SpliderService {
         return content;
     }
 
-//    public void doPicture() {
-//        List<News> blogs = newsRepository.findAll();
-//        for (News news : blogs) {
-//            String pictureUrl = "";
-//            String content = news.getContent();
-//
-//            Source source = new Source(content);
-//            StartTag startTag = source.getFirstStartTag("img");
-//            if (startTag != null) {
-//                pictureUrl = startTag.getAttributeValue("src");
-//            }
-//
-//            newsRepository.updatePictureUrlById(news.getId(), pictureUrl);
-//        }
-//    }
+
+    @Autowired
+    URIService uriService;
+
+    @Transactional
+    @Scheduled(initialDelay = 1000, fixedDelay = 1000 * 60 * 60 * 24)
+    public void doSlide() {
+        slideRepository.deleteAll();
+        log.info("****enter do slide****");
+        List<Slide> slides = new ArrayList<>();
+
+        List<Category> categories = categoryRepository.findAll();
+        for (Category category : categories) {
+            List<News> list = newsSerice.getTopByCategoryGroup(category, 5);
+            for (News news : list) {
+                slides.add(new Slide(0L, news.getCategory(), news.getTitle()
+                        , news.getPictureUrl()
+                        , uriService.getNewURI(news.getId())));
+            }
+        }
+        slideRepository.save(slides);
+    }
 }
