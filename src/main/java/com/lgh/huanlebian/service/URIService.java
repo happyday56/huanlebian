@@ -11,4 +11,6 @@ public interface URIService {
     String getCategoryURI(String one, String two, String kind);
 
     String getNewURI(Long id);
+
+
 }

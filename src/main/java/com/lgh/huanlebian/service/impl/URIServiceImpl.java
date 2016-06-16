@@ -37,4 +37,6 @@ public class URIServiceImpl implements URIService {
     public String getNewURI(Long id) {
         return "/v/news/" + id + ".html";
     }
+
+
 }

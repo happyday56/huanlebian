@@ -1,10 +1,12 @@
 package com.lgh.huanlebian.controller;
 
 import com.lgh.huanlebian.entity.Category;
-import com.lgh.huanlebian.model.WebCategoryListModel;
-import com.lgh.huanlebian.model.WebCategoryPageModel;
-import com.lgh.huanlebian.model.WebNewsListModel;
+import com.lgh.huanlebian.entity.Slide;
+import com.lgh.huanlebian.model.*;
 import com.lgh.huanlebian.repository.CategoryRepository;
+import com.lgh.huanlebian.repository.SlideRepository;
+import com.lgh.huanlebian.service.SlideService;
+import com.lgh.huanlebian.service.URIService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +27,40 @@ public class IndexController {
     private static Log log = LogFactory.getLog(IndexController.class);
 
     @Autowired
+    URIService uriService;
+
+    @Autowired
+    SlideService slideService;
+
+    @Autowired
     private CategoryRepository categoryRepository;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(Model model) {
-//        model.addAttribute("title", "网页标题");
-//        model.addAttribute("keywords", "关键字");
-//        model.addAttribute("description", "描述");
+        WebIndexPageModel webIndexPageModel = new WebIndexPageModel();
 
+        List<Category> categories = categoryRepository.findAllByParentOrderBySortAsc(null);
+
+        List<WebCategoryListModel> webCategoryListModels = new ArrayList<>();
+        for (Category category : categories) {
+            webCategoryListModels.add(new WebCategoryListModel(category.getTitle(), uriService.getCategoryURI(category.getPath())));
+        }
+        webIndexPageModel.setTopNav(webCategoryListModels);
+
+        List<WebSlideListModel> webSlideListModels = new ArrayList<>();
+        List<Slide> slides = slideService.findTopSlideList(null, 5);
+        for (Slide slide : slides) {
+            webSlideListModels.add(new WebSlideListModel(slide.getTitle(), slide.getImageUrl(), slide.getUrl()));
+        }
+        webIndexPageModel.setSlideList(webSlideListModels);
+
+        model.addAttribute("page", webIndexPageModel);
+
+        return "index";
+    }
+
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public String test(Model model) {
         WebCategoryPageModel webCategoryPageModel = new WebCategoryPageModel();
         webCategoryPageModel.setTitle("网页标题1");
         webCategoryPageModel.setKeywords("关键字1");
@@ -48,13 +76,9 @@ public class IndexController {
 
 
         List<WebNewsListModel> webNewsListModels = new ArrayList<>();
-        webNewsListModels.add(new WebNewsListModel("开心", "a","",""));
-        webNewsListModels.add(new WebNewsListModel("快乐", "b","",""));
-//        webCategoryPageModel.setNewsList(webNewsListModels);
-
+        webNewsListModels.add(new WebNewsListModel("开心", "a", "", ""));
+        webNewsListModels.add(new WebNewsListModel("快乐", "b", "", ""));
         model.addAttribute("page", webCategoryPageModel);
-
-
         return "test";
     }
 }
