@@ -2,169 +2,815 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <meta name="keywords" content=""/>
-    <meta name="description" content=""/>
-    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/common.css}"/>
+    <title>欢乐变亲子网_健康育儿 品质生活</title>
+    <meta name="keywords" content="怀孕,育儿,家庭"/>
+    <meta name="description" content="欢乐变亲子网为家长们提供0-6岁各阶段孩子成长、教育、家庭和用品等全方位、多角度的各种实用资讯以及有关怀孕的各方面知识。"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/index.css}"/>
     <script type="text/javascript" th:src="@{/resources/js/common.js}"></script>
     <script type="text/javascript" th:src="@{/resources/js/tab.js}"></script>
 </head>
-<title></title>
+
 <body>
-<!-- channelNav -->
-<div class="channelNav2" th:include="fragments/top::top"></div>
-<!-- top ads  -->
-<div class="main">
-    top ads
-</div>
-<!-- 频道导航 -->
-<div class="head">
-    <div class="main">
-        <a href="/" target="_blank"><em class="head-title"></em></a>
-
-        <a href="javascript:joinFavorite('http://www.huanlebian.com/','');" id="aFavorite"
-           class="head-favorite">收藏<em></em></a>
-
-    </div>
-</div>
-<!-- 导航 -->
-<div class="nav shadow">
-    <div class="main">
-        <div class="subNav fl" th:each="item:${page.topNav}">
-            <a target="_blank" th:href="${item.url}" th:text="${item.title}"></a>
-        </div>
-        <div class="th-b fr">
-            <a title="孕育周刊" target="_blank" href="">周刊</a>
-            <em></em>
-            <a title="育儿专题" target="_blank" href="">专题</a>
-            <em></em>
-            <a title="潮童" target="_blank" href="">ABC KIDS潮童</a>
-            <em></em>
-            <a title="宝宝取名" target="_blank" href="">取名</a>
-        </div>
-    </div>
-</div>
-
-<!-- tab1 -->
-<div class="tab1 border shadow clearfix">
-    <!-- slide -->
-    <div id="slide01" class="tab" onmouseover="this.className='tab tab-active';" onmouseout="this.className='tab';">
-
-        <th:block th:each="item:${page.slideList}">
-            <div class="c">
-                <div class="pic">
-                    <a th:href="${item.url}" target="_blank" class="fl">
-                        <img th:src="${item.imageUrl}" width="660" height="340"
-                             th:alt="${item.title}"/>
-                    </a>
-                <span class="picTit">
-                <em><a th:href="${item.url}" th:text="${item.title}" target="_blank"></a></em>
-                </span>
+<div class="doc">
+    <div class="navibar clearfix" id="navibar">
+        <div class="navibar-wap clearfix">
+            <div class="navibar-la">
+                <div class="navibar-sites">
+                    <dt>太平洋网络：</dt>
+                    <dd>
+                        <a href="http://www.pconline.com.cn/" target="_blank" class="nb-first">电脑网</a>
+                        <a href="http://www.pcauto.com.cn/" target="_blank">汽车网</a>
+                        <a href="http://www.pcgames.com.cn/" target="_blank">游戏网</a>
+                        <a href="http://www.pclady.com.cn/" target="_blank">时尚网</a>
+                        <a href="http://www.pcbaby.com.cn/"  class="nb-cur">亲子网</a>
+                        <a href="http://www.pchouse.com.cn/" target="_blank">家居网</a>
+                    </dd>
                 </div>
             </div>
-        </th:block>
-
-
-        <div class="control" id="slide01_control">
-            <a href="javascript:void(0)"></a>
-            <a href="javascript:void(0)"></a>
-            <a href="javascript:void(0)"></a>
-        </div>
-        <a href="javascript:;" class="btn btnL" onclick="slide01.prev();return false;" onmouseover="slide01.stop();"
-           onmouseout="slide01.play();"></a>
-        <a href="javascript:;" class="btn btnR" onclick="slide01.next();return false;" onmouseover="slide01.stop();"
-           onmouseout="slide01.play();"></a>
-    </div>
-
-    <div class="th-b fr">
-        <p class="tips">
-            <a href="http://yuer.pcbaby.com.cn/yinger/huli/" target="_blank">婴儿护理</a>
-        </p>
-        <p class="pTit">
-            <a href="http://yuer.pcbaby.com.cn/291/2910984.html" target="_blank">小小飘窗藏趣味 我和宝宝有约</a>
-        </p>
-        <p class="des">
-            当妈妈们终日围绕着宝宝而转的时候，奶粉纸尿裤、辅食睡眠等等的育儿琐事占据了你的所有时间时，内心是否渴望去飘窗上闲坐一会？其实，你...
-        </p>
-        <ul class="titList">
-            <li>
-                <a href="http://yuer.pcbaby.com.cn/288/2884549.html" target="_blank">长辈爱给宝贝零食 阻止讲方法</a>
-            </li>
-            <li>
-                <a href="http://yuer.pcbaby.com.cn/288/2884585.html" target="_blank">早起也有好心情 花式早餐倍棒</a>
-            </li>
-            <li>
-                <a href="http://yuer.pcbaby.com.cn/288/2884547.html" target="_blank">宝宝沿用二手衣物 未必这么好</a>
-            </li>
-        </ul>
-    </div>
-</div>
-
-
-<div class="main tab3 clearfix tab3-1">
-
-</div>
-<div class="main tab3 tab3-1 tab3-2 clearfix">
-    <div class="left660 fl border shadow" id="slide04">
-        <div class="th clearfix">
-            <p class="tabTit fl"></p>
-
-        </div>
-        <div class="tb dpic-txt dpic-txt-long">
-
+            <div class="navibar-lb navL">
+                <ul class="nb-info meg">
+                    <li class="nb-tit" id="ajaxLogon">
+                        <div id="Jlogin-tit" class="nb-tit Jnb-tit">
+                            <a target="_self" href="http://my.pcbaby.com.cn/login.jsp?return=" class="nb-menu">
+                                <span class="nb-txt">登录</span> <i class="nb-arrow"></i>
+                            </a>
+                            <div class="nb-menulist">
+                                <div class="nb-menulist-inner">
+                                    <div class="nb-menuList-con nb-ml-loginway">
+                                        <a target="_self" href="http://my.pcbaby.com.cn/login.jsp?return=" class="nb-ml-item nb-ml-pc"> <i class="nb-ml-ic"></i>
+                                            通行证登录
+                                        </a>
+                                        <a target="_self" href="http://my.pcbaby.com.cn/login.jsp?tab=1&return=" class="nb-ml-item nb-ml-mzc">
+                                            <i class="nb-ml-ic"></i>
+                                            免注册登录
+                                        </a>
+                                        <a target="_self" href="http://my.pcbaby.com.cn/passport/opens/authorize.jsp?type=qzone_baby&return=" class="nb-ml-item nb-ml-qq">
+                                            <i class="nb-ml-ic"></i>
+                                            QQ登录
+                                        </a>
+                                        <a target="_self" href="http://my.pcbaby.com.cn/passport/opens/authorize.jsp?type=sina_baby&return=" class="nb-ml-item nb-ml-weibo">
+                                            <i class="nb-ml-ic"></i>
+                                            微博登录
+                                        </a>
+                                        <a target="_self" href="http://my.pcbaby.com.cn/passport/opens/authorize.jsp?type=weixin_baby&return=" class="nb-ml-item nb-ml-weixin">
+                                            <i class="nb-ml-ic"></i>
+                                            微信登录
+                                        </a>
+                                    </div> <em class="nb-ml-arrow"></em>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="nb-tit">
+                            <a href="http://my.pcbaby.com.cn/user/registerStep1.jsp" class="nb-menu" target="_blank">
+                                <span class="nb-txt">注册</span>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
-    <div class="right306 border shadow fr">
-        <div class="rBox" id="Rbbs">
-        </div>
-    </div>
-</div>
 
-
-<div id="slide10" class="seo">
-    <div class="th">
+    <div class="wraper">
         <div class="main">
-            <div class="seoContr fl">
-                <span class="current">友情链接</span>
-                <span>热点标签</span>
+            <div class="ivy990 ivy-tonglan">
+                <u id="pckids.shouye.qp." class="adpos"></u>
+                <u id="pckids.shouye.khzu.dbtl." class="adpos"></u>
             </div>
-
-        </div>
-    </div>
-    <div class="tb clearfix">
-        <div class="main">
-            <div class="tabContent">
-                <div class="c">
-                    <div class="links">
-                        <p>
-
-                        </p>
+            <div class="head">
+                <div class="logo"><a href="http://www.pcbaby.com.cn/"></a></div>
+                <div class="search">
+                    <div class="form" id="s-form">
+                        <form action="http://ks.pcbaby.com.cn/kids_index.jsp" method="get" target="_blank" id="search" class="clearfix">
+                            <input type="hidden" name="sort" value="time" style="display:none;" />
+                            <input type="hidden" name="menu" value="" style="display:none;" />
+                            <input type="hidden" name="key" value="" style="display:none;" />
+                            <input type="hidden" name="qt2" value="" style="display:none;" />
+                            <input type="hidden" name="dispatch" value="inner" style="display:none;" />
+                            <input type="text" value="" name="q" id="q" class="input">
+                            <a href="javascript:void(0)" class="sbtn" onclick="document.getElementById('search').submit();" title="搜索"></a>
+                        </form>
+                    </div>
+                    <div class="hot-word">
+                        <a href="http://huaiyun.pcbaby.com.cn/yqzt/0912/878482.html" target="_blank">宝宝取名</a> <a href="http://baike.pcbaby.com.cn/meishi.html" target="_blank">美食百科</a> <a href="http://baike.pcbaby.com.cn/qzbd/939517.html" target="_blank">生男生女</a> <a href="http://edu.pcbaby.com.cn/resource/scb/" target="_blank">手抄报</a>
+                        <a href="http://yuer.pcbaby.com.cn/283/2839964.html" target="_blank" title="儿童奶酪怎么吃" style="display:none">儿童奶酪怎么吃</a>
+                        <a href="http://yuer.pcbaby.com.cn/283/2839944.html" target="_blank" title="奶酪的种类与区别" style="display:none">奶酪的种类与区别</a>
                     </div>
                 </div>
-                <div class="c">
-                    <div class="links">
-                        <p>
-
-                        </p>
-                    </div>
-                </div>
-                <div class="c">
-                    <ul class="txt clearfix">
-
-                    </ul>
-                </div>
-                <div class="c">
-                    <div class="links">
-                        <p style="border:none;padding-left:0">
-
-                        </p>
-                    </div>
+                <div class="banner">
+                    <a href="http://app.pcbaby.com.cn/phone/?ad=5350" target="_blank" class="banner-pic" title="点击下载"><img src="http://www1.pcbaby.com.cn/add/ad/2015/images/ad-index2.png" height="80" width="164" alt=""></a>
                 </div>
             </div>
         </div>
+        <div class="nav shadow">
+            <ul class="main" id="nav">
+                <li class="cur">
+                    <dl>
+                        <dt><a href="http://huaiyun.pcbaby.com.cn/" target="_blank" class="nav1">怀孕</a></dt>
+                        <dd><a href="http://huaiyun.pcbaby.com.cn/yunqian/" target="_blank">备孕</a><a href="http://huaiyun.pcbaby.com.cn/yzq/" target="_blank">孕早期</a><a href="http://huaiyun.pcbaby.com.cn/yzhq/" target="_blank">孕中期</a><a href="http://huaiyun.pcbaby.com.cn/ywq/" target="_blank">孕晚期</a><a href="http://huaiyun.pcbaby.com.cn/fenmian/" target="_blank">分娩</a></dd>
+                    </dl>
+                </li>
+                <li>
+                    <dl>
+                        <dt><a href="http://chanhou.pcbaby.com.cn/" target="_blank" class="nav2">产后</a></dt>
+                        <dd><a href="http://huaiyun.pcbaby.com.cn/yuezi/" target="_blank">月子</a><a href="http://chanhou.pcbaby.com.cn/jianfei/" target="_blank">减肥</a><a href="http://chanhou.pcbaby.com.cn/sex/" target="_blank">避孕</a><a href="http://chanhou.pcbaby.com.cn/huifu/" target="_blank">大姨妈</a><a href="http://chanhou.pcbaby.com.cn/baojian/" target="_blank">女性健康</a></dd>
+                    </dl>
+                </li>
+                <li>
+                    <dl>
+                        <dt><a href="http://yuer.pcbaby.com.cn/" target="_blank" class="nav3">育儿</a></dt>
+                        <dd><a href="http://yuer.pcbaby.com.cn/xinshenger/" target="_blank">新生儿</a><a href="http://yuer.pcbaby.com.cn/yinger/" target="_blank"> 0-1岁</a><a href="http://yuer.pcbaby.com.cn/youer/" target="_blank">1-3岁</a><a href="http://yuer.pcbaby.com.cn/xuelingqian/" target="_blank">3-6岁</a><a href="http://edu.pcbaby.com.cn/" target="_blank">早教</a></dd>
+                    </dl>
+                </li>
+                <li>
+                    <dl>
+                        <dt><a href="http://life.pcbaby.com.cn/" target="_blank" class="nav4">生活</a></dt>
+                        <dd><a href="http://www.pcbaby.com.cn/shipu/" target="_blank">营养</a><a href="http://baike.pcbaby.com.cn/recipe/" target="_blank">食谱</a><a href=" http://bbs.pcbaby.com.cn/chaoma/" target="_blank">潮妈</a><a href="http://life.pcbaby.com.cn/chaotong/
+" target="_blank">潮童</a><a href="http://2tai.pcbaby.com.cn/" target="_blank">二胎指南</a></dd>
+                    </dl>
+                </li>
+                <li>
+                    <dl>
+                        <dt><a href="http://special.pcbaby.com.cn/" target="_blank"
+                               class="nav5">精选</a></dt>
+                        <dd>
+                            <a href="http://www.pcbaby.com.cn/tools/" target="_blank">工具</a>
+                            <a href="http://pp.pcbaby.com.cn/cate/30/1.html" target="_blank">图说</a>
+                            <a href="http://zhuanjia.pcbaby.com.cn/qzkt/" target="_blank">亲子课堂</a>
+                            <a href="http://zhuanjia.pcbaby.com.cn/jtye/" target="_blank">家庭育儿</a>
+                        </dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+        <div class="main subnav">
+            <table class="subnav-tab">
+                <tr>
+                    <td>
+                        <a href="http://baike.pcbaby.com.cn/" target="_blank" class="first">百科</a>
+                    </td>
+                    <td><em class="fl vline"></em>
+                        <a href="http://product.pcbaby.com.cn/" target="_blank">用品</a>
+                    </td>
+                    <td><em class="fl vline"></em>
+                        <a href="http://product.pcbaby.com.cn/zx/pc/" target="_blank">评测</a>
+                    </td>
+                    <td><em class="fl vline"></em>
+                        <a href="http://try.pcbaby.com.cn/" target="_blank">试用</a>
+                    </td>
+                    <td><em class="fl vline"></em>
+                        <a href="http://best.pcbaby.com.cn/" target="_blank" class="ps-r"><span class="tip">聚超值<em class="icon-new"></em></span></a>
+                    </td>
+                    <td style="width:100px;"><em class="fl vline"></em>
+                        <a href="http://zhuanjia.pcbaby.com.cn/fever/" target="_blank">宝宝发烧</a>
+                    </td>
+                    <td style="width:100px;"><em class="fl vline"></em>
+                        <a href="http://zhuanjia.pcbaby.com.cn/bbhuli/" target="_blank">护理专区</a>
+                    </td>
+                    <td><em class="fl vline"></em>
+                        <a href="http://zhuanjia.pcbaby.com.cn/" target="_blank">专家</a>
+                    </td>
+                    <td><em class="fl vline"></em>
+                        <a href="http://kuaiwen.pcbaby.com.cn/" target="_blank">快问</a>
+                    </td>
+                    <td><em class="fl vline"></em>
+                        <a href="http://www.pcbaby.com.cn/huodong/" target="_blank">活动</a>
+                    </td>
+                    <td><em class="fl vline"></em>
+                        <a href="http://www.pcbaby.com.cn/mykids/daren/" target="_blank">达人</a>
+                    </td>
+                    <td><em class="fl vline"></em>
+                        <a href="http://bbs.pcbaby.com.cn/" target="_blank">论坛</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="main part">
+            <div class="ivy-tonglan ivytl">
+                <div></div>
+                <u id="pckids.shouye.kcftl." class="adpos"></u>
+            </div>
+            <div class="ivy-tonglan ivytl">
+                <div></div>
+                <u id="pckids.shouye.jdtsftl." class="adpos"></u>
+            </div>
+            <div id="slide01" class="tab shadow" onmouseover="this.className='tab shadow tab-active';" onmouseout="this.className='tab shadow';">
+                <div class="c">
+                    <p class="pic"><a href="http://life.pcbaby.com.cn/299/zt2996144.html" target="_blank"><img src="http://img0.pcbaby.com.cn/pcbaby/life/shzt/1606/660340xibai.jpg" width="660" height="340" alt="父亲节·和爸爸拍张合照" /></a></p>
+                    <p class="tips"><a href="http://special.pcbaby.com.cn/xinzhuzhang/" target="_blank">PCbaby新主张</a></p>
+                    <p class="tit"><a href="http://life.pcbaby.com.cn/299/zt2996144.html" target="_blank">父亲节 和爸爸拍张合照</a></p>
+                    <p class="des">单身的你，是个自拍狂；热恋中的你，热衷于晒恩爱；生娃后的你，变成晒娃狂魔……你的手机里保存着无数张自己或和男友、闺蜜、孩子的合照...</p>
+                </div>
+                <div class="c">
+                    <p class="pic"><a href="http://pp.pcbaby.com.cn/photo/25393.html" target="_blank"><img src="http://www1.pcbaby.com.cn/images/blank.gif" #src1="http://img0.pcbaby.com.cn/pcbaby/shipu/youershipu/yeyytlsp/1606/0617xiu.jpg"  width="660" height="340" alt="暑热来吃豆 bb营养更均衡"  /></a></p>
+                    <p class="tips">
+                        <a href="http://pp.pcbaby.com.cn/cate/100/1.html" target="_blank">幼儿食谱</a>
+                    </p>
+                    <p class="tit"><a href="http://pp.pcbaby.com.cn/photo/25393.html" target="_blank">暑热吃豆 bb营养更均衡</a></p>
+                    <p class="des">豆类的营养价值非常高，尤其是在炎热的夏天，让宝宝食用豆类代替一定量的肉类等植物性食品，是解决营养不良和营养过剩双重负担的最好方法...</p>
+                </div>
+                <div class="c">
+                    <p class="pic"><a href="http://pcbaby.pcvideo.com.cn/video-2356.html" target="_blank"><img src="http://www1.pcbaby.com.cn/images/blank.gif" #src1="http://img0.pcbaby.com.cn/pcbaby/vedio/000031346/1606/0616.jpg"  width="660" height="340" alt="保护乳牙 拒绝龋齿捣乱"  /></a></p>
+                    <p class="tips">
+                        <a href="http://www.pcbaby.com.cn/" target="_blank">精彩推荐</a>
+                    </p>
+                    <p class="tit"><a href="http://pcbaby.pcvideo.com.cn/video-2356.html" target="_blank">保护乳牙 拒绝龋齿捣乱</a></p>
+                    <p class="des">随着宝宝年龄的增长，乳牙会被恒牙所替代。而有部分家长认为患了乳牙龋齿不必治疗，等换牙就好了。乳牙患龋齿后要不要及时治疗呢？本期亲...</p>
+                </div>
+                <div class="c">
+                    <p class="pic"><a href="http://bbs.pcbaby.com.cn/topic-3992786.html" target="_blank"><img src="http://www1.pcbaby.com.cn/images/blank.gif" #src1="http://www1.pcbaby.com.cn/bbs/0616dajiaodianhjyhjy.jpg"  width="660" height="340" alt="感恩父亲节 我想对他说"  /></a></p>
+                    <p class="tips">
+                        <a href="http://www.pcbaby.com.cn/" target="_blank">精彩推荐</a>
+                    </p>
+                    <p class="tit"><a href="http://bbs.pcbaby.com.cn/topic-3992786.html" target="_blank">感恩父亲节 我想对他说</a></p>
+                    <p class="des">父亲节要到了，有很多很多的话想和爸爸说，无论是对他经常加班熬夜的担心，还是希望他可以多陪陪你的期许。没关系，在这个父亲节来临之际...</p>
+                </div>
+                <div class="c">
+                    <p class="pic"><a href="http://ivy.pcbaby.com.cn/click?adid=409991&id=pckids.shouye.jdt." target="_blank"  id="ad409991" ivyLocation="pckids.shouye.jdt."><img src="http://www1.pcbaby.com.cn/images/blank.gif" #src1="http://imgad0.pcbaby.com.cn/ivy/image/20165/13/14631447783730.jpg"  width="660" height="340"  /></a><span style='position:absolute;top:-9999px;left:-9999px;width:1px;height:1px;overflow:hidden;'><img src='http://www1.pcbaby.com.cn/images/blank.gif' #src1="http://v.admaster.com.cn/i/a68331,b1104083,c1136,i0,m202,h"   /></span></p>
+                    <p class="tips">
+                        <a href="http://www.pcbaby.com.cn/" target="_blank">精彩推荐</a>
+                    </p>
+                    <p class="tit"><a href="http://ivy.pcbaby.com.cn/click?adid=409991&id=pckids.shouye.jdt." target="_blank">宝宝第一次发烧</a><span style='position:absolute;top:-9999px;left:-9999px;width:1px;height:1px;overflow:hidden;'><img src='http://www1.pcbaby.com.cn/images/blank.gif' #src1="http://v.admaster.com.cn/i/a68331,b1104083,c1136,i0,m202,h"   /></span></p>
+                    <p class="des">新手妈妈不要慌，退烧专家帮你忙。初次经历宝宝发烧的新手妈妈，经常会不知如何科学应对，快跟着专家，一起来学习下怎么科学处理宝宝发烧问题吧！...</p>
+                </div>
+                <div class="control" id ="slide01_control">
+                    <a href="javascript:void(0)" class="current"></a>
+                    <a href="javascript:void(0)"></a>
+                    <a href="javascript:void(0)"></a>
+                    <a href="javascript:void(0)"></a>
+                    <a href="javascript:void(0)"></a>
+                </div>
+                <a href="#" class="btn btnL" onClick="slide01.prev();return false;" onmouseover="slide01.stop();" onmouseout="slide01.play();"></a>
+                <a href="#" class="btn btnR" onClick="slide01.next();return false;" onmouseover="slide01.stop();" onmouseout="slide01.play();"></a>
+            </div>
+        </div>
+        <div class="main part part2">
+            <div class="col-ab">
+                <div class="box shadow">
+                    <div class="pic-txt">
+                        <p class="pic"><a href="http://life.pcbaby.com.cn/299/2995567.html" target="_blank"><img src="http://img0.pcbaby.com.cn/pcbaby/life/xwy/1606/5051xb.jpg" width="225" height="145" alt="惬意生活 家居空气净化小贴士" /></a></p>
+                        <p class="tit"><a href="http://life.pcbaby.com.cn/299/2995567.html" target="_blank">惬意生活 家居空气净化小贴士</a></p>
+                        <ul class="txt">
+                            <li class="fl"><a href="http://bbs.pcbaby.com.cn/topic-4001361.html" target="_blank">烟雨之时 独享凤凰清秀游</a></li>
+                            <li class="fr"><a href="http://bbs.pcbaby.com.cn/topic-3999042.html" target="_blank">多滋夏日 健康可口玉米汁</a></li>
+                            <li class="fl"><a href="http://yuer.pcbaby.com.cn/299/2998929.html" target="_blank">这样才正路 益生菌冲调法</a></li>
+                            <li class="fr"><a href="http://bbs.pcbaby.com.cn/topic-3964368.html" target="_blank">感恩生日趴 欢享有爱周末</a></li>
+                        </ul>
+                    </div>
+                    <div class="pic-txt-line"></div>
+                    <div class="pic-txt">
+                        <p class="pic"><a href="http://kuaiwen.pcbaby.com.cn/2016/0616/zt2999044.html" target="_blank"><img src="http://www1.pcbaby.com.cn/kuaiwen/357-tui-225-145.jpg" width="225" height="145" alt="钟鑫琪：加强亲子互动 助力早产儿发育" /></a></p>
+                        <p class="tit"><a href="http://kuaiwen.pcbaby.com.cn/2016/0616/zt2999044.html" target="_blank">加强亲子互动 助力早产儿发育</a></p>
+                        <ul class="txt">
+                            <li class="fl"><a href="http://www1.pcbaby.com.cn/zt/b160505/zhenhu/index.html" target="_blank">珍护不上火 轻便快乐成长</a></li>
+                            <li class="fr"><a href="http://kuaiwen.pcbaby.com.cn/2016/0520/zt2945744.html" target="_blank">双顶径偏大 管住嘴勤产检</a></li>
+                            <li class="fl"><a href="http://product.pcbaby.com.cn/zx/tz/dg/1606/2990824.html" target="_blank">看脸世界 选帽子时尚一夏</a></li>
+                            <li class="fr"><a href="http://pp.pcbaby.com.cn/photo/27571.html" target="_blank">不用忍 孕期抽筋五招搞定</a></li>
+                        </ul>
+                    </div>
+                    <div class="pic-txt-line"></div>
+                    <div class="pic-txt">
+                        <p class="pic"><a href="http://bbs.pcbaby.com.cn/topic-3982948.html" target="_blank"><img src="http://www1.pcbaby.com.cn/bbs/0612xiaojiaodian33333.jpg" width="225" height="145" alt="夏日果趣 玩转水果创意新吃法" /></a></p>
+                        <p class="tit"><a href="http://bbs.pcbaby.com.cn/topic-3982948.html" target="_blank">夏日果趣 玩转水果创意新吃法</a></p>
+                        <ul class="txt">
+                            <li class="fl"><a href="http://2tai.pcbaby.com.cn/299/2994985.html" target="_blank">心态 才是最佳的二胎准备</a></li>
+                            <li class="fr"><a href="http://baike.pcbaby.com.cn/qzbd/1287632.html" target="_blank">生二胎最佳年龄 不超35岁</a></li>
+                            <li class="fl"><a href="http://kuaiwen.pcbaby.com.cn/2016/0612/zt2989604.html" target="_blank">夏季科学补钙 首选液体钙</a></li>
+                            <li class="fr"><a href="http://bbs.pcbaby.com.cn/topic-3964420.html" target="_blank">辣妈私享会 秘密花园探宝</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-c">
+                <div class="ivy-yc"><u id="pckids.shouye.qtz." class="adpos"></u></div>
+            </div>
+        </div>
+        <div class="main part addpart">
+            <div class="col-ab" >
+                <u id="pckids.shouye.qzsjsf." class="adpos"></u>
+            </div>
+            <div class="col-c">
+                <div class=" addright">
+                    <span class = "tab-tit">品<br />牌 <br />馆</span>
+                    <div class="tab-wrap" id="Jslide-new">
+                        <ul>
+                            <li>
+                                <a href="http://www1.pcbaby.com.cn/qzzt/g20160523/vtechsz/index.html" title="伟易达" target="_blank">
+                                    <img src="http://www1.pcbaby.com.cn/product/wyd-105x40.jpg" alt="">
+                                </a>
+                                <a href="http://product.pcbaby.com.cn/yili/" title="伊利" target="_blank">
+                                    <img src="http://www1.pcbaby.com.cn/product/yili-20151230.jpg" alt="">
+                                </a>
+                                <a href="http://www1.pcbaby.com.cn/qzzt/ABCKIDS/20160204/index.html"  title="ABC KIDS" target="_blank">
+                                    <img src="http://www1.pcbaby.com.cn/product/abckids-20151230.jpg" alt="">
+                                </a>
+                                <a href="http://product.pcbaby.com.cn/qichu/" title="启初" target="_blank">
+                                    <img src="http://www1.pcbaby.com.cn/product/qichu-20151230.jpg" alt="">
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <a href="javascript:void(0)" class="tabA prev"></a>
+                    <a href="javascript:void(0)" class="tabA next"></a>
+                </div>
+            </div>
+        </div>
+        <div class="main part part3">
+            <div class="col-ab">
+                <div class="box shadow tab2" id="slide02" >
+                    <div class="th-a clearfix">
+                        <strong class="fl">亲子视界</strong>
+                        <div class="fr control"  id="slide02_control" >
+                            <a href="#" >资讯</a>
+                            <a href="#" >推荐</a>
+                            <a href="#" >互动</a>
+                        </div>
+                    </div>
+                    <div class="tb-a" >
+                        <div class="c">
+                            <p class="pic"><a href="http://ivy.pcbaby.com.cn/click?adid=407460&id=pckids.shouye.qzsj." target="_blank"  id="ad407460" ivyLocation="pckids.shouye.qzsj.-1"><img src="http://imgad0.pcbaby.com.cn/ivy/image/20166/12/14657277996350.jpg" width="405" height="240" /></a><span style='position:absolute;top:-9999px;left:-9999px;width:1px;height:1px;overflow:hidden;'><img src='http://v.admaster.com.cn/i/a68540,b1156535,c1136,i0,m202,h' /></span></p>
+                            <p class="tips"><a href="http://www.pcbaby.com.cn/" target="_blank">资讯</a></p>
+                            <p class="tit"><a href="http://ivy.pcbaby.com.cn/click?adid=407460&id=pckids.shouye.qzsj." target="_blank">乐活初夏 <br/>wuli宝宝开启亲子行</a></p>
+                            <p class="des">大好光阴，想出个门却羁绊多多，特别是家有wuli小宝，总担心ta耐不住旅途的艰辛。其实，当个屋里小宝，不一定是最健康的成长方式。...</p>
+                            <p class="view"><a href="http://ivy.pcbaby.com.cn/click?adid=407460&id=pckids.shouye.qzsj." target="_blank">查看详情</a></p>
+                        </div>
+                        <div class="c">
+                            <p class="pic"><a href="http://ivy.pcbaby.com.cn/click?adid=407466&id=pckids.shouye.qzsj." target="_blank"  id="ad407466" ivyLocation="pckids.shouye.qzsj.-2"><img src="http://imgad0.pcbaby.com.cn/ivy/image/20166/12/14657276542180.jpg" width="405" height="240" /></a></p>
+                            <p class="tips"><a href="http://www.pcbaby.com.cn/" target="_blank">推荐</a></p>
+                            <p class="tit"><a href="http://ivy.pcbaby.com.cn/click?adid=407466&id=pckids.shouye.qzsj." target="_blank">出行季  <br/>宝宝抵抗力足够出去靓吗</a></p>
+                            <p class="des">天气晴朗，鸟儿叫花儿笑，正是带着宝宝外出游玩的好时节。在阳光灿烂的出游季，你家宝宝的抵抗力足够出去靓吗？本期新妈必修课来揭晓咯！...</p>
+                            <p class="view"><a href="http://ivy.pcbaby.com.cn/click?adid=407466&id=pckids.shouye.qzsj." target="_blank">查看详情</a></p>
+                        </div>
+                        <div class="c">
+                            <p class="pic"><a href="http://ivy.pcbaby.com.cn/click?adid=407469&id=pckids.shouye.qzsj." target="_blank"  id="ad407469" ivyLocation="pckids.shouye.qzsj.-3"><img src="http://imgad0.pcbaby.com.cn/ivy/image/20166/12/14657279187260.jpg" width="405" height="240" /></a></p>
+                            <p class="tips"><a href="http://bbs.pcbaby.com.cn/" target="_blank">互动</a></p>
+                            <p class="tit"><a href="http://ivy.pcbaby.com.cn/click?adid=407469&id=pckids.shouye.qzsj." target="_blank">没有强抵抗<br/>力，宝宝怎敢出去靓</a></p>
+                            <p class="des">宝宝抵抗力差，出行旅途身体不适，状况频出，哪里还有靓心情找美食拍美照？惊险？刺激？好玩？有趣？想要宝宝靓出去，拥有强抵抗力是关键！那么，如何增强宝宝抵抗力呢？...</p>
+                            <p class="view"><a href="http://ivy.pcbaby.com.cn/click?adid=407469&id=pckids.shouye.qzsj." target="_blank">查看详情</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-c">
+                <div class="box shadow">
+                    <div class="th-a"><strong class="fl">达人专访</strong></div>
+                    <div class="tb-a">
+                        <div class="dpic">
+                            <a href="http://special.pcbaby.com.cn/297/zt2973281.html" target="_blank">
+                                <img src="http://img0.pcbaby.com.cn/pcbaby/special/sixiangjia/1606/265X160.jpg" width="265" height="160" alt="第51期：造型师淳子 双胞胎女儿让我幸福加倍_妈咪私享家" />
+                                <p>造型师淳子 双胞胎女儿让我幸福加倍</p>
+                            </a>
+                        </div>
+                        <p class="p-tit"><a href="http://special.pcbaby.com.cn/" target="_blank">往日专题</a></p>
+                        <ul class="txt">
+                            <li><a href="http://special.pcbaby.com.cn/289/zt2894493.html" target="_blank">宝岛维尼妈 我与四宝的餐桌故事</a></li>
+                            <li><a href="http://special.pcbaby.com.cn/280/zt2801484.html" target="_blank">姜涞妈妈 我家有个时尚口红妹</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ivy-tonglan ivytls">
+            <u id="pckids.shouye.tonglan1." class="adpos"></u>
+            <u id="pckids.shouye.tl1xf." class="adpos"></u></div>
+        <div class="main part part4">
+            <div class="box shadow">
+                <div class="th-b">
+                    <strong class="fl">幸福妈咪</strong><span class="fl mommy"></span>
+                    <div class="fr">
+                        <a href="http://baike.pcbaby.com.cn/qzbd/1101724.html" target="_blank" title="怀孕多久能测出来">怀孕多久能测出来</a><em></em>
+                        <a href="http://baike.pcbaby.com.cn/qzbd/1142103.html" target="_blank" title="四维彩超">四维彩超</a><em></em>
+                        <a href="http://baike.pcbaby.com.cn/qzbd/1111745.html" target="_blank" title="早孕反应">早孕反应</a><em></em>
+                        <a href="http://baike.pcbaby.com.cn/qzbd/998522.html" target="_blank" title="碱性食物">碱性食物</a><em></em>
+                        <a href="http://baike.pcbaby.com.cn/qzbd/940003.html" target="_blank" title="怀孕期间可以同房吗">孕期同房</a><em></em>
+                        <a href="http://huaiyun.pcbaby.com.cn/quming/scbzwxzy/" target="_blank" title="生辰八字取名字">八字起名</a>
+                    </div>
+                </div>
+                <div class="tb-b">
+                    <div class="col-ab">
+                        <div class="dpic-txt">
+                            <div class="pic">
+                                <a href="http://special.pcbaby.com.cn/291/zt2910471.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/special/xmby/1605/290X400.jpg"  width="290" height="400" alt="梁静：大女人小心思 最幸福的角色是做妈妈"  />
+                                    <em></em>
+                                    <span>梁静 最幸福的角色是做妈妈</span>
+                                </a>
+                            </div>
+                            <div class="dtxt">
+                                <p class="tit"><a href="http://huaiyun.pcbaby.com.cn/299/2993526.html" target="_blank">清爽可口 夏季不可错过月子餐</a></p>
+                                <p class="des">夏日炎炎，高温使每一天对妈妈和宝宝来说都是很难熬的。妈妈刚生完宝宝...</p>
+                                <ul class="txt">
+                                    <li class="fl"><a href="http://huaiyun.pcbaby.com.cn/298/2988644.html" target="_blank">较真 吃水果≠喝果汁</a></li>
+                                    <li class="fr"><a href="http://product.pcbaby.com.cn/zx/ry/dg/1606/2981950.html" target="_blank">分享帖 改善室内空气</a></li>
+                                </ul>
+                            </div>
+                            <div class="dtxt">
+                                <p class="tit"><a href="http://huaiyun.pcbaby.com.cn/299/2994665.html" target="_blank">认真就输了 意外怀孕BB更聪明</a></p>
+                                <p class="des">意外怀孕的宝宝更聪明的民间说法更是由来已久，事实真的是这样吗？事实...</p>
+                                <ul class="txt">
+                                    <li class="fl"><a href="http://huaiyun.pcbaby.com.cn/299/2991744.html" target="_blank">别当宅妈 孕期出游表</a></li>
+                                    <li class="fr"><a href="http://huaiyun.pcbaby.com.cn/299/2993525.html" target="_blank">五种分娩表情包 上线</a></li>
+                                </ul>
+                            </div>
+                            <div class="dtxt">
+                                <p class="tit"><a href="http://chanhou.pcbaby.com.cn/298/2984165.html" target="_blank">新妈护肤的重头戏 保湿≠补水</a></p>
+                                <p class="des">让人感觉到干净健康的皮肤，在很大程度上，肯定是水嫩的。水嫩的皮肤能...</p>
+                                <ul class="txt">
+                                    <li class="fl"><a href="http://product.pcbaby.com.cn/zx/xh/dg/1606/2972245.html" target="_blank">夏季对抗蚊虫叮咬妙招</a></li>
+                                    <li class="fr"><a href="http://chanhou.pcbaby.com.cn/298/2982325.html" target="_blank">咦 月见草能否缓痛经</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="tools">
+                            <div class="tit">妈妈<br/>工具<br/>推荐</div>
+                            <div class="tool-list">
+                                <a href="http://banshi.pcbaby.com.cn/" target="_blank">
+                                    <img width="50" height="50" alt="二胎指南" src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/tools/1406/ertai.png"   />
+                                    二胎指南
+                                </a>
+                                <a href="http://www.pcbaby.com.cn/tools/aqq/" target="_blank">
+                                    <img width="50" height="50" alt="排卵期计算" src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/tools/aqq/1406/pailuanqi.png"   />
+                                    排卵期计算
+                                </a>
+                                <a href="http://www.pcbaby.com.cn/tools/hyrlb/" target="_blank">
+                                    <img width="50" height="50" alt="怀孕日历表" src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/tools/hyrlb/1406/huaiyunrilibiao.png"   />
+                                    怀孕日历表
+                                </a>
+                                <a href="http://www.pcbaby.com.cn/tools/tefygct/" target="_blank">
+                                    <img width="50" height="50" alt="胎儿发育图" src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/tools/tefygct/1406/taierfayu.png"   />
+                                    胎儿发育图
+                                </a>
+                                <a href="http://www.pcbaby.com.cn/tools/ycq/" target="_blank">
+                                    <img width="50" height="50" alt="预产期计算" src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/tools/ycq/1406/yuchanqi.png"   />
+                                    预产期计算
+                                </a>
+                                <a href="http://www.pcbaby.com.cn/tools/nannv/" target="_blank">
+                                    <img width="50" height="50" alt="生男生女" src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/tools/nannv/1406/shengnanshengnv.png"   />
+                                    生男生女
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-c">
+                        <div class="tab3"  id="slide03">
+                            <div class="control" id="slide03_control">
+                                <a href="#" >论坛热议<em></em></a>
+                                <a href="#" >精彩回答<em></em></a>
+                            </div>
+                            <div class="tb-tab3">
+                                <div class="c">
+                                    <ul class="rank" id="m_bbs"></ul>
+                                    <div class="last"><a href="http://bbs.pcbaby.com.cn/forum-1948.html" target="_blank">查看更多精彩热帖</a></div>
+                                </div>
+                                <div class="c">
+                                    <ul class="ask" id="m_ask"></ul>
+                                    <div class="last"><a href="http://kuaiwen.pcbaby.com.cn/question/t22/p1.html" target="_blank">查看更多精彩回答</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-text clearfix">
+                        <dl>
+                            <dt><a href="http://baike.pcbaby.com.cn/qzbd/1208696.html" target="_blank" title="备孕注意事项">备孕须知</a></dt>
+                            <dd>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/3751.html" target="_blank" title="月经">月经</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/953789.html" target="_blank" title="子宫肌瘤">子宫肌瘤</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/1622.html" target="_blank" title="安全期">安全期</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/1129079.html" target="_blank" title="月经量少">月经量少</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/3815.html" target="_blank" title="生男孩的秘诀">生男孩秘诀</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/1613.html" target="_blank" title="怎样才能怀孕">怎样能怀孕</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/1110769.html" target="_blank" title="如何快速怀孕">快速怀孕</a>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt><a href="http://baike.pcbaby.com.cn/tools/zhoukan.html" target="_blank" title="孕育周刊">孕育周刊</a></dt>
+                            <dd>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/1275293.html" target="_blank" title="怀孕初期有哪些症状">孕初症状</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/1208714.html" target="_blank" title="孕早期注意事项">孕早注意</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/1208717.html" target="_blank" title="孕中期注意事项">孕中注意</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/4445.html" target="_blank" title="孕妇不能吃哪些食物">孕妇不能吃</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/1146339.html" target="_blank" title="孕酮正常值">孕酮正常</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/952085.html" target="_blank" title="宫外孕">宫外孕</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/939863.html" target="_blank" title="胎动">胎动</a>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt><a href="http://baike.pcbaby.com.cn/qzbd/940486.html" target="_blank" title="坐月子注意事项">坐月子须知</a></dt>
+                            <dd>
+                                <a href="http://www.pcbaby.com.cn/qzbd/hyshbk/bbqmzq/1011/971833.html" target="_blank" title="起名字大全">起名字大全</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/940508.html" target="_blank" title="生完孩子多久可以同房">产后同房</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/940378.html" target="_blank" title="生孩子的真实过程">产程</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/3803.html" target="_blank" title="顺产">顺产</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/938384.html" target="_blank"  title="哺乳期不能吃的东西">哺乳期食谱</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/950917.html" target="_blank"  title="剖腹产">剖腹产</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/940289.html" target="_blank" title="宫缩">宫缩</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/1028068.html" target="_blank"  title="杨梅">杨梅</a>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt><a href="http://www.pcbaby.com.cn/tools/dream/" target="_blank" title="胎梦解析">胎梦大全</a></dt>
+                            <dd>
+                                <a href="http://huaiyun.pcbaby.com.cn/quming/yangbbqm/" target="_blank" title="羊宝宝取名">羊宝宝名</a>
+                                <a href="http://huaiyun.pcbaby.com.cn/quming/englishname/" target="_blank" title="好听的英文名大全">英文名</a>
+                                <a href="http://edu.pcbaby.com.cn/resource/scb/anquan/" target="_blank" title="安全手抄报">安全</a>
+                                <a href="http://www.pcbaby.com.cn/tools/xuexing/" target="_blank" title="血型遗传规律表">血型遗传</a>
+                                <a href="http://www.pcbaby.com.cn/tools/taier_tizhong/" target="_blank" title="胎儿体重计算">胎儿体重计算</a>
+                                <a href="http://www.pcbaby.com.cn/tools/zengzhang/" target="_blank" title="孕妇体重增长">孕妇体重增长</a>
+                                <a href="http://www.pcbaby.com.cn/tools/dtjlb/" target="_blank" title="胎动记录表">胎动</a>
+                                <a href="http://huaiyun.pcbaby.com.cn/quming/boy/" target="_blank" title="好听的男孩名字大全">男孩名</a>
+                                <a href="http://www.pcbaby.com.cn/tools/155/1556205.html" target="_blank" title="孕妇梦见蛇">孕妇梦见蛇</a>
+                                <a href="http://www.pcbaby.com.cn/tools/155/1556244.html" target="_blank" title="孕妇梦见鱼">孕妇梦见鱼</a>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ivy-tonglan ivytls"><u id="pckids.shouye.tl2." class="adpos"></u>
+        </div>
+        <div class="ivy-tonglan ivytls"><u id="pckids.shouye.tl2xf." class="adpos"></u></div>
+        <div class="main part part5">
+            <div class="box shadow">
+                <div class="th-b">
+                    <strong class="fl">快乐宝贝</strong><span class="fl baby"></span>
+                    <div class="fr">
+                        <a href="http://special.pcbaby.com.cn/festival/jdj/" target="_blank" title="建党节">建党节</a><em></em>
+                        <a href="http://baike.pcbaby.com.cn/qzbd/1584.html" target="_blank" title="婴儿辅食食谱">婴儿辅食食谱</a><em></em>
+                        <a href="http://baike.pcbaby.com.cn/qzbd/953615.html" target="_blank" title="新生儿黄疸">新生儿黄疸</a><em></em>
+                        <a href="http://baike.pcbaby.com.cn/qzbd/953651.html" target="_blank" title="婴儿湿疹">婴儿湿疹</a><em></em>
+                        <a href="http://baike.pcbaby.com.cn/qzbd/1135730.html" target="_blank" title="小孩发烧怎么办">小孩发烧</a><em></em>
+                        <a href="http://baike.pcbaby.com.cn/qzbd/1027681.html" target="_blank" title="荔枝">荔枝</a>
+                    </div>
+                </div>
+                <div class="tb-b">
+                    <div class="col-ab">
+                        <div class="dpic-txt">
+                            <div class="pic">
+                                <a href="http://bbs.pcbaby.com.cn/topic-3981028.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://www1.pcbaby.com.cn/bbs/kuailebaobei20160613_2.jpg"  width="290" height="400" alt="有范小美妞 潮感十足炫酷拍"  />
+                                    <em></em>
+                                    <span>有范小美妞 潮感十足炫酷拍</span>
+                                </a>
+                            </div>
+                            <div class="dtxt">
+                                <p class="tit"><a href="http://yuer.pcbaby.com.cn/299/2993424.html" target="_blank">夏季宝宝洗澡多 妈妈做对了吗</a></p>
+                                <p class="des">夏天气温高，炎热之下宝宝随便动动就出一身的汗。汗水粘附在宝宝皮肤上...</p>
+                                <ul class="txt">
+                                    <li class="fl"><a href="http://yuer.pcbaby.com.cn/299/2991266.html" target="_blank">赶跑手足口病 BB快好</a></li>
+                                    <li class="fr"><a href="http://yuer.pcbaby.com.cn/298/2989504.html" target="_blank">夏日宝宝用凉席有讲究</a></li>
+                                </ul>
+                            </div>
+                            <div class="dtxt">
+                                <p class="tit"><a href="http://yuer.pcbaby.com.cn/299/2993425.html" target="_blank">龙舟水时 宝宝的中医养生之道</a></p>
+                                <p class="des">龙舟水期间，雨量增多，气温升高，空气十分潮湿，天气异常湿热。为人们...</p>
+                                <ul class="txt">
+                                    <li class="fl"><a href="http://yuer.pcbaby.com.cn/298/2984125.html" target="_blank">致宝贝儿子的一封信</a></li>
+                                    <li class="fr"><a href="http://kuaiwen.pcbaby.com.cn/2016/0616/zt2999044.html" target="_blank">早产儿发育 重关键期</a></li>
+                                </ul>
+                            </div>
+                            <div class="dtxt">
+                                <p class="tit"><a href="http://product.pcbaby.com.cn/zx/ry/dg/1606/2976887.html" target="_blank">出游季 韩国首尔BB用品大搜罗</a></p>
+                                <p class="des">前段时间《太阳的后裔》简直是刷爆了屏，这部极具男性荷尔蒙的韩剧，相...</p>
+                                <ul class="txt">
+                                    <li class="fl"><a href="http://product.pcbaby.com.cn/zx/fs/dg/1606/2976706.html" target="_blank">婴幼儿辅食面条怎么选</a></li>
+                                    <li class="fr"><a href="http://product.pcbaby.com.cn/zx/ry/dg/1606/2971084.html" target="_blank">助力妈妈的省事小物品</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="tools">
+                            <div class="tit">宝宝<br/>工具<br/>推荐</div>
+                            <div class="tool-list">
+                                <a href="http://www.pcbaby.com.cn/tools/getname/" target="_blank">
+                                    <img width="50" height="50" alt="宝宝起名" src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/tools/getname/1406/qiming.png"   />
+                                    宝宝起名
+                                </a>
+                                <a href="http://www.pcbaby.com.cn/tools/nametest/" target="_blank">
+                                    <img width="50" height="50" alt="名字测试" src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/tools/nametest/1406/qimingceshi.png"   />
+                                    名字测试
+                                </a>
+                                <a href="http://www.pcbaby.com.cn/tools/scbz/" target="_blank">
+                                    <img width="50" height="50" alt="生辰八字" src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/tools/scbz/1406/bazi.png"   />
+                                    生辰八字
+                                </a>
+                                <a href="http://www.pcbaby.com.cn/tools/babyheight/" target="_blank">
+                                    <img width="50" height="50" alt="身高预测" src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/tools/babyheight/1406/sehnggaoyuce.png"   />
+                                    身高预测
+                                </a>
+                                <a href="http://www.pcbaby.com.cn/tools/baobaofayu/" target="_blank">
+                                    <img width="50" height="50" alt="发育指标" src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/tools/000033120/syyegj/1406/fayuzhibiao.png"   />
+                                    发育指标
+                                </a>
+                                <a href="http://www.pcbaby.com.cn/tools/my/" target="_blank">
+                                    <img width="50" height="50" alt="疫苗接种表" src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/tools/my/1406/yimiao.png"   />
+                                    疫苗接种表
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-c">
+                        <div class="tab3" id="slide04">
+                            <div class="control" id="slide04_control">
+                                <a href="#" >论坛热议<em></em></a>
+                                <a href="#" >精彩回答<em></em></a>
+                            </div>
+                            <div class="tb-tab3">
+                                <div class="c">
+                                    <ul class="rank" id="b_bbs"></ul>
+                                    <div class="last"><a href="http://bbs.pcbaby.com.cn/forum-1917.html" target="_blank">查看更多精彩热帖</a></div>
+                                </div>
+                                <div class="c">
+                                    <ul class="ask" id="b_ask">
+                                    </ul>
+                                    <div class="last"><a href="http://kuaiwen.pcbaby.com.cn/question/t41/p1.html" target="_blank">查看更多精彩回答</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-text clearfix">
+                        <dl>
+                            <dt><a href="http://baike.pcbaby.com.cn/qzbd/1579.html" target="_blank" title="婴儿常见疾病">宝宝疾病</a></dt>
+                            <dd>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/953660.html" target="_blank" title="手足口病">手足口病</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/953583.html" target="_blank" title="宝宝感冒鼻塞怎么办">婴儿感冒</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/953792.html" target="_blank" title="宝宝拉肚子怎么办">宝宝拉肚子</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/1269494.html" target="_blank" title="小孩咳嗽吃什么好的快">小儿咳嗽</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/953627.html" target="_blank" title="">鹅口疮</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/953638.html" target="_blank" title="">乙肝</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/1269953.html" target="_blank" title="">湿疹症状</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/4218.html" target="_blank" title="">唐氏综合症</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/953818.html" target="_blank" title="">水痘</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/953236.html" target="_blank" title="">中耳炎</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/953642.html" target="_blank" title="">白血病</a>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt><a href="http://baike.pcbaby.com.cn/qzbd/1589.html" target="_blank" title="婴儿生活护理">宝宝护理</a></dt>
+                            <dd>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/1151157.html" target="_blank" title="新生儿吐奶">新生儿吐奶</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/1276834.html" target="_blank" title="宝宝肚子胀气怎么办">肚子胀气</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/940517.html" target="_blank" title="宝宝晚上睡觉哭闹">睡觉哭闹</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/940612.html" target="_blank" title="新生儿打嗝">新生儿打嗝</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/1286252.html" target="_blank" title="幼儿急疹">幼儿急疹</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/1527.html" target="_blank" title="新生儿护理">新生儿护理</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/3746.html" target="_blank" title="">断奶</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/4208.html" target="_blank" title="">肠胃炎</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/1271972.html" target="_blank" title="新生儿睡觉不踏实">睡不踏实</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/941095.html" target="_blank" title="增高">增高</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/1109788.html" target="_blank" title="宝宝大便绿色">宝宝大便绿色</a>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt><a href="http://baike.pcbaby.com.cn/qzbd/1590.html" target="_blank" title="婴儿营养">宝宝营养</a></dt>
+                            <dd>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/1110781.html" target="_blank" title="母乳保存时间">母乳保存时间</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/1110850.html" target="_blank" title="母乳喂养多久做好">母乳喂养</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/941650.html" target="_blank" title="添加辅食">添加辅食</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/941521.html" target="_blank" title="新生儿喂养">新生儿喂养</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/1284854.html" target="_blank" title="宝宝辅食制作100款">辅食100款</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/347.html" target="_blank" title="一岁宝宝食谱">一岁食谱</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/1057475.html" target="_blank" title="土豆泥">土豆泥</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/4464.html" target="_blank" title="母乳">母乳</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/940512.html" target="_blank" title="磨牙棒">磨牙棒</a>
+                                <a href="http://baike.pcbaby.com.cn/qzbd/1270014.html" target="_blank" title="">婴儿湿疹最佳治疗方法</a>
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt><a href="http://edu.pcbaby.com.cn/resource/" target="_blank" title="早教资源">早教资源</a></dt>
+                            <dd>
+                                <a href="http://edu.pcbaby.com.cn/resource/sgdq/qyjdjsg/" target="_blank" title="七一建党节诗歌">建党节诗歌</a>
+                                <a href="http://special.pcbaby.com.cn/festival/jdj/jdjhdfa/" target="_blank" title="建党节活动方案">建党节活动</a>
+                                <a href="http://edu.pcbaby.com.cn/resource/yjg/qqy/" target="_blank" title="庆七一演讲稿">七一演讲</a>
+                                <a href="http://edu.pcbaby.com.cn/zuowen/jrzw/jdjzw/" target="_blank" title="建党节作文">建党作文</a>
+                                <a href="http://edu.pcbaby.com.cn/resource/scb/fuqin/" target="_blank" title="父亲节手抄报">父亲手抄报</a>
+                                <a href="http://edu.pcbaby.com.cn/resource/sgdq/fuqinjie/" target="_blank" title="关于父亲节的诗歌">父亲节诗歌</a>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main part part6">
+            <div class="box shadow">
+                <div class="th-b" style="border:none;">
+                    <strong class="fl">生活</strong><span class="fl life"></span>
+                    <div class="fr">
+                        <a href="http://special.pcbaby.com.cn/festival/fuqinjie/zhufu/" target="_blank"  title="父亲节祝福语">父亲节祝福语</a><em></em>
+                        <a title="男孩名字" target="_blank" href="http://huaiyun.pcbaby.com.cn/quming/boy/">男孩取名</a><em></em>
+                        <a title="女孩名字" target="_blank" href="http://huaiyun.pcbaby.com.cn/quming/girl/">女孩取名</a><em></em>
+                        <a title="小名大全" target="_blank" href="http://huaiyun.pcbaby.com.cn/quming/xiaoming//">小名</a><em></em>
+                        <a title="双胞胎起名" target="_blank" href="http://huaiyun.pcbaby.com.cn/quming/twinsname/">双胞胎起名</a><em></em>
+                        <a href="http://yuer.pcbaby.com.cn/yuer_zt/shengrizhufu/" target="_blank" title="生日祝福语">生日祝福语</a><em></em>
+                        <a href="http://yuer.pcbaby.com.cn/yuer_zt/shengxiao/" target="_blank" title="12属相2015年运势">12属相</a><em></em>
+                    </div>
+                </div>
+                <div class="tb-b">
+                    <div class="tab4" id="slide05">
+                        <a href="#" class="btn btnL" onClick="slide05.prev();return false;" onmouseover="slide05.stop();" onmouseout="slide05.play();"></a>
+                        <a href="#" class="btn btnR" onClick="slide05.next();return false;" onmouseover="slide05.stop();" onmouseout="slide05.play();"></a>
+                        <div class="tb-tab">
+                            <div class="c">
+                                <div class="pics">
+                                    <span  class="long"><a href="http://bbs.pcbaby.com.cn/topic-3929760.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://www1.pcbaby.com.cn/bbs/0606qzqda1.jpg"  /><em></em><i>全家总动员 率性海岛之旅</i></a></span>
+<span>
+<img src="http://www1.pcbaby.com.cn/2014/index/qzy.png" width="47" height="38" class="icon">
+<strong>亲子游</strong>
+</span>
+                                    <span ><a href="http://bbs.pcbaby.com.cn/topic-3909648.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://www1.pcbaby.com.cn/bbs/0606qzqxiao2.jpg"  /><em></em><i>甜美小闺蜜 花漾林间乐游</i></a></span>
+                                    <span ><a href="http://bbs.pcbaby.com.cn/topic-3964938.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://www1.pcbaby.com.cn/bbs/0606qzqxiao3.jpg"  /><em></em><i>活力萌宝 正太玩转世博园</i></a></span>
+                                    <span ><a href="http://bbs.pcbaby.com.cn/topic-3917992.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://www1.pcbaby.com.cn/bbs/0606qzqxiao4.jpg"  /><em></em><i>拥抱自然 阳光乐园合家欢</i></a></span>
+                                    <span  class="long"><a href="http://bbs.pcbaby.com.cn/topic-3963956.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://www1.pcbaby.com.cn/bbs/0606qzqda555.jpg"  /><em></em><i>乐活假日 温馨亲子野餐乐</i></a></span>
+                                    <span ><a href="http://bbs.pcbaby.com.cn/topic-3898848.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://www1.pcbaby.com.cn/bbs/0606qzqxiao6.jpg"  /><em></em><i>绿意江南 享悠闲亲子时光</i></a></span>
+                                    <span ><a href="http://bbs.pcbaby.com.cn/topic-3902836.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://www1.pcbaby.com.cn/bbs/0606qzqxiao7.jpg"  /><em></em><i>萌萌哒小菇凉趣游夏语湖畔</i></a></span>
+                                    <span ><a href="http://bbs.pcbaby.com.cn/topic-3824599.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://www1.pcbaby.com.cn/bbs/0427qiziqiang7.jpg"  /><em></em><i>亲近自然 欢乐假期全家行</i></a></span>
+                                    <span ><a href="http://bbs.pcbaby.com.cn/topic-3861615.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://www1.pcbaby.com.cn/bbs/0427qiziqiang6.jpg"  /><em></em><i>花语小精灵 约会绿意森林</i></a></span>
+                                    <span ><a href="http://bbs.pcbaby.com.cn/topic-3839405.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://www1.pcbaby.com.cn/bbs/0427qiziqiang5.jpg"  /><em></em><i>乐动春日 浪漫赏樱亲子游</i></a></span>
+                                </div>
+                            </div>
+                            <div class="c">
+                                <div class="pics">
+                                    <span ><a href="http://bbs.pcbaby.com.cn/topic-3941970.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://www1.pcbaby.com.cn/bbs/20160606mengbao11.jpg"  /><em></em><i>青草世界 美宝趣味玩乐行</i></a></span>
+                                    <span ><a href="http://bbs.pcbaby.com.cn/topic-3950090.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://www1.pcbaby.com.cn/bbs/20160606mengbao22.jpg"  /><em></em><i>潮帅小正太嗨玩阳光植物园</i></a></span>
+                                    <span ><a href="http://bbs.pcbaby.com.cn/topic-3927164.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://www1.pcbaby.com.cn/bbs/20160606mengbao33.jpg"  /><em></em><i>萌妞夏日与旋转木马奇遇记</i></a></span>
+                                    <span  class="long"><a href="http://bbs.pcbaby.com.cn/topic-3898263.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://www1.pcbaby.com.cn/bbs/20160606mengbao444.jpg"  /><em></em><i>俏皮公举假日清凉玩乐美拍</i></a></span>
+                                    <span ><a href="http://bbs.pcbaby.com.cn/topic-3895880.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://www1.pcbaby.com.cn/bbs/20160606mengbao55.jpg"  /><em></em><i>肉肉宝贝享乐池边小时光</i></a></span>
+<span>
+<img src="http://www1.pcbaby.com.cn/2014/index/mb.png" width="49" height="45" class="icon">
+<strong>萌宝</strong>
+</span>
+                                    <span  class="long"><a href="http://bbs.pcbaby.com.cn/topic-3911130.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://www1.pcbaby.com.cn/bbs/20160606mengbao66.jpg"  /><em></em><i>仙气白纱裙打造萌萌公主风</i></a></span>
+                                    <span ><a href="http://bbs.pcbaby.com.cn/topic-3927363.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://www1.pcbaby.com.cn/bbs/20160606mengbao77.jpg"  /><em></em><i>妈咪告白 宝贝美照连连看</i></a></span>
+                                    <span ><a href="http://bbs.pcbaby.com.cn/topic-3812507.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://www1.pcbaby.com.cn/bbs/201605mengbao07.jpg"  /><em></em><i>甜美小妞春日采花乐开怀</i></a></span>
+                                    <span ><a href="http://bbs.pcbaby.com.cn/topic-3842093.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://www1.pcbaby.com.cn/bbs/201605mengbao06.jpg"  /><em></em><i>花季小精灵 绿油油田野行</i></a></span>
+                                    <span ><a href="http://bbs.pcbaby.com.cn/topic-3874052.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://www1.pcbaby.com.cn/bbs/201605mengbao05.jpg"  /><em></em><i>呆萌眼镜控 宝贝百日美拍</i></a></span>
+                                </div>
+                            </div>
+                            <div class="c">
+                                <div class="pics">
+                                    <span  class="long"><a href="http://www1.pcbaby.com.cn/qzzt/byxm/huangjiaqian.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/special/xmby/1511/huangjiaqian380X245_2.jpg"  /><em></em><i>黄嘉千：爱与陪伴</i></a></span>
+                                    <span ><a href="http://special.pcbaby.com.cn/275/zt2757324.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/home/home2014/life/star/1605/xienan_3.jpg"  /><em></em><i>谢楠：趣味人生</i></a></span>
+<span>
+<img src="http://www1.pcbaby.com.cn/2014/index/xm.png" width="42" height="44" class="icon">
+<strong>星妈星爸</strong>
+</span>
+                                    <span ><a href="http://special.pcbaby.com.cn/283/zt2830485.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/home/home2014/life/star/1605/zhangzhilin_1.jpg"  /><em></em><i>张智霖：男神不老</i></a></span>
+                                    <span ><a href="http://www1.pcbaby.com.cn/qzzt/byxm/fanwenfang.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/special/xmby/1602/185X245.jpg"  /><em></em><i>范文芳：爱的力量</i></a></span>
+                                    <span ><a href="http://www1.pcbaby.com.cn/qzzt/byxm/huangxiaolei/pcindex.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/special/xmby/1511/huangxiaolei185X245_2.jpg"  /><em></em><i>黄小蕾：率真辣妈</i></a></span>
+                                    <span ><a href="http://www1.pcbaby.com.cn/qzzt/byxb/baobeierPC.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/special/byxb/1605/baobeier_1.jpg"  /><em></em><i>包贝尔：新手奶爸</i></a></span>
+                                    <span  class="long"><a href="http://www1.pcbaby.com.cn/qzzt/byxb/JNL.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/home/home2014/life/star/1605/jianailiang_1.jpg"  /><em></em><i>贾乃亮：快乐至上</i></a></span>
+                                    <span ><a href="http://www1.pcbaby.com.cn/xmby/chenxiaodong/index.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/special/byxb/1511/chenxiaodong.jpg"  /><em></em><i>陈晓东：一颗平凡心</i></a></span>
+                                    <span ><a href="http://www1.pcbaby.com.cn/qzzt/byxb/index_pc.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/special/byxb/1511/guoxiaodong.jpg"  /><em></em><i>郭晓东：全能暖爸</i></a></span>
+                                    <span ><a href="http://www1.pcbaby.com.cn/qzzt/xmby/zuoxiaoqing/index.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/special/xmby/1511/zuoxiaoqing185X245_2.jpg"  /><em></em><i>左小青：温润如水</i></a></span>
+                                </div>
+                            </div>
+                            <div class="c">
+                                <div class="pics">
+                                    <span ><a href="http://pp.pcbaby.com.cn/photo/26882.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/shipu/youershipu/youer/1507/1851xiu.jpg"  /><em></em><i>周末到 日式料理约起来</i></a></span>
+                                    <span ><a href="http://pp.pcbaby.com.cn/photo/26875.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/shipu/youershipu/xuelingqian/1507/1852xiu.jpg"  /><em></em><i>带上点心 和爸爸去郊游</i></a></span>
+                                    <span ><a href="http://pp.pcbaby.com.cn/photo/28153.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/shipu/youershipu/xuelingqian/1510/shanyao.jpg"  /><em></em><i>健康时蔬 山药鲜香美味</i></a></span>
+                                    <span  class="long"><a href="http://pp.pcbaby.com.cn/photo/27287.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/shipu/youershipu/xuelingqian/1511/2.jpg"  /><em></em><i>全麦膳食 为备孕添助力</i></a></span>
+                                    <span ><a href="http://pp.pcbaby.com.cn/photo/27113.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/shipu/youershipu/xuelingqian/1510/yumitang.jpg"  /><em></em><i>产后喝骨汤 补钙促恢复</i></a></span>
+                                    <span  class="long"><a href="http://pp.pcbaby.com.cn/photo/27067.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/shipu/1507/3806xiu.jpg"  /><em></em><i>红心火龙果 美丽好滋味</i></a></span>
+<span>
+<img src="http://www1.pcbaby.com.cn/2014/index/ms.png" width="42" height="44" class="icon">
+<strong>美食</strong>
+</span>
+                                    <span ><a href="http://pp.pcbaby.com.cn/photo/26748.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/shipu/yunfushipu/yunqi/1507/18548xiu.jpg"  /><em></em><i>家常美味 准妈妈好开胃</i></a></span>
+                                    <span ><a href="http://pp.pcbaby.com.cn/photo/27283.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/shipu/youershipu/xuelingqian/1510/1.jpg"  /><em></em><i>鲜味蛤蜊 为准妈妈补碘</i></a></span>
+                                    <span ><a href="http://pp.pcbaby.com.cn/photo/26797.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/shipu/yunfushipu/zuoyuezi/1507/8xiu.jpg"  /><em></em><i>美味菌菇菜 助新妈塑身</i></a></span>
+                                    <span ><a href="http://pp.pcbaby.com.cn/photo/28360.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/shipu/youershipu/xuelingqian/1512/0.jpg"  /><em></em><i>食材君 将卖萌进行到底</i></a></span>
+                                </div>
+                            </div>
+                            <div class="c">
+                                <div class="pics">
+                                    <span ><a href="http://pp.pcbaby.com.cn/photo/28631.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/product/zx/tz/1605/Mango_1.jpg"  /><em></em><i>Mango</i></a></span>
+                                    <span ><a href="http://pp.pcbaby.com.cn/photo/28831.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/product/zx/tz/1605/Chloe_1.jpg"  /><em></em><i>Chloé</i></a></span>
+                                    <span ><a href="http://pp.pcbaby.com.cn/group/351406.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/product/zx/tz/1605/sugar_2_1.jpg"  /><em></em><i>No added sugar</i></a></span>
+<span>
+<img src="http://www1.pcbaby.com.cn/2014/index/tzdp.png" width="47" height="34" class="icon">
+<strong>童装大片</strong>
+</span>
+                                    <span ><a href="http://pp.pcbaby.com.cn/photo/28968.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/product/zx/tz/1605/007.jpg"  /><em></em><i>Hucklebones</i></a></span>
+                                    <span ><a href="http://pp.pcbaby.com.cn/photo/28707.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/product/zx/tz/1605/Bape.jpg"  /><em></em><i>Bape</i></a></span>
+                                    <span  class="long"><a href="http://pp.pcbaby.com.cn/photo/28957.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/product/zx/tz/1605/Dolce&Gabbana_2_1.jpg"  /><em></em><i>Dolce&Gabbana</i></a></span>
+                                    <span  class="long"><a href="http://pp.pcbaby.com.cn/photo/28946.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/product/zx/tz/1605/Dolce&Gabbana_3_1.jpg"  /><em></em><i>Dolce&Gabbana</i></a></span>
+                                    <span ><a href="http://pp.pcbaby.com.cn/photo/27720.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/product/zx/tz/1605/Zara_3.jpg"  /><em></em><i>Zara</i></a></span>
+                                    <span ><a href="http://life.pcbaby.com.cn/284/zt2849164.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/life/chaotong/zt_chaotong/1605/20160504-18.jpg"  /><em></em><i>ABC KIDS</i></a></span>
+                                    <span ><a href="http://pp.pcbaby.com.cn/photo/27716.html" target="_blank"><img src="http://www1.pclady.com.cn/images/blank.gif" #src="http://img0.pcbaby.com.cn/pcbaby/product/zx/tz/dg/1603/indi_1.jpg"  /><em></em><i>Indikidual</i></a></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="control">
+                            <span class="current"></span><span></span><span></span><span></span><span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
     </div>
+
+    <div th:include="fragments/bot::bot"></div>
+    <script type="text/javascript" th:src="@{/resources/js/slide.js}"></script>
 </div>
-
-<div th:include="fragments/bot::bot"></div>
-<script type="text/javascript" th:src="@{/resources/js/slide.js}"></script>
 </body>
 </html>
