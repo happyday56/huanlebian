@@ -19,7 +19,6 @@ import org.springframework.util.StringUtils;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -45,7 +44,6 @@ public class SpliderServiceImpl implements SpliderService {
     @Autowired
     NewsRepository newsRepository;
 
-
     @Autowired
     NewsFilterRepository newsFilterRepository;
 
@@ -63,140 +61,156 @@ public class SpliderServiceImpl implements SpliderService {
 
     @Autowired
     SlideRepository slideRepository;
+
     @Autowired
     NewsService newsSerice;
 
     @Transactional
     @Scheduled(initialDelay = 1000, fixedDelay = 1000 * 1000)
     public void start() throws Exception {
+        //1.读取要抓取的配置文件
+        ProjectRoot root = readSpliderConfigXml();
 
-        Date uploadTime = new Date(System.currentTimeMillis());
+        //2.根据配置信息，抓取文件，保存新闻信息
+        doSpliderConfigXml(root);
+    }
 
+    /**
+     * 读取要抓取的配置文件
+     *
+     * @return
+     * @throws Exception
+     */
+    private ProjectRoot readSpliderConfigXml() throws Exception {
         File file = new File(this.getClass().getResource("/").getPath() + "targets.xml");
-//        log.info(file.exists());
         if (!file.exists()) {
             log.error("not find targets.xml");
-            return;
+            return null;
         }
         //读取项目配置的XML文件
-        ProjectRoot root = FileUtil.ConvertToBean(file, ProjectRoot.class);
+        return FileUtil.ConvertToBean(file, ProjectRoot.class);
+    }
+
+    /**
+     * 根据配置信息，抓取文件，保存新闻信息
+     *
+     * @param root
+     */
+    private void doSpliderConfigXml(ProjectRoot root) {
+        log.info("config file loading finished,start spridering");
+
+        Date uploadTime = new Date(System.currentTimeMillis());
         Integer totalCount = 0;
         Integer errorCount = 0;
         Integer repeatCount = 0;
 
-//        List<Category> categories = categoryRepository.findAll();
 
         List<News> blogSpliders = new ArrayList<>();
-        List<NewsFilter> blogFilters = new ArrayList<>();
-        //用于过滤
-        List<String> listTitles = new ArrayList<>();
-        log.info("config file loading finished,start spridering");
         List<Project> listProject = root.getProjects();
         for (Project project : listProject) {
-            Boolean enabled = project.getEnabled();
-            String categoryPath = project.getCategory();
-            String kindPath = project.getKind();
-            String name = project.getName();
-
-            Category category = categoryRepository.findByPath(categoryPath);
-            Kind kind = kindRepository.findByPath(kindPath);
-
-//            CategoryKind categoryKind = categoryKindRepository.findByCategoryAndKind(category, kind);
-//            if (categoryKind == null) {
-//                categoryKind = new CategoryKind();
-//                categoryKind.setCategory(category);
-//                categoryKind.setKind(kind);
-//                categoryKind.setTitle(name);
-//                categoryKindRepository.save(categoryKind);
-//            }
-
-            String projectName = project.getName();
-
-            //判断是否进行抓取
-            if (enabled) {
-
-                log.info(projectName + " start doTarget....");
-                // 获取项目处理目标，分析后，返回需要处理的具体页面
-                Target target = project.getTarget();
-                List<String> listUrl = null;
-                if (target == null)
-                    log.error("xml have no target");
-                else {
-                    try {
-                        listUrl = doTarget(target);
-                    } catch (Exception exp) {
-                        log.error("doTarget error " + exp.getMessage());
-                    }
-                }
-
-                totalCount += listUrl.size();
-
-                log.info("doTarget finished,url length:" + listUrl.size());
-
-                log.info("start web page");
-                List<Process> processes = project.getProcesses();
-                for (String doFinalUrl : listUrl) {
-                    try {
-                        News news = doProcesses(doFinalUrl, processes);
-                        //内容存入list中 标题不能重复
-                        if (news != null
-                                && !StringUtils.isEmpty(news.getTitle())
-                                && !StringUtils.isEmpty(news.getContent())
-                                && !listTitles.contains(news.getTitle())
-                                && newsFilterRepository.findOne(news.getTitle()) == null) {
-                            //设置时间间隔
-
-                            uploadTime = new Date(uploadTime.getTime() + 60 * 1000);
-                            news.setCategory(category);
-                            news.setKind(kind);
-                            news.setUploadTime(uploadTime);
-                            news.setViews(0L);
-                            blogSpliders.add(news);
-
-                            NewsFilter blogFilter = new NewsFilter(news.getTitle());
-                            blogFilters.add(blogFilter);
-
-                            listTitles.add(news.getTitle());
-                        } else {
-                            repeatCount++;
-                        }
-
-//                        if (blogSplider != null) {
-//                            newsRepository.updateContentByTitle(blogSplider.getContent(),blogSplider.getTitle());
-//
-//                        }
-                    } catch (Exception exp) {
-                        log.error("web url:" + listUrl + exp.getMessage());
-                        errorCount++;
-                    }
-                }
-                log.info("project " + projectName + " finined");
-            } else {
-                log.error("project " + projectName + " no open,so no do");
-            }
-        }
-
-        for (News news : blogSpliders) {
-            log.info(news.getTitle());
+            doXmlProject(project, blogSpliders);
         }
 
         //插入数据
         newsRepository.save(blogSpliders);
         newsFilterRepository.save(blogFilters);
 
-
         log.info("total：" + totalCount + " success：" + blogSpliders.size() + " error：" + errorCount + " repeat：" + repeatCount);
-
     }
 
     /**
-     * 处理目标， 获取具体网页列表
+     * 处理Xml中具体网址项目
+     *
+     * @param project
+     * @param blogSpliders
+     */
+    private void doXmlProject(Project project, List<News> blogSpliders) {
+        log.debug(project.getName() + " start doing....");
+
+        Boolean enabled = project.getEnabled();
+        //判断是否进行抓取
+        if (!enabled) {
+            log.error("project " + project.getName() + " no enabled,so no do");
+            return;
+        }
+
+        // 获取项目处理目标，分析后，返回需要处理的具体页面
+        List<String> listUrl;
+        try {
+            listUrl = getProjectWebUrl(project.getTarget());
+        } catch (Exception exp) {
+            log.error("getProjectWebUrl error ", exp);
+            return;
+        }
+
+        if (listUrl == null || listUrl.size() == 0) {
+            log.error("");
+        }
+
+        totalCount += listUrl.size();
+
+        log.debug("processeProjectWebUrl start");
+
+        processeProjectWebUrl(project, blogSpliders, listUrl);
+
+        log.debug("project " + project.getName() + " finined");
+    }
+
+    private void processeProjectWebUrl(Project project, List<News> blogSpliders, List<String> listUrl) {
+        //获取分类
+        Category category = categoryRepository.findByPath(project.getCategory());
+        Kind kind = kindRepository.findByPath(project.getKind());
+
+        for (String doFinalUrl : listUrl) {
+            try {
+                News news = doProcesses(doFinalUrl, project.getProcesses());
+                //内容存入list中 标题不能重复
+                if (news != null
+                        && !StringUtils.isEmpty(news.getTitle())
+                        && !StringUtils.isEmpty(news.getContent())
+                        && !listTitles.contains(news.getTitle())
+                        && newsFilterRepository.findOne(news.getTitle()) == null) {
+                    //设置时间间隔
+
+                    uploadTime = new Date(uploadTime.getTime() + 60 * 1000);
+                    news.setCategory(category);
+                    news.setKind(kind);
+                    news.setUploadTime(uploadTime);
+                    news.setViews(0L);
+                    blogSpliders.add(news);
+
+                    NewsFilter blogFilter = new NewsFilter(news.getTitle());
+                    blogFilters.add(blogFilter);
+
+                    listTitles.add(news.getTitle());
+                } else {
+                    repeatCount++;
+                }
+
+//                        if (blogSplider != null) {
+//                            newsRepository.updateContentByTitle(blogSplider.getContent(),blogSplider.getTitle());
+//
+//                        }
+            } catch (Exception exp) {
+                log.error("web url:" + listUrl + exp.getMessage());
+                errorCount++;
+            }
+        }
+    }
+
+    /**
+     * 处理目标， 获取项目具体网页列表
      *
      * @param target
      * @return
      * @throws IOException
      */
-    private List<String> doTarget(Target target) throws IOException {
+    private List<String> getProjectWebUrl(Target target) throws IOException {
+        if (target == null) {
+            log.error("xml have no target");
+            return null;
+        }
+
         List<String> result = new ArrayList();
         List<String> listSourceUrl = new ArrayList();
         //1.多个具体网址
@@ -286,6 +300,7 @@ public class SpliderServiceImpl implements SpliderService {
 
         return result;
     }
+
 
     /**
      * 处理单个最终页面
