@@ -11,5 +11,5 @@ public interface SpliderService {
     void start() throws Exception;
 
     @Transactional
-    void doSlide();
+    void handleSlide();
 }

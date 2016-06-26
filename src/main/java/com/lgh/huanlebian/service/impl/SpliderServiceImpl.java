@@ -44,6 +44,7 @@ public class SpliderServiceImpl implements SpliderService {
     @Autowired
     NewsRepository newsRepository;
 
+
     @Autowired
     NewsFilterRepository newsFilterRepository;
 
@@ -61,112 +62,97 @@ public class SpliderServiceImpl implements SpliderService {
 
     @Autowired
     SlideRepository slideRepository;
-
     @Autowired
     NewsService newsSerice;
+
+    @Autowired
+    URIService uriService;
+
 
     @Transactional
     @Scheduled(initialDelay = 1000, fixedDelay = 1000 * 1000)
     public void start() throws Exception {
-        //1.读取要抓取的配置文件
-        ProjectRoot root = readSpliderConfigXml();
 
-        //2.根据配置信息，抓取文件，保存新闻信息
-        doSpliderConfigXml(root);
-    }
-
-    /**
-     * 读取要抓取的配置文件
-     *
-     * @return
-     * @throws Exception
-     */
-    private ProjectRoot readSpliderConfigXml() throws Exception {
+        //1.读取配置文件
         File file = new File(this.getClass().getResource("/").getPath() + "targets.xml");
         if (!file.exists()) {
             log.error("not find targets.xml");
-            return null;
+            return;
         }
         //读取项目配置的XML文件
-        return FileUtil.ConvertToBean(file, ProjectRoot.class);
+        ProjectRoot root = FileUtil.ConvertToBean(file, ProjectRoot.class);
+
+        //2.处理配置文件
+        List<News> blogSpliders = new ArrayList<>();
+        List<NewsFilter> blogFilters = new ArrayList<>();
+        handleConfigXml(root, blogSpliders, blogFilters);
+
+        //3.插入数据
+        newsRepository.save(blogSpliders);
+        newsFilterRepository.save(blogFilters);
     }
 
     /**
-     * 根据配置信息，抓取文件，保存新闻信息
+     * 处理配置文件
      *
      * @param root
+     * @param blogSpliders
+     * @param blogFilters
      */
-    private void doSpliderConfigXml(ProjectRoot root) {
-        log.info("config file loading finished,start spridering");
+    private void handleConfigXml(ProjectRoot root, List<News> blogSpliders, List<NewsFilter> blogFilters) {
+        log.debug("handle config xml start");
 
         Date uploadTime = new Date(System.currentTimeMillis());
         Integer totalCount = 0;
         Integer errorCount = 0;
         Integer repeatCount = 0;
 
-
-        List<News> blogSpliders = new ArrayList<>();
         List<Project> listProject = root.getProjects();
+        //用于过滤
+        List<String> listTitles = new ArrayList<>();
+
         for (Project project : listProject) {
-            doXmlProject(project, blogSpliders);
-        }
+            //判断项目是否开启
+            if (!project.getEnabled()) {
+                log.error("project " + project.getName() + " no enabled");
+                continue;
+            }
+            //判断目标是否为空
+            if (project.getTarget() == null) {
+                log.error("project " + project.getName() + " no target");
+                continue;
+            }
 
-        //插入数据
-        newsRepository.save(blogSpliders);
-        newsFilterRepository.save(blogFilters);
-
-        log.info("total：" + totalCount + " success：" + blogSpliders.size() + " error：" + errorCount + " repeat：" + repeatCount);
-    }
-
-    /**
-     * 处理Xml中具体网址项目
-     *
-     * @param project
-     * @param blogSpliders
-     */
-    private void doXmlProject(Project project, List<News> blogSpliders) {
-        log.debug(project.getName() + " start doing....");
-
-        Boolean enabled = project.getEnabled();
-        //判断是否进行抓取
-        if (!enabled) {
-            log.error("project " + project.getName() + " no enabled,so no do");
-            return;
-        }
-
-        // 获取项目处理目标，分析后，返回需要处理的具体页面
-        List<String> listUrl;
-        try {
-            listUrl = getProjectWebUrl(project.getTarget());
-        } catch (Exception exp) {
-            log.error("getProjectWebUrl error ", exp);
-            return;
-        }
-
-        if (listUrl == null || listUrl.size() == 0) {
-            log.error("");
-        }
-
-        totalCount += listUrl.size();
-
-        log.debug("processeProjectWebUrl start");
-
-        processeProjectWebUrl(project, blogSpliders, listUrl);
-
-        log.debug("project " + project.getName() + " finined");
-    }
-
-    private void processeProjectWebUrl(Project project, List<News> blogSpliders, List<String> listUrl) {
-        //获取分类
-        Category category = categoryRepository.findByPath(project.getCategory());
-        Kind kind = kindRepository.findByPath(project.getKind());
-
-        for (String doFinalUrl : listUrl) {
+            log.info(project.getName() + " start handleTarget....");
+            // 获取项目处理目标，分析后，返回需要处理的具体页面
+            List<String> listUrl = new ArrayList<>();
             try {
-                News news = doProcesses(doFinalUrl, project.getProcesses());
+                listUrl = handleTarget(project.getTarget());
+            } catch (Exception exp) {
+                log.error("handleTarget error " + exp.getMessage());
+                continue;
+            }
+            totalCount += listUrl.size();
+
+            log.info("start web page");
+
+            Category category = categoryRepository.findByPath(project.getCategory());
+            Kind kind = kindRepository.findByPath(project.getKind());
+            List<Process> processes = project.getProcesses();
+            for (String doFinalUrl : listUrl) {
+                News news = null;
+                try {
+                    news = handleProcesses(doFinalUrl, processes);
+                } catch (Exception exp) {
+                    log.error("web url:" + listUrl, exp);
+                    errorCount++;
+                }
+
+
                 //内容存入list中 标题不能重复
-                if (news != null
-                        && !StringUtils.isEmpty(news.getTitle())
+                if (news == null) {
+                    repeatCount++;
+                } else if (!StringUtils.isEmpty(news.getTitle())
                         && !StringUtils.isEmpty(news.getContent())
                         && !listTitles.contains(news.getTitle())
                         && newsFilterRepository.findOne(news.getTitle()) == null) {
@@ -183,34 +169,23 @@ public class SpliderServiceImpl implements SpliderService {
                     blogFilters.add(blogFilter);
 
                     listTitles.add(news.getTitle());
-                } else {
-                    repeatCount++;
                 }
-
-//                        if (blogSplider != null) {
-//                            newsRepository.updateContentByTitle(blogSplider.getContent(),blogSplider.getTitle());
-//
-//                        }
-            } catch (Exception exp) {
-                log.error("web url:" + listUrl + exp.getMessage());
-                errorCount++;
             }
+            log.info("project " + project.getName() + " finined");
         }
+
+
+        log.info("total：" + totalCount + " success：" + blogSpliders.size() + " error：" + errorCount + " repeat：" + repeatCount);
     }
 
     /**
-     * 处理目标， 获取项目具体网页列表
+     * 处理目标， 获取具体网页列表
      *
      * @param target
      * @return
      * @throws IOException
      */
-    private List<String> getProjectWebUrl(Target target) throws IOException {
-        if (target == null) {
-            log.error("xml have no target");
-            return null;
-        }
-
+    private List<String> handleTarget(Target target) throws IOException {
         List<String> result = new ArrayList();
         List<String> listSourceUrl = new ArrayList();
         //1.多个具体网址
@@ -301,7 +276,6 @@ public class SpliderServiceImpl implements SpliderService {
         return result;
     }
 
-
     /**
      * 处理单个最终页面
      *
@@ -309,7 +283,8 @@ public class SpliderServiceImpl implements SpliderService {
      * @param listProcess
      * @throws IOException
      */
-    private News doProcesses(String doFinalUrl, List<Process> listProcess) throws IOException, URISyntaxException {
+
+    private News handleProcesses(String doFinalUrl, List<Process> listProcess) throws IOException, URISyntaxException {
         News result = new News();
 
         URL url = new URL(doFinalUrl);
@@ -333,7 +308,7 @@ public class SpliderServiceImpl implements SpliderService {
         }
 
         for (Process process : listProcess) {
-            doProcess(source, process, result);
+            handleProcess(source, process, result);
         }
 
         return result;
@@ -351,7 +326,7 @@ public class SpliderServiceImpl implements SpliderService {
      * @param process
      * @param result
      */
-    private void doProcess(Source source, Process process, News result) throws IOException, URISyntaxException {
+    private void handleProcess(Source source, Process process, News result) throws IOException, URISyntaxException {
         String sourceHtml = source.getSource().toString();
         //处理后的内容
         String processContent = "";
@@ -403,7 +378,7 @@ public class SpliderServiceImpl implements SpliderService {
 
         //3.对以1或2方式获取的内容进行过滤
         if (process.getProcess_clean() != null)
-            processContent = doProcessClean(processContent, process.getProcess_clean());
+            processContent = handleProcessClean(processContent, process.getProcess_clean());
 
         //4.把处理内容保存到实体中（标题 内容 图片）
         String field = process.getField();
@@ -449,7 +424,7 @@ public class SpliderServiceImpl implements SpliderService {
      * @param content
      * @param clean_tags
      */
-    private String doProcessClean(String content, List<Clean_Tag> clean_tags) {
+    private String handleProcessClean(String content, List<Clean_Tag> clean_tags) {
         if (clean_tags != null && clean_tags.size() > 0) {
             Source source = new Source(content);
             StringBuilder strB = new StringBuilder();
@@ -506,7 +481,7 @@ public class SpliderServiceImpl implements SpliderService {
     }
 
 
-    private String doContentPicture(String content) throws IOException, URISyntaxException {
+    private String handleContentPicture(String content) throws IOException, URISyntaxException {
         Pattern pattern = Pattern.compile("<img.*?src=\"([^\"]*)\"[^>]*>");
         Matcher matcher = pattern.matcher(content);
         while (matcher.find()) {
@@ -518,12 +493,9 @@ public class SpliderServiceImpl implements SpliderService {
     }
 
 
-    @Autowired
-    URIService uriService;
-
     @Transactional
     @Scheduled(initialDelay = 1000, fixedDelay = 1000 * 60 * 60 * 24)
-    public void doSlide() {
+    public void handleSlide() {
         slideRepository.deleteAll();
         log.info("****enter do slide****");
         List<Slide> slides = new ArrayList<>();
