@@ -21,6 +21,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/5/8.
  */
+@SuppressWarnings("SpringJavaAutowiringInspection")
 @Controller
 public class IndexController {
 
@@ -39,13 +40,21 @@ public class IndexController {
     public String index(Model model) {
         WebIndexPageModel webIndexPageModel = new WebIndexPageModel();
 
+        List<WebIndexCategoryListModel> webIndexCategoryListModels = new ArrayList<>();
         List<Category> categories = categoryRepository.findAllByParentOrderBySortAsc(null);
-
-        List<WebCategoryListModel> webCategoryListModels = new ArrayList<>();
         for (Category category : categories) {
-            webCategoryListModels.add(new WebCategoryListModel(category.getTitle(), uriService.getCategoryURI(category.getPath())));
+            WebIndexCategoryListModel webIndexCategoryListModel = new WebIndexCategoryListModel(category.getTitle(), uriService.getCategoryURI(category.getPath()));
+
+            List<WebCategoryListModel> webCategoryListModels = new ArrayList<>();
+            List<Category> subCategories = categoryRepository.findAllByParentOrderBySortAsc(category);
+            subCategories.forEach(x -> {
+                webCategoryListModels.add(new WebCategoryListModel(x.getTitle(), uriService.getCategoryURI(category.getPath(), x.getPath())));
+            });
+            webIndexCategoryListModel.setSub(webCategoryListModels);
+
+            webIndexCategoryListModels.add(webIndexCategoryListModel);
         }
-        webIndexPageModel.setTopNav(webCategoryListModels);
+        webIndexPageModel.setTopNav(webIndexCategoryListModels);
 
         List<WebSlideListModel> webSlideListModels = new ArrayList<>();
         List<Slide> slides = slideService.findTopSlideList(null, 5);
@@ -58,6 +67,7 @@ public class IndexController {
 
         return "index";
     }
+
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String test(Model model) {

@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 public class WebIndexPageModel {
-    private List<WebCategoryListModel> topNav;
+    private List<WebIndexCategoryListModel> topNav;
     private List<WebSlideListModel> slideList;
 
 }
