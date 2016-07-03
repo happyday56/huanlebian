@@ -14,11 +14,25 @@ import java.util.List;
  */
 public interface NewsService {
 
-    List<News> getTopByCategory(Category category, Integer top);
+    /**
+     * 获取分类的前几个 （id排序）
+     *
+     * @param category 一二级分类
+     * @param top 前几
+     * @return
+     */
+    List<News> getTopByCategoryOrderById(Category category, Integer top);
 
-    List<News> getTopByCategoryGroup(Category category, Integer top);
+    /**
+     * 获取该分类的前几个（view排序）
+     *
+     * @param category 一二级分类
+     * @param top 前几
+     * @return
+     */
+    List<News> getTopByCategoryOrderByViews(Category category, Integer top);
 
-    List<News> getTopByCategoryGroup();
+//    List<News> getTopByCategoryOrderByViews();
 
     /**
      * 获取全路径

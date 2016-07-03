@@ -15,5 +15,5 @@ import java.util.List;
 public class WebIndexPageModel {
     private List<WebIndexCategoryListModel> topNav;
     private List<WebSlideListSummaryModel> slideList;
-
+    private List<WebIndexContentListModel> contentList;
 }

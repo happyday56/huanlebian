@@ -70,7 +70,7 @@ public class CategoryController {
      * @return
      */
     @RequestMapping(value = "/{one}", method = RequestMethod.GET)
-    public String one(@PathVariable("one") String one, Model model) {
+    public String one(@PathVariable("one") String one, Model model) throws URISyntaxException {
 
         Category oneCategory = categoryRepository.findByPath(one);
         if (oneCategory != null) {
@@ -92,7 +92,8 @@ public class CategoryController {
             List<WebSlideListModel> webSlideListModels = new ArrayList<>();
             List<Slide> slides = slideService.findTopSlideList(oneCategory, 5);
             for (Slide slide : slides) {
-                webSlideListModels.add(new WebSlideListModel(slide.getTitle(), slide.getImageUrl(), slide.getUrl()));
+                webSlideListModels.add(new WebSlideListModel(slide.getTitle()
+                        , staticResourceService.getResource(slide.getImageUrl()).toString(), slide.getUrl()));
             }
             webCategoryPageModel.setSlideList(webSlideListModels);
 
@@ -144,10 +145,9 @@ public class CategoryController {
             webSecondCategoryPageModel.setSlideList(webSlideListModels);
 
 
-
             //子项列表
             List<WebNewsListModel> webSubNewsListModels = new ArrayList<>();
-            List<News> newsList = newsService.getTopByCategory(secondCategory, 10);
+            List<News> newsList = newsService.getTopByCategoryOrderById(secondCategory, 10);
             for (News news : newsList) {
                 webSubNewsListModels.add(new WebNewsListModel(news.getTitle(), uriService.getNewURI(news.getId())
                         , staticResourceService.getResource(news.getPictureUrl()).toString(), news.getSummary()));

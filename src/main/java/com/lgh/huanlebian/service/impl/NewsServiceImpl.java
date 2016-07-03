@@ -46,10 +46,19 @@ public class NewsServiceImpl implements NewsService {
     StaticResourceService  staticResourceService;
 
 
-    public List<News> getTopByCategory(Category category, Integer top) {
+    public List<News> getTopByCategoryOrderById(Category category, Integer top) {
         List<News> result = new ArrayList<>();
         StringBuilder hql = new StringBuilder();
-        hql.append("select news from News news where news.category=:category order by news.id");
+        hql.append("select news from News news");
+        if (category.getParent() == null)
+        {
+            hql.append(" where news.category in (select category from Category category where category.parent=:category)");
+        }
+        else {
+            hql.append(" where news.category=:category");
+        }
+        hql.append(" order by news.id");
+
         Query query = entityManager.createQuery(hql.toString());
         query.setParameter("category", category);
         query.setMaxResults(top);
@@ -60,10 +69,18 @@ public class NewsServiceImpl implements NewsService {
         return result;
     }
 
-    public List<News> getTopByCategoryGroup(Category category, Integer top) {
+    public List<News> getTopByCategoryOrderByViews(Category category, Integer top) {
         List<News> result = new ArrayList<>();
         StringBuilder hql = new StringBuilder();
-        hql.append("select news from News news where news.category=:category order by news.views");
+        hql.append("select news from News news");
+        if (category.getParent() == null)
+        {
+            hql.append(" where news.category in (select category from Category category where category.parent=:category)");
+        }
+        else {
+            hql.append(" where news.category=:category");
+        }
+        hql.append(" order by news.views");
         Query query = entityManager.createQuery(hql.toString());
         query.setParameter("category", category);
         query.setMaxResults(top);
@@ -79,8 +96,8 @@ public class NewsServiceImpl implements NewsService {
      *
      * @return
      */
-    public List<News> getTopByCategoryGroup() {
-        List<News> result = new ArrayList<>();
+//    public List<News> getTopByCategoryOrderByViews() {
+//        List<News> result = new ArrayList<>();
 
 //        StringBuilder hql = new StringBuilder();
 //        hql.append("select news.category,news from News news group by news.category order by news.category,news.views");
@@ -91,8 +108,8 @@ public class NewsServiceImpl implements NewsService {
 //            Object[] item = (Object[]) o;
 //            result.add((News) item[1]);
 //        }
-        return result;
-    }
+//        return result;
+//    }
 
     @Override
     public List<WebCategoryListModel> getFullPath(Category category, Kind kind) {

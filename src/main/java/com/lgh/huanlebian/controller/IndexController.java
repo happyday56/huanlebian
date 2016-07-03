@@ -1,11 +1,13 @@
 package com.lgh.huanlebian.controller;
 
 import com.lgh.huanlebian.entity.Category;
+import com.lgh.huanlebian.entity.News;
 import com.lgh.huanlebian.entity.Slide;
 import com.lgh.huanlebian.model.*;
 import com.lgh.huanlebian.repository.CategoryRepository;
-import com.lgh.huanlebian.repository.SlideRepository;
+import com.lgh.huanlebian.service.NewsService;
 import com.lgh.huanlebian.service.SlideService;
+import com.lgh.huanlebian.service.StaticResourceService;
 import com.lgh.huanlebian.service.URIService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -15,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,18 +31,25 @@ public class IndexController {
     private static Log log = LogFactory.getLog(IndexController.class);
 
     @Autowired
-    URIService uriService;
+    private URIService uriService;
 
     @Autowired
-    SlideService slideService;
+    private SlideService slideService;
 
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private StaticResourceService staticResourceService;
+
+    @Autowired
+    private NewsService newsService;
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index(Model model) {
+    public String index(Model model) throws URISyntaxException {
         WebIndexPageModel webIndexPageModel = new WebIndexPageModel();
 
+        //主导航
         List<WebIndexCategoryListModel> webIndexCategoryListModels = new ArrayList<>();
         List<Category> categories = categoryRepository.findAllByParentOrderBySortAsc(null);
         for (Category category : categories) {
@@ -56,16 +66,55 @@ public class IndexController {
         }
         webIndexPageModel.setTopNav(webIndexCategoryListModels);
 
+        //轮播
         List<WebSlideListSummaryModel> webSlideListSummaryModels = new ArrayList<>();
         List<Slide> slides = slideService.findTopSlideList(null, 5);
         for (Slide slide : slides) {
             webSlideListSummaryModels.add(new WebSlideListSummaryModel(slide.getTitle()
-                    , slide.getImageUrl(), slide.getUrl(),slide.getSummary()));
+                    , staticResourceService.getResource(slide.getImageUrl()).toString()
+                    , slide.getUrl(), slide.getSummary()));
         }
         webIndexPageModel.setSlideList(webSlideListSummaryModels);
 
-        model.addAttribute("page", webIndexPageModel);
 
+        //内容列表
+        List<WebIndexContentListModel> webIndexContentListModels = new ArrayList<>();
+        for (Category category : categories) {
+            List<News> newses = newsService.getTopByCategoryOrderById(category, 5);
+            WebIndexContentListModel webIndexContentListModel = new WebIndexContentListModel();
+
+            List<WebNewsListModel> webNewsListModels = new ArrayList<>();
+            final int[] count = {0};
+            newses.forEach(x -> {
+                String imageUrl = "";
+                try {
+                    imageUrl = staticResourceService.getResource(x.getPictureUrl()).toString();
+                } catch (URISyntaxException e) {
+                }
+
+                if (count[0] == 0) {
+                    webIndexContentListModel.setTitle(x.getTitle());
+                    webIndexContentListModel.setImageUrl(imageUrl);
+                    webIndexContentListModel.setUrl(uriService.getNewURI(x.getId()).toString());
+                } else {
+                    webNewsListModels.add(new WebNewsListModel(
+                            x.getTitle()
+                            , uriService.getNewURI(x.getId()).toString()
+                            , imageUrl
+                            , x.getSummary()));
+                }
+                count[0]++;
+            });
+            if (webNewsListModels.size() > 0) webIndexContentListModel.setNewsList(webNewsListModels);
+
+            if (newses.size() > 0)
+                webIndexContentListModels.add(webIndexContentListModel);
+        }
+
+
+        webIndexPageModel.setContentList(webIndexContentListModels);
+
+        model.addAttribute("page", webIndexPageModel);
         return "index";
     }
 

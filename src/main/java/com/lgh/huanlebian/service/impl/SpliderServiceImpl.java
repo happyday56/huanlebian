@@ -502,7 +502,7 @@ public class SpliderServiceImpl implements SpliderService {
 
         List<Category> categories = categoryRepository.findAll();
         for (Category category : categories) {
-            List<News> list = newsSerice.getTopByCategoryGroup(category, 5);
+            List<News> list = newsSerice.getTopByCategoryOrderByViews(category, 5);
             for (News news : list) {
                 slides.add(new Slide(0L, news.getCategory(), news.getTitle()
                         , news.getPictureUrl()

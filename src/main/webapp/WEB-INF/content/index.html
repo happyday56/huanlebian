@@ -114,67 +114,32 @@
     </div>
 </div>
 
-
 <div class="main part part2">
     <div class="col-ab">
         <div class="box shadow">
-            <div class="pic-txt">
-                <p class="pic"><a href="http://life.pcbaby.com.cn/299/2995567.html" target="_blank"><img
-                        src="#" width="225" height="145"
-                        alt="惬意生活 家居空气净化小贴士"/></a></p>
-                <p class="tit"><a href="http://life.pcbaby.com.cn/299/2995567.html" target="_blank">惬意生活
-                    家居空气净化小贴士</a></p>
-                <ul class="txt">
-                    <li class="fl"><a href="http://bbs.pcbaby.com.cn/topic-4001361.html" target="_blank">烟雨之时
-                        独享凤凰清秀游</a></li>
-                    <li class="fr"><a href="http://bbs.pcbaby.com.cn/topic-3999042.html" target="_blank">多滋夏日
-                        健康可口玉米汁</a></li>
-                    <li class="fl"><a href="http://yuer.pcbaby.com.cn/299/2998929.html" target="_blank">这样才正路
-                        益生菌冲调法</a></li>
-                    <li class="fr"><a href="http://bbs.pcbaby.com.cn/topic-3964368.html" target="_blank">感恩生日趴
-                        欢享有爱周末</a></li>
-                </ul>
-            </div>
-            <div class="pic-txt-line"></div>
-            <div class="pic-txt">
-                <p class="pic"><a href="http://kuaiwen.pcbaby.com.cn/2016/0616/zt2999044.html"
-                                  target="_blank"><img
-                        src="#" width="225" height="145"
-                        alt="钟鑫琪：加强亲子互动 助力早产儿发育"/></a></p>
-                <p class="tit"><a href="http://kuaiwen.pcbaby.com.cn/2016/0616/zt2999044.html" target="_blank">加强亲子互动
-                    助力早产儿发育</a></p>
-                <ul class="txt">
-                    <li class="fl"><a href="http://www1.pcbaby.com.cn/zt/b160505/zhenhu/index.html"
-                                      target="_blank">珍护不上火 轻便快乐成长</a></li>
-                    <li class="fr"><a href="http://kuaiwen.pcbaby.com.cn/2016/0520/zt2945744.html"
-                                      target="_blank">双顶径偏大 管住嘴勤产检</a></li>
-                    <li class="fl"><a href="http://product.pcbaby.com.cn/zx/tz/dg/1606/2990824.html"
-                                      target="_blank">看脸世界 选帽子时尚一夏</a></li>
-                    <li class="fr"><a href="http://pp.pcbaby.com.cn/photo/27571.html" target="_blank">不用忍
-                        孕期抽筋五招搞定</a></li>
-                </ul>
-            </div>
-            <div class="pic-txt-line"></div>
-            <div class="pic-txt">
-                <p class="pic"><a href="http://bbs.pcbaby.com.cn/topic-3982948.html" target="_blank"><img
-                        src="#" width="225" height="145"
-                        alt="夏日果趣 玩转水果创意新吃法"/></a></p>
-                <p class="tit"><a href="http://bbs.pcbaby.com.cn/topic-3982948.html" target="_blank">夏日果趣
-                    玩转水果创意新吃法</a></p>
-                <ul class="txt">
-                    <li class="fl"><a href="http://2tai.pcbaby.com.cn/299/2994985.html" target="_blank">心态
-                        才是最佳的二胎准备</a></li>
-                    <li class="fr"><a href="http://baike.pcbaby.com.cn/qzbd/1287632.html" target="_blank">生二胎最佳年龄
-                        不超35岁</a></li>
-                    <li class="fl"><a href="http://kuaiwen.pcbaby.com.cn/2016/0612/zt2989604.html"
-                                      target="_blank">夏季科学补钙 首选液体钙</a></li>
-                    <li class="fr"><a href="http://bbs.pcbaby.com.cn/topic-3964420.html" target="_blank">辣妈私享会
-                        秘密花园探宝</a></li>
-                </ul>
-            </div>
+            <th:block th:each="content:${page.contentList}">
+                <div class="pic-txt">
+                    <p class="pic">
+                        <a th:href="*{content.url}" target="_blank">
+                            <img th:src="*{content.imageUrl}" th:alt="*{content.title}" height="145" width="225"/>
+                        </a>
+                    </p>
+                    <p class="tit"><a th:href="*{content.url}" target="_blank" th:text="*{content.title}"></a>
+                    </p>
+
+                    <ul class="txt">
+                        <li th:each="news,iterStat:*{content.newsList}" th:class="*{iterStat.odd}?'fl':'fr'">
+                            <a th:href="*{news.url}" target="_blank" th:text="*{news.title}"></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="pic-txt-line"></div>
+            </th:block>
         </div>
     </div>
-
+    <div class="col-c">
+        <div class="ivy-yc"></div>
+    </div>
 </div>
 
 <div th:include="fragments/bot::bot"></div>
