@@ -497,7 +497,7 @@ public class SpliderServiceImpl implements SpliderService {
     @Scheduled(initialDelay = 1000, fixedDelay = 1000 * 60 * 60 * 24)
     public void handleSlide() {
         slideRepository.deleteAll();
-        log.info("****enter do slide****");
+        log.debug("****enter do slide****");
         List<Slide> slides = new ArrayList<>();
 
         List<Category> categories = categoryRepository.findAll();
@@ -506,7 +506,8 @@ public class SpliderServiceImpl implements SpliderService {
             for (News news : list) {
                 slides.add(new Slide(0L, news.getCategory(), news.getTitle()
                         , news.getPictureUrl()
-                        , uriService.getNewURI(news.getId())));
+                        , uriService.getNewURI(news.getId())
+                        , news.getSummary()));
             }
         }
         slideRepository.save(slides);

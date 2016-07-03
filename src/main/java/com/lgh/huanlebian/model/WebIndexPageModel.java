@@ -14,6 +14,6 @@ import java.util.List;
 @Setter
 public class WebIndexPageModel {
     private List<WebIndexCategoryListModel> topNav;
-    private List<WebSlideListModel> slideList;
+    private List<WebSlideListSummaryModel> slideList;
 
 }

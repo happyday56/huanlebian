@@ -56,12 +56,13 @@ public class IndexController {
         }
         webIndexPageModel.setTopNav(webIndexCategoryListModels);
 
-        List<WebSlideListModel> webSlideListModels = new ArrayList<>();
+        List<WebSlideListSummaryModel> webSlideListSummaryModels = new ArrayList<>();
         List<Slide> slides = slideService.findTopSlideList(null, 5);
         for (Slide slide : slides) {
-            webSlideListModels.add(new WebSlideListModel(slide.getTitle(), slide.getImageUrl(), slide.getUrl()));
+            webSlideListSummaryModels.add(new WebSlideListSummaryModel(slide.getTitle()
+                    , slide.getImageUrl(), slide.getUrl(),slide.getSummary()));
         }
-        webIndexPageModel.setSlideList(webSlideListModels);
+        webIndexPageModel.setSlideList(webSlideListSummaryModels);
 
         model.addAttribute("page", webIndexPageModel);
 

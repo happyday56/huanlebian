@@ -46,4 +46,9 @@ public class Slide {
     @Column(length = 200)
     private String url;
 
+    /**
+     * 摘要
+     */
+    @Column(length = 500)
+    private String summary;
 }
