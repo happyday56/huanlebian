@@ -7,6 +7,7 @@ import com.lgh.huanlebian.model.WebNewsPageModel;
 import com.lgh.huanlebian.repository.NewsRepository;
 import com.lgh.huanlebian.service.NewsService;
 import com.lgh.huanlebian.service.StaticResourceService;
+import com.lgh.huanlebian.service.URIService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,13 +28,16 @@ import java.util.List;
 @RequestMapping("/v")
 public class ContentController {
     @Autowired
-    NewsRepository newsRepository;
+    private NewsRepository newsRepository;
 
     @Autowired
-    StaticResourceService staticResourceService;
+    private StaticResourceService staticResourceService;
 
     @Autowired
-    NewsService newsService;
+    private NewsService newsService;
+
+    @Autowired
+    private URIService uriService;
 
     @RequestMapping(value = "/news/{id}.html", method = RequestMethod.GET)
     public String getNewsDetail(@PathVariable("id") Long id, Model model) throws URISyntaxException {
@@ -42,9 +46,10 @@ public class ContentController {
         webNewsPageModel.setTitle(news.getTitle());
         webNewsPageModel.setKeywords(news.getKeywords());
         webNewsPageModel.setDescription(news.getDescription());
-        
-        webNewsPageModel.setData(newsService.toWebNewsModel(news));
 
+        webNewsPageModel.setHeadName(news.getCategory().getParent().getTitle());
+        webNewsPageModel.setHeadUrl(uriService.getCategoryURI(news.getCategory().getParent().getPath()));
+        webNewsPageModel.setData(newsService.toWebNewsModel(news));
         webNewsPageModel.setTopNav(newsService.getFullPath(news.getCategory(), news.getKind()));
 
         model.addAttribute("page", webNewsPageModel);
