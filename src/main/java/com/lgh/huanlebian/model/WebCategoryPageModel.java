@@ -19,7 +19,7 @@ public class WebCategoryPageModel extends WebBasePageModel {
     /**
      * 子分类信息列表
      */
-    private List<WebSubNewsListModel> subNewsList;
+    private List<WebNewsListModel> webNewsList;
 
 
 }

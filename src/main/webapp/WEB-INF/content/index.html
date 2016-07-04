@@ -6,15 +6,14 @@
     <meta name="keywords" content="怀孕,育儿,家庭"/>
     <meta name="description" content="欢乐变亲子网为家长们提供0-6岁各阶段孩子成长、教育、家庭和用品等全方位、多角度的各种实用资讯以及有关怀孕的各方面知识。"/>
     <link rel="stylesheet" type="text/css" th:href="@{/resources/css/index.css}"/>
-    <script type="text/javascript" th:src="@{/resources/js/common.js}"></script>
-    <script type="text/javascript" th:src="@{/resources/js/tab.js}"></script>
+    <script type="text/javascript" th:src="@{/resources/js/main.js}"></script>
     <script type="text/javascript" th:src="@{/resources/js/lazy.js}"></script>
 </head>
 
 <body id="Jbody">
 
-<!-- channelNav -->
-<div class="channelNav2" th:include="fragments/top::top"></div>
+<!-- topNav -->
+<div class="topNav" th:include="fragments/top::top"></div>
 
 
 <div class="main">
@@ -144,7 +143,7 @@
 
 <div th:include="fragments/bot::bot"></div>
 <script type="text/javascript" th:src="@{/resources/js/slide.js}"></script>
+<script type="text/javascript" th:src="@{/resources/js/common.js}"></script>
 <script type="text/javascript" th:src="@{/resources/js/index.js}"></script>
-
 </body>
 </html>

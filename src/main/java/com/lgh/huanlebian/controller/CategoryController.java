@@ -82,6 +82,7 @@ public class CategoryController {
             webCategoryPageModel.setCategoryName(oneCategory.getTitle());
             webCategoryPageModel.setCategoryUrl(uriService.getCategoryURI(one));
 
+            //分类部分
             List<Category> categories = categoryRepository.findAllByParentOrderBySortAsc(oneCategory);
             List<WebCategoryListModel> webCategoryListModels = new ArrayList<>();
             for (Category category : categories) {
@@ -89,6 +90,7 @@ public class CategoryController {
             }
             webCategoryPageModel.setTopNav(webCategoryListModels);
 
+            //轮播部分
             List<WebSlideListModel> webSlideListModels = new ArrayList<>();
             List<Slide> slides = slideService.findTopSlideList(oneCategory, 5);
             for (Slide slide : slides) {
@@ -98,8 +100,13 @@ public class CategoryController {
             webCategoryPageModel.setSlideList(webSlideListModels);
 
             //子项列表
-            List<WebSubNewsListModel> webSubNewsListModels = new ArrayList<>();
-            webCategoryPageModel.setSubNewsList(webSubNewsListModels);
+            List<WebNewsListModel> webNewsListModels = new ArrayList<>();
+            List<News> newsList = newsService.getTopByCategoryOrderById(oneCategory, 10);
+            for (News news : newsList) {
+                webNewsListModels.add(new WebNewsListModel(news.getTitle(), uriService.getNewURI(news.getId())
+                        , staticResourceService.getResource(news.getPictureUrl()).toString(), news.getSummary()));
+            }
+            webCategoryPageModel.setWebNewsList(webNewsListModels);
 
             model.addAttribute("page", webCategoryPageModel);
         }

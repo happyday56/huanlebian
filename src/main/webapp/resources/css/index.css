@@ -1,4 +1,3 @@
-/* reset 重置样式 */
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td,hr,button,article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section {margin:0;padding:0;}
 html {-webkit-text-size-adjust: none;}
 body{background:#f8f8f8;font:12px/1.5 \5FAE\8F6F\96C5\9ED1,"Arial Narrow",HELVETICA;text-align:left;color: #333}
@@ -20,8 +19,8 @@ a:focus{outline:none;}
 .clear{clear:both;height:0;line-height:0;font-size:0;overflow:hidden;}
 .clearfix{*zoom:1}
 .clearfix:after{content:"\20";clear:both;height:0;display:block;overflow:hidden}
-.ps-r{position: relative;}
 
+.ps-r{position: relative;}
 .main{width: 1000px;margin: 0 auto;zoom:1;}
 .main:after{content:"\20";clear:both;height:0;display:block;overflow:hidden}
 
@@ -34,10 +33,10 @@ a:focus{outline:none;}
 .col-c{width: 305px; float: right;}
 
 /*顶部导航*/
-.channelNav2{font-size: 12px;line-height:15px;height:15px;padding:15px 0;}
-.channelNav2 a{float:left;padding:0 9px;border-right:1px #ededed solid;color:#636363;}
-.channelNav2 a:hover{color:#f44;}
-.channelNav2 a.last{border-right: none;}
+.topNav {font-size: 12px;line-height:15px;height:15px;padding:15px 0;}
+.topNav a{float:left;padding:0 9px;border-right:1px #ededed solid;color:#636363;}
+.topNav a:hover{color:#f44;}
+.topNav a.last{border-right: none;}
 
 /*头logo*/
 .head{height: 100px;background: #f8f8f8;}
@@ -50,9 +49,9 @@ a:focus{outline:none;}
     -ms-transition:left 0.4s ease-in;
     -webkit-transition:left 0.4s ease-in;
     -moz-transition:left 0.4s ease-in;}
-.head .search .input{background:url("../images/b.png") no-repeat 1px -228px;-moz-border-bottom-colors:none;-moz-border-left-colors:none;-moz-border-right-colors:none;-moz-border-top-colors:none;border-color:-moz-use-text-color -moz-use-text-color #ececec;border-image:none;border-style:none none solid;border-width:medium medium 1px;color:#adadad;float:left;height:24px;line-height:22px;padding-left:29px;width:175px;border-bottom-color: #ececec;}
-.head .search .form-active .sbtn{background:url("../images/search1.png") no-repeat 0 0;display:inline;float:left;height:25px;left:204px;opacity:1;width:52px;}
-.head .search .form-active .sbtn:hover{background:url("../images/search2.png") no-repeat 0 0;}
+.head .search .input{background:url(../images/b.png) no-repeat 1px -228px;-moz-border-bottom-colors:none;-moz-border-left-colors:none;-moz-border-right-colors:none;-moz-border-top-colors:none;border-color:-moz-use-text-color -moz-use-text-color #ececec;border-image:none;border-style:none none solid;border-width:medium medium 1px;color:#adadad;float:left;height:24px;line-height:22px;padding-left:29px;width:175px;border-bottom-color: #ececec;}
+.head .search .form-active .sbtn{background:url(../images/search1.png) no-repeat 0 0;display:inline;float:left;height:25px;left:204px;opacity:1;width:52px;}
+.head .search .form-active .sbtn:hover{background:url(../images/search2.png) no-repeat 0 0;}
 .head .search .hot-word{padding: 4px 0 0 163px;clear: both;}
 .head .search .hot-word a{color: #adadad;margin-right: 10px;}
 
@@ -67,7 +66,7 @@ a:focus{outline:none;}
     -moz-transition:all 0.4s ease-in;}
 .nav dl{width: 482px;}
 .nav dt{float: left;width: 128px; text-align: center;}
-.nav dt a{display: block;height: 59px; line-height: 44px; font-size: 24px; background: url(http://www1.pcbaby.com.cn/2014/index/texts.png) no-repeat}
+.nav dt a{display: block;height: 59px; line-height: 44px; font-size: 24px; background: url(../images/texts.png) no-repeat}
 .nav dt p{line-height: 10px;overflow: hidden;font-size: 12px;color: #d3d3d3;}
 .nav a:hover{text-decoration: none;}
 .nav .main{border-right: 1px solid #ececec;width: 999px}
@@ -100,7 +99,7 @@ a:focus{outline:none;}
 .tab .tit{height: 52px; line-height: 48px;font-size: 22px; overflow: hidden;}
 .tab .des{width: 240px;line-height: 24px;color: #999}
 .tab .control{position: absolute; height: 12px; left: 695px;top: 319px; z-index: 333;}
-.tab .control a{width: 12px;height: 12px;overflow: hidden;float: left;display: inline;margin-right: 3px;background: url(http://www1.pcbaby.com.cn/2014/index/x.png) no-repeat 0 -304px;}
+.tab .control a{width: 12px;height: 12px;overflow: hidden;float: left;display: inline;margin-right: 3px;background: url(../images/b.png) no-repeat 0 -304px;}
 .tab .control a.current{background-position: 0 -290px;}
 .tab .btn{background:url("../images/b.png") no-repeat 0 0;height:46px;position:absolute;top:151px;width:24px;z-index:333;}
 .tab .btnL{left: 21px;display: none;}

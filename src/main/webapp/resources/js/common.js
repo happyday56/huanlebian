@@ -12,3 +12,15 @@ function joinFavorite(siteUrl, siteName) {
     }
 }
 
+
+var s_input = pc.getElem("#q");
+var form_div = pc.getElem("#s-form");
+pc.addEvent(form_div, "click", function (e) {
+    form_div.className = 'form form-active';
+    s_input.value = '';
+    e.stopPropagation();
+})
+pc.addEvent(pc.getElem("body"),"click",function(){
+    form_div.className='form';
+})
+

@@ -6,22 +6,29 @@
     <meta name="keywords" th:content="${page.keywords}" content=""/>
     <meta name="description" th:content="${page.description}" content=""/>
     <link rel="stylesheet" type="text/css" th:href="@{/resources/css/channel.css}"/>
-    <script type="text/javascript" th:src="@{/resources/js/common.js}"></script>
-    <script type="text/javascript" th:src="@{/resources/js/tab.js}"></script>
+    <script type="text/javascript" th:src="@{/resources/js/main.js}"></script>
 </head>
 <body>
-<!-- channelNav -->
-<div class="channelNav2" th:include="fragments/top::top"></div>
-<!-- top ads  -->
+<!-- 顶部导航 -->
+<div class="topNav" th:include="fragments/top::top"></div>
+
 
 <!-- 频道导航 -->
 <div class="head">
     <div class="main">
         <a href="/" target="_blank"><em class="head-title"></em></a>
         <a th:href="${page.categoryUrl}"><em class="head-channel" th:text="${page.categoryName}"></em></a>
-        <a href="javascript:joinFavorite('http://www.huanlebian.com/','健康育儿_育儿知识大全_欢乐变母婴网');" id="aFavorite"
+        <a href="javascript:joinFavorite('http://www.huanlebian.com/','健康育儿_育儿知识大全_欢乐变亲子网');" id="aFavorite"
            class="head-favorite">收藏<em></em></a>
-
+        <div class="search">
+            <div id="s-form" class="form">
+                <form id="search" class="clearfix" target="_blank" method="get" action="#">
+                    <input id="q" class="input" type="text" name="q" value=""/>
+                    <a class="sbtn" title="搜索" onclick="document.getElementById('search').submit();"
+                       href="javascript:void(0)"></a>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 <!-- 导航 -->
@@ -42,7 +49,7 @@
     </div>
 </div>
 
-<!-- tab1 -->
+<!-- 轮播 -->
 <div class="tab1 border shadow clearfix">
     <!-- slide -->
     <div id="slide01" class="tab" onmouseover="this.className='tab tab-active';" onmouseout="this.className='tab';">
@@ -74,29 +81,29 @@
     </div>
     <div class="th-b fr">
         <p class="tips">
-            <a href="http://yuer.pcbaby.com.cn/yinger/huli/" target="_blank">婴儿护理</a>
+            <a href="#" target="_blank">婴儿护理</a>
         </p>
         <p class="pTit">
-            <a href="http://yuer.pcbaby.com.cn/291/2910984.html" target="_blank">小小飘窗藏趣味 我和宝宝有约</a>
+            <a href="#" target="_blank">小小飘窗藏趣味 我和宝宝有约</a>
         </p>
         <p class="des">
             当妈妈们终日围绕着宝宝而转的时候，奶粉纸尿裤、辅食睡眠等等的育儿琐事占据了你的所有时间时，内心是否渴望去飘窗上闲坐一会？其实，你...
         </p>
         <ul class="titList">
             <li>
-                <a href="http://yuer.pcbaby.com.cn/288/2884549.html" target="_blank">长辈爱给宝贝零食 阻止讲方法</a>
+                <a href="#" target="_blank">长辈爱给宝贝零食 阻止讲方法</a>
             </li>
             <li>
-                <a href="http://yuer.pcbaby.com.cn/288/2884585.html" target="_blank">早起也有好心情 花式早餐倍棒</a>
+                <a href="#" target="_blank">早起也有好心情 花式早餐倍棒</a>
             </li>
             <li>
-                <a href="http://yuer.pcbaby.com.cn/288/2884547.html" target="_blank">宝宝沿用二手衣物 未必这么好</a>
+                <a href="#" target="_blank">宝宝沿用二手衣物 未必这么好</a>
             </li>
         </ul>
     </div>
 </div>
 
-<!-- main -->
+<!-- news -->
 <div id="tab3" class="tab3 main">
     <div id="left660" class="left660 border shadow fl">
         <p class="tabTit">最新资讯</p>
@@ -117,12 +124,12 @@
                 <div class="pic-txt-line"></div>
             </th:block>
         </div>
-        <a id="loadMore" class="loadMore" href="javascript:;" data-num="0"> <span>点击加载更多</span> </a>
+
     </div>
     <div class="fr" style="width:306px;">
         <div id="right306" class="right306">
             <div class="ivy295">
-                <a href="http://www.pcbaby.com.cn/shipu/yxyfs/" target="_blank" class="pic">
+                <a href="#" target="_blank" class="pic">
                     <img width="295" height="260" alt=""
                          src="http://www1.pcbaby.com.cn/yesc/20151130yxyyouce295-260.jpg"/>
                 </a>
@@ -149,6 +156,8 @@
         </div>
     </div>
 </div>
+
+
 <div id="slide10" class="seo">
     <div class="th">
         <div class="main">
@@ -195,5 +204,6 @@
 
 <div th:include="fragments/bot::bot"></div>
 <script type="text/javascript" th:src="@{/resources/js/slide.js}"></script>
+<script type="text/javascript" th:src="@{/resources/js/common.js}"></script>
 </body>
 </html>
