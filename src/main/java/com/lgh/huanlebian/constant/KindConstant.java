@@ -13,4 +13,8 @@ public class KindConstant {
     public static final String huli = "huli";
     public static final String jibing = "jibing";
     public static final String jinji = "jinji";
+    public static final String fangshi = "fangshi";
+    public static final String zhuyishixiang = "zhuyishixiang";
+    public static final String yaowu = "yaowu";
+    public static final String xingshenghuo = "xingshenghuo";
 }

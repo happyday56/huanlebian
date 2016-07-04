@@ -14,6 +14,8 @@ import java.util.List;
 public class WebSecondCategoryPageModel extends WebBasePageModel {
     private String categoryName;
     private String categoryUrl;
+    private String parentCategoryName;
+    private String parentCategoryUrl;
     private List<WebCategoryListModel> topNav;
     private List<WebSlideListModel> slideList;
 

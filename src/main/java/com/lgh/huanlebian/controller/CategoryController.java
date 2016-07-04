@@ -131,7 +131,8 @@ public class CategoryController {
             webSecondCategoryPageModel.setDescription(secondCategory.getDescription());
 
             webSecondCategoryPageModel.setCategoryName(secondCategory.getTitle());
-            webSecondCategoryPageModel.setCategoryUrl(uriService.getCategoryURI(one, two));
+            webSecondCategoryPageModel.setParentCategoryName(secondCategory.getParent().getTitle());
+            webSecondCategoryPageModel.setParentCategoryUrl(uriService.getCategoryURI(one));
 
             //种类部分
             List<CategoryKind> categoryKinds = categoryKindRepository.findAllByCategory(secondCategory);
