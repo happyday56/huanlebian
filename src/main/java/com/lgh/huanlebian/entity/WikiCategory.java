@@ -23,7 +23,7 @@ import javax.persistence.ManyToOne;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BaikeCategory {
+public class WikiCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,7 +32,7 @@ public class BaikeCategory {
      * 父项
      */
     @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    private BaikeCategory parent;
+    private WikiCategory parent;
 
     /**
      * 标题

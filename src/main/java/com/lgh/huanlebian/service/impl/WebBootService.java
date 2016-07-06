@@ -2,18 +2,19 @@ package com.lgh.huanlebian.service.impl;
 
 import com.lgh.huanlebian.constant.CatetoryConstant;
 import com.lgh.huanlebian.constant.KindConstant;
-import com.lgh.huanlebian.entity.BaikeCategory;
+import com.lgh.huanlebian.entity.WikiCategory;
 import com.lgh.huanlebian.entity.Category;
 import com.lgh.huanlebian.entity.CategoryKind;
 import com.lgh.huanlebian.entity.Kind;
 import com.lgh.huanlebian.entity.SystemConfig;
 import com.lgh.huanlebian.model.CommonVersion;
-import com.lgh.huanlebian.repository.BaikeCategoryRepository;
+import com.lgh.huanlebian.repository.WikiCategoryRepository;
 import com.lgh.huanlebian.repository.CategoryKindRepository;
 import com.lgh.huanlebian.repository.CategoryRepository;
 import com.lgh.huanlebian.repository.KindRepository;
 import com.lgh.huanlebian.repository.SystemConfigRepository;
 import com.lgh.huanlebian.service.JdbcService;
+import com.lgh.huanlebian.service.SpliderService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +30,7 @@ import java.util.List;
  * 启动设置
  * Created by lgh on 2016/5/5.
  */
+@SuppressWarnings("SpringJavaAutowiringInspection")
 @Service
 public class WebBootService implements ApplicationListener<ContextRefreshedEvent> {
 
@@ -52,7 +55,10 @@ public class WebBootService implements ApplicationListener<ContextRefreshedEvent
     CategoryKindRepository categoryKindRepository;
 
     @Autowired
-    private BaikeCategoryRepository baikeCategoryRepository;
+    private WikiCategoryRepository wikiCategoryRepository;
+
+    @Autowired
+    private SpliderService spliderService;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -288,33 +294,43 @@ public class WebBootService implements ApplicationListener<ContextRefreshedEvent
     }
 
 
-    public void initBaikeCategory() {
+    public void initBaikeCategory() throws IOException {
 
         //todo keywords despcrition
-        List<BaikeCategory> list = new ArrayList<>();
-        BaikeCategory parentBaikeCategory = new BaikeCategory(0L, null, "怀孕", CatetoryConstant.huaiyun, "", "", 1, false);
-        parentBaikeCategory = baikeCategoryRepository.save(parentBaikeCategory);
-        list.add(new BaikeCategory(0L, parentBaikeCategory, "备孕", CatetoryConstant.huaiyun, "", "", 1, true));
-        list.add(new BaikeCategory(0L, parentBaikeCategory, "孕期", CatetoryConstant.yunqi, "", "", 2, true));
-        list.add(new BaikeCategory(0L, parentBaikeCategory, "分娩", CatetoryConstant.fenmian, "", "", 3, true));
-        list.add(new BaikeCategory(0L, parentBaikeCategory, "月子", CatetoryConstant.yuezi, "", "", 4, true));
-        baikeCategoryRepository.save(list);
+        List<WikiCategory> list = new ArrayList<>();
+        WikiCategory parentWikiCategory = new WikiCategory(0L, null, "怀孕", CatetoryConstant.huaiyun, "", "", 1, false);
+        parentWikiCategory = wikiCategoryRepository.save(parentWikiCategory);
+        list.add(new WikiCategory(0L, parentWikiCategory, "备孕", CatetoryConstant.huaiyun, "", "", 1, true));
+        list.add(new WikiCategory(0L, parentWikiCategory, "孕期", CatetoryConstant.yunqi, "", "", 2, true));
+        list.add(new WikiCategory(0L, parentWikiCategory, "分娩", CatetoryConstant.fenmian, "", "", 3, true));
+        list.add(new WikiCategory(0L, parentWikiCategory, "月子", CatetoryConstant.yuezi, "", "", 4, true));
+        list = wikiCategoryRepository.save(list);
+        for(WikiCategory wikiCategory :list) {
+            spliderService.initWikiData(wikiCategory);
+        }
 
-        parentBaikeCategory = new BaikeCategory(0L, null, "育儿", CatetoryConstant.yuer, "", "", 2, false);
-        parentBaikeCategory = baikeCategoryRepository.save(parentBaikeCategory);
-        list.add(new BaikeCategory(0L, parentBaikeCategory, "新生儿", CatetoryConstant.xinshenger, "", "", 1, true));
-        list.add(new BaikeCategory(0L, parentBaikeCategory, "0-1岁", CatetoryConstant.yinger, "", "", 2, true));
-        list.add(new BaikeCategory(0L, parentBaikeCategory, "1-3岁", CatetoryConstant.youer, "", "", 3, true));
-        list.add(new BaikeCategory(0L, parentBaikeCategory, "3-6岁", CatetoryConstant.xuelingqian, "", "", 4, true));
-        baikeCategoryRepository.save(list);
+        parentWikiCategory = new WikiCategory(0L, null, "育儿", CatetoryConstant.yuer, "", "", 2, false);
+        parentWikiCategory = wikiCategoryRepository.save(parentWikiCategory);
+        list.add(new WikiCategory(0L, parentWikiCategory, "新生儿", CatetoryConstant.xinshenger, "", "", 1, true));
+        list.add(new WikiCategory(0L, parentWikiCategory, "0-1岁", CatetoryConstant.yinger, "", "", 2, true));
+        list.add(new WikiCategory(0L, parentWikiCategory, "1-3岁", CatetoryConstant.youer, "", "", 3, true));
+        list.add(new WikiCategory(0L, parentWikiCategory, "3-6岁", CatetoryConstant.xuelingqian, "", "", 4, true));
+        list = wikiCategoryRepository.save(list);
+        for(WikiCategory wikiCategory :list) {
+            spliderService.initWikiData(wikiCategory);
+        }
 
-        parentBaikeCategory = new BaikeCategory(0L, null, "营养", CatetoryConstant.meishi, "", "", 3, true);
-        parentBaikeCategory = baikeCategoryRepository.save(parentBaikeCategory);
+        parentWikiCategory = new WikiCategory(0L, null, "营养", CatetoryConstant.meishi, "", "", 3, true);
+        parentWikiCategory = wikiCategoryRepository.save(parentWikiCategory);
+        spliderService.initWikiData(parentWikiCategory);
 
-        parentBaikeCategory = new BaikeCategory(0L, null, "生活", CatetoryConstant.shenghuo, "", "", 4, true);
-        parentBaikeCategory = baikeCategoryRepository.save(parentBaikeCategory);
+        parentWikiCategory = new WikiCategory(0L, null, "生活", CatetoryConstant.shenghuo, "", "", 4, true);
+        parentWikiCategory = wikiCategoryRepository.save(parentWikiCategory);
+        spliderService.initWikiData(parentWikiCategory);
 
-        parentBaikeCategory = new BaikeCategory(0L, null, "用品", CatetoryConstant.yongpin, "", "", 5, true);
-        parentBaikeCategory = baikeCategoryRepository.save(parentBaikeCategory);
+        parentWikiCategory = new WikiCategory(0L, null, "用品", CatetoryConstant.yongpin, "", "", 5, true);
+        parentWikiCategory = wikiCategoryRepository.save(parentWikiCategory);
+        spliderService.initWikiData(parentWikiCategory);
+
     }
 }

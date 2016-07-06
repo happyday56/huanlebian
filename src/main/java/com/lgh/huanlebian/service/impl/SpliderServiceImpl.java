@@ -19,7 +19,6 @@ import org.springframework.util.StringUtils;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -34,6 +33,7 @@ import java.util.regex.Pattern;
  * Created by lenovo on 2015/7/10.
  */
 
+@SuppressWarnings("SpringJavaAutowiringInspection")
 @Service
 public class SpliderServiceImpl implements SpliderService {
 
@@ -68,6 +68,9 @@ public class SpliderServiceImpl implements SpliderService {
 
     @Autowired
     URIService uriService;
+
+    @Autowired
+    private WikiCategoryRepository wikiCategoryRepository;
 
 
     @Transactional
@@ -515,30 +518,56 @@ public class SpliderServiceImpl implements SpliderService {
     }
 
     @Override
-    public void initBaikeData(BaikeCategory baikeCategory) throws IOException {
-        String sourceurl = "http://baike.pcbaby.com.cn/" + baikeCategory.getPath() + ".html";
+    public void initWikiData(WikiCategory wikiCategory) throws IOException {
+        String sourceurl = "http://baike.pcbaby.com.cn/" + wikiCategory.getPath() + ".html";
         // 下载页面
         URL url = new URL(sourceurl);
         Source source = new Source(url);
         Element element = source.getElementById("Jbaike");
-        int count = 0;
+        int oneCount = 0;
         for (Element element1 : element.getChildElements()) {
-            String one = "";
-            if (count % 2 == 1) {
+            String one;
+            WikiCategory oneWikiCategory;
+            if (oneCount % 2 == 1) {
                 one = element1.getChildElements().get(0).getTextExtractor().toString();
+                oneWikiCategory = new WikiCategory(0L, wikiCategory, one, "", "", "", oneCount, false);
+                oneWikiCategory = wikiCategoryRepository.save(oneWikiCategory);
             } else {
+                int towCount = 0;
                 for (Element element2 : element1.getChildElements()) {
                     String two = element2.getFirstStartTag("dt").getFirstStartTag("a").getTextExtractor().toString();
+                    WikiCategory twoWikiCategory = new WikiCategory(0L, oneWikiCategory, two, "", "", "", towCount, false);
+                    twoWikiCategory = wikiCategoryRepository.save(twoWikiCategory);
+
+                    int threeCount = 0;
                     List<StartTag> startTags = element2.getFirstStartTag("dd").getAllStartTags("a");
                     for (StartTag startTag : startTags) {
                         String three = startTag.getTextExtractor().toString();
                         String targetUrl = startTag.getAttributeValue("href");
-
+//                        WikiCategory threeBaikeCategory = new WikiCategory(0L, twoWikiCategory, three, "", "", "", threeCount, false);
+//                        threeBaikeCategory = baikeCategoryRepository.save(threeBaikeCategory);
+                        //web url;
+                        spliderWikiDetail(targetUrl, twoWikiCategory);
+                        threeCount++;
                     }
+
+                    towCount++;
                 }
             }
-            count++;
+            oneCount++;
         }
+
+    }
+
+    /**
+     * 遍历百科详情页
+     *
+     * @param targetUrl
+     * @param twoWikiCategory
+     */
+    private void spliderWikiDetail(String targetUrl, WikiCategory twoWikiCategory) {
+        Source source = new Source(targetUrl);
+
 
     }
 }

@@ -1,10 +1,9 @@
 package com.lgh.huanlebian.service;
 
-import com.lgh.huanlebian.entity.BaikeCategory;
+import com.lgh.huanlebian.entity.WikiCategory;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 /**
  * Created by lenovo on 2015/7/10.
@@ -20,8 +19,8 @@ public interface SpliderService {
 
     /**
      * 初始化百科分类
-     * @param baikeCategory
+     * @param wikiCategory
      */
     @Transactional
-    void initBaikeData(BaikeCategory baikeCategory) throws IOException;
+    void initWikiData(WikiCategory wikiCategory) throws IOException;
 }
