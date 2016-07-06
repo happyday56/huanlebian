@@ -19,6 +19,7 @@ import org.springframework.util.StringUtils;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -511,5 +512,33 @@ public class SpliderServiceImpl implements SpliderService {
             }
         }
         slideRepository.save(slides);
+    }
+
+    @Override
+    public void initBaikeData(BaikeCategory baikeCategory) throws IOException {
+        String sourceurl = "http://baike.pcbaby.com.cn/" + baikeCategory.getPath() + ".html";
+        // 下载页面
+        URL url = new URL(sourceurl);
+        Source source = new Source(url);
+        Element element = source.getElementById("Jbaike");
+        int count = 0;
+        for (Element element1 : element.getChildElements()) {
+            String one = "";
+            if (count % 2 == 1) {
+                one = element1.getChildElements().get(0).getTextExtractor().toString();
+            } else {
+                for (Element element2 : element1.getChildElements()) {
+                    String two = element2.getFirstStartTag("dt").getFirstStartTag("a").getTextExtractor().toString();
+                    List<StartTag> startTags = element2.getFirstStartTag("dd").getAllStartTags("a");
+                    for (StartTag startTag : startTags) {
+                        String three = startTag.getTextExtractor().toString();
+                        String targetUrl = startTag.getAttributeValue("href");
+
+                    }
+                }
+            }
+            count++;
+        }
+
     }
 }

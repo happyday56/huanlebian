@@ -2,11 +2,13 @@ package com.lgh.huanlebian.service.impl;
 
 import com.lgh.huanlebian.constant.CatetoryConstant;
 import com.lgh.huanlebian.constant.KindConstant;
+import com.lgh.huanlebian.entity.BaikeCategory;
 import com.lgh.huanlebian.entity.Category;
 import com.lgh.huanlebian.entity.CategoryKind;
 import com.lgh.huanlebian.entity.Kind;
 import com.lgh.huanlebian.entity.SystemConfig;
 import com.lgh.huanlebian.model.CommonVersion;
+import com.lgh.huanlebian.repository.BaikeCategoryRepository;
 import com.lgh.huanlebian.repository.CategoryKindRepository;
 import com.lgh.huanlebian.repository.CategoryRepository;
 import com.lgh.huanlebian.repository.KindRepository;
@@ -49,6 +51,9 @@ public class WebBootService implements ApplicationListener<ContextRefreshedEvent
     @Autowired
     CategoryKindRepository categoryKindRepository;
 
+    @Autowired
+    private BaikeCategoryRepository baikeCategoryRepository;
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         if (event.getApplicationContext().getParent() != null) {
@@ -74,6 +79,10 @@ public class WebBootService implements ApplicationListener<ContextRefreshedEvent
                             initKind();
 
                             initCategoryKind();
+
+                            initBaikeCategory();
+
+
                         } catch (Exception e) {
                             log.info("upgrade to " + CommonVersion.Version101.ordinal() + " error", e);
                         }
@@ -209,7 +218,7 @@ public class WebBootService implements ApplicationListener<ContextRefreshedEvent
         category = categoryRepository.findByPath(CatetoryConstant.biyun);
         kind = kindRepository.findByPath(KindConstant.fangshi);
         list.add(new CategoryKind(category, kind, "产后避孕法"));
-        kind = kindRepository.findByPath(KindConstant.yaowu );
+        kind = kindRepository.findByPath(KindConstant.yaowu);
         list.add(new CategoryKind(category, kind, "产后避孕药"));
         kind = kindRepository.findByPath(KindConstant.xingshenghuo);
         list.add(new CategoryKind(category, kind, "产后性生活"));
@@ -229,7 +238,7 @@ public class WebBootService implements ApplicationListener<ContextRefreshedEvent
         category = categoryRepository.findByPath(CatetoryConstant.biaojian);
         kind = kindRepository.findByPath(KindConstant.jibing);
         list.add(new CategoryKind(category, kind, "产后疾病"));
-        kind = kindRepository.findByPath(KindConstant.jinji );
+        kind = kindRepository.findByPath(KindConstant.jinji);
         list.add(new CategoryKind(category, kind, "产后禁忌"));
         kind = kindRepository.findByPath(KindConstant.shipu);
         list.add(new CategoryKind(category, kind, "产后食谱"));
@@ -276,5 +285,36 @@ public class WebBootService implements ApplicationListener<ContextRefreshedEvent
         kind = kindRepository.findByPath(KindConstant.shipu);
         list.add(new CategoryKind(category, kind, "3-6饮食"));
         categoryKindRepository.save(list);
+    }
+
+
+    public void initBaikeCategory() {
+
+        //todo keywords despcrition
+        List<BaikeCategory> list = new ArrayList<>();
+        BaikeCategory parentBaikeCategory = new BaikeCategory(0L, null, "怀孕", CatetoryConstant.huaiyun, "", "", 1, false);
+        parentBaikeCategory = baikeCategoryRepository.save(parentBaikeCategory);
+        list.add(new BaikeCategory(0L, parentBaikeCategory, "备孕", CatetoryConstant.huaiyun, "", "", 1, true));
+        list.add(new BaikeCategory(0L, parentBaikeCategory, "孕期", CatetoryConstant.yunqi, "", "", 2, true));
+        list.add(new BaikeCategory(0L, parentBaikeCategory, "分娩", CatetoryConstant.fenmian, "", "", 3, true));
+        list.add(new BaikeCategory(0L, parentBaikeCategory, "月子", CatetoryConstant.yuezi, "", "", 4, true));
+        baikeCategoryRepository.save(list);
+
+        parentBaikeCategory = new BaikeCategory(0L, null, "育儿", CatetoryConstant.yuer, "", "", 2, false);
+        parentBaikeCategory = baikeCategoryRepository.save(parentBaikeCategory);
+        list.add(new BaikeCategory(0L, parentBaikeCategory, "新生儿", CatetoryConstant.xinshenger, "", "", 1, true));
+        list.add(new BaikeCategory(0L, parentBaikeCategory, "0-1岁", CatetoryConstant.yinger, "", "", 2, true));
+        list.add(new BaikeCategory(0L, parentBaikeCategory, "1-3岁", CatetoryConstant.youer, "", "", 3, true));
+        list.add(new BaikeCategory(0L, parentBaikeCategory, "3-6岁", CatetoryConstant.xuelingqian, "", "", 4, true));
+        baikeCategoryRepository.save(list);
+
+        parentBaikeCategory = new BaikeCategory(0L, null, "营养", CatetoryConstant.meishi, "", "", 3, true);
+        parentBaikeCategory = baikeCategoryRepository.save(parentBaikeCategory);
+
+        parentBaikeCategory = new BaikeCategory(0L, null, "生活", CatetoryConstant.shenghuo, "", "", 4, true);
+        parentBaikeCategory = baikeCategoryRepository.save(parentBaikeCategory);
+
+        parentBaikeCategory = new BaikeCategory(0L, null, "用品", CatetoryConstant.yongpin, "", "", 5, true);
+        parentBaikeCategory = baikeCategoryRepository.save(parentBaikeCategory);
     }
 }

@@ -22,5 +22,8 @@ public class CatetoryConstant {
     public static final String yinger = "yinger";
     public static final String youer = "youer";
     public static final String xuelingqian = "xuelingqian";
-
+    public static final String yunqi = "yunqi";
+    public static final String meishi = "meishi";
+    public static final String shenghuo = "shenghuo";
+    public static final String yongpin = "yongpin";
 }

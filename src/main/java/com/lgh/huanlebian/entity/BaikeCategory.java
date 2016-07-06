@@ -60,4 +60,9 @@ public class BaikeCategory {
      * 排序号
      */
     private Integer sort;
+
+    /**
+     * 是否主要
+     */
+    private Boolean isMain;
 }
