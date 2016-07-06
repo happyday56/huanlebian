@@ -73,6 +73,9 @@ public class SpliderServiceImpl implements SpliderService {
     private WikiCategoryRepository wikiCategoryRepository;
 
 
+    @Autowired
+    private WikiRepository wikiRepository;
+
     @Transactional
     @Scheduled(initialDelay = 1000, fixedDelay = 1000 * 1000)
     public void start() throws Exception {
@@ -395,14 +398,7 @@ public class SpliderServiceImpl implements SpliderService {
 
             //处理内容的同时处理简介summary
             if (!StringUtils.isEmpty(processContent)) {
-                Source sourceSummary = new Source(processContent);
-                String processSummary = sourceSummary.getTextExtractor().toString();
-                if (processSummary.length() > 150) processSummary = processSummary.substring(0, 150);
-                if (processSummary.lastIndexOf("。") > 0) {
-                    processSummary = processSummary.substring(0, processSummary.lastIndexOf("。") + 1);
-                } else if (processSummary.lastIndexOf("！") > 0) {
-                    processSummary = processSummary.substring(0, processSummary.lastIndexOf("！") + 1);
-                }
+                String processSummary = getFilterSummary(processContent);
                 if (StringUtils.isEmpty(processSummary)) processSummary = result.getTitle();
                 result.setSummary(processSummary);
             }
@@ -419,6 +415,24 @@ public class SpliderServiceImpl implements SpliderService {
             processContent = downloadPicture(processContent);
             result.setPictureUrl(processContent.replace(commonConfigService.getResourcesUri(), ""));
         }
+    }
+
+    /**
+     * 获得过滤的简介
+     *
+     * @param processContent
+     * @return
+     */
+    private String getFilterSummary(String processContent) {
+        Source sourceSummary = new Source(processContent);
+        String processSummary = sourceSummary.getTextExtractor().toString();
+        if (processSummary.length() > 150) processSummary = processSummary.substring(0, 150);
+        if (processSummary.lastIndexOf("。") > 0) {
+            processSummary = processSummary.substring(0, processSummary.lastIndexOf("。") + 1);
+        } else if (processSummary.lastIndexOf("！") > 0) {
+            processSummary = processSummary.substring(0, processSummary.lastIndexOf("！") + 1);
+        }
+        return processSummary;
     }
 
     /**
@@ -567,7 +581,27 @@ public class SpliderServiceImpl implements SpliderService {
      */
     private void spliderWikiDetail(String targetUrl, WikiCategory twoWikiCategory) {
         Source source = new Source(targetUrl);
-
+        Wiki wiki = new Wiki();
+        String title = "";
+        wiki.setTitle(title);
+        wiki.setCategory(twoWikiCategory);
+        String content = "";
+        wiki.setContent(content);
+        wiki.setSummary(getFilterSummary(content));
+        // 获取关键字
+        List<StartTag> keywords = source.getAllStartTags("name", "keywords", false);
+        for (StartTag tag : keywords) {
+            wiki.setKeywords(tag.getAttributeValue("content"));
+        }
+        // 获取描述
+        List<StartTag> description = source.getAllStartTags("name", "description", false);
+        for (StartTag tag : description) {
+            wiki.setDescription(tag.getAttributeValue("content"));
+        }
+        wiki.setPictureUrl("");
+        wiki.setUploadTime(new Date());
+        wiki.setViews(0L);
+        wikiRepository.save(wiki);
 
     }
 }
