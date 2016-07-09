@@ -22,5 +22,5 @@ public interface SpliderService {
      * @param wikiCategory
      */
     @Transactional
-    void initWikiData(WikiCategory wikiCategory) throws IOException;
+    void initWikiData(WikiCategory wikiCategory) ;
 }

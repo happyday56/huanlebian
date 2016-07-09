@@ -45,6 +45,12 @@ public class Wiki {
     private String title;
 
     /**
+     * 目录
+     */
+    @Column(length = 2000)
+    private String catalog;
+
+    /**
      * 图片地址
      */
     @Column(length = 200)

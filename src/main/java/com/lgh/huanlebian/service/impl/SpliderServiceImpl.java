@@ -7,6 +7,7 @@ import com.lgh.huanlebian.repository.*;
 import com.lgh.huanlebian.service.*;
 import com.lgh.huanlebian.utils.FileUtil;
 import net.htmlparser.jericho.Element;
+import net.htmlparser.jericho.HTMLElementName;
 import net.htmlparser.jericho.Source;
 import net.htmlparser.jericho.StartTag;
 import org.apache.commons.logging.Log;
@@ -394,6 +395,7 @@ public class SpliderServiceImpl implements SpliderService {
         else if (field.equals("content")) {
             //内容中有图片进行下载处理
 //            processContent = doContentPicture(processContent);
+            //todo 过滤链接地址
             result.setContent(processContent);
 
             //处理内容的同时处理简介summary
@@ -532,45 +534,48 @@ public class SpliderServiceImpl implements SpliderService {
     }
 
     @Override
-    public void initWikiData(WikiCategory wikiCategory) throws IOException {
+    public void initWikiData(WikiCategory wikiCategory) {
         String sourceurl = "http://baike.pcbaby.com.cn/" + wikiCategory.getPath() + ".html";
-        // 下载页面
-        URL url = new URL(sourceurl);
-        Source source = new Source(url);
-        Element element = source.getElementById("Jbaike");
-        int oneCount = 0;
-        for (Element element1 : element.getChildElements()) {
-            String one;
-            WikiCategory oneWikiCategory;
-            if (oneCount % 2 == 1) {
-                one = element1.getChildElements().get(0).getTextExtractor().toString();
-                oneWikiCategory = new WikiCategory(0L, wikiCategory, one, "", "", "", oneCount, false);
-                oneWikiCategory = wikiCategoryRepository.save(oneWikiCategory);
-            } else {
-                int towCount = 0;
-                for (Element element2 : element1.getChildElements()) {
-                    String two = element2.getFirstStartTag("dt").getFirstStartTag("a").getTextExtractor().toString();
-                    WikiCategory twoWikiCategory = new WikiCategory(0L, oneWikiCategory, two, "", "", "", towCount, false);
-                    twoWikiCategory = wikiCategoryRepository.save(twoWikiCategory);
+        try {
+            // 下载页面
+            URL url = new URL(sourceurl);
+            Source source = new Source(url);
+            Element element = source.getElementById("Jbaike");
+            int oneCount = 0;
+            for (Element element1 : element.getChildElements()) {
+                String one;
+                WikiCategory oneWikiCategory = null;
+                if (oneCount % 2 == 1) {
+                    one = element1.getChildElements().get(0).getTextExtractor().toString();
+                    oneWikiCategory = new WikiCategory(0L, wikiCategory, one, "", "", "", oneCount, false);
+                    oneWikiCategory = wikiCategoryRepository.save(oneWikiCategory);
+                } else {
+                    int towCount = 0;
+                    for (Element element2 : element1.getChildElements()) {
+                        String two = element2.getFirstStartTag("dt").getFirstStartTag("a").getTextExtractor().toString();
+                        WikiCategory twoWikiCategory = new WikiCategory(0L, oneWikiCategory, two, "", "", "", towCount, false);
+                        twoWikiCategory = wikiCategoryRepository.save(twoWikiCategory);
 
-                    int threeCount = 0;
-                    List<StartTag> startTags = element2.getFirstStartTag("dd").getAllStartTags("a");
-                    for (StartTag startTag : startTags) {
-                        String three = startTag.getTextExtractor().toString();
-                        String targetUrl = startTag.getAttributeValue("href");
+                        int threeCount = 0;
+                        List<StartTag> startTags = element2.getFirstStartTag("dd").getAllStartTags("a");
+                        for (StartTag startTag : startTags) {
+                            String three = startTag.getTextExtractor().toString();
+                            String targetUrl = startTag.getAttributeValue("href");
 //                        WikiCategory threeBaikeCategory = new WikiCategory(0L, twoWikiCategory, three, "", "", "", threeCount, false);
 //                        threeBaikeCategory = baikeCategoryRepository.save(threeBaikeCategory);
-                        //web url;
-                        spliderWikiDetail(targetUrl, twoWikiCategory);
-                        threeCount++;
+                            //web url;
+                            spliderWikiDetail(targetUrl, twoWikiCategory);
+                            threeCount++;
+                        }
+
+                        towCount++;
                     }
-
-                    towCount++;
                 }
+                oneCount++;
             }
-            oneCount++;
+        } catch (Exception ex) {
+            log.error("get " + sourceurl + " web html ", ex);
         }
-
     }
 
     /**
@@ -581,11 +586,38 @@ public class SpliderServiceImpl implements SpliderService {
      */
     private void spliderWikiDetail(String targetUrl, WikiCategory twoWikiCategory) {
         Source source = new Source(targetUrl);
+
+        String sourceHtml = "";
+        List<Element> elements = source.getAllElements(HTMLElementName.HTML);
+        for (Element element : elements) {
+            sourceHtml = element.getContent().toString();
+        }
+
         Wiki wiki = new Wiki();
         String title = "";
+        String regexitle = "<p class=\"fl\">(.+?)</p>";
+        Pattern p = Pattern.compile(regexitle);
+        Matcher matcher = p.matcher(sourceHtml);
+        while (matcher.find()) {
+            title = matcher.group(1);
+            break;
+        }
         wiki.setTitle(title);
+
+        String catalog = "";
+        Element elementCatalog = source.getElementById("Janchor");
+        catalog = elementCatalog.getChildElements().get(0).getContent().toString();
+        wiki.setCatalog(catalog);
+
         wiki.setCategory(twoWikiCategory);
         String content = "";
+        String regexContent = "<div class=\"mb30 border shadow mt30\">(.+?)</div>";
+        p = Pattern.compile(regexContent);
+        matcher = p.matcher(sourceHtml);
+        while (matcher.find()) {
+            content = matcher.group(1);
+            break;
+        }
         wiki.setContent(content);
         wiki.setSummary(getFilterSummary(content));
         // 获取关键字

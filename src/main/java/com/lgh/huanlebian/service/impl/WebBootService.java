@@ -71,8 +71,7 @@ public class WebBootService implements ApplicationListener<ContextRefreshedEvent
                 systemConfigRepository.save(databaseVession);
             }
 
-//            initKind();
-//            initCategoryKind();
+            initBaikeCategory();
 
             //系统升级
             baseService.systemUpgrade("DatabaseVersion", CommonVersion.class, CommonVersion.Version101, (upgrade) -> {
@@ -86,7 +85,7 @@ public class WebBootService implements ApplicationListener<ContextRefreshedEvent
 
                             initCategoryKind();
 
-                            initBaikeCategory();
+
 
 
                         } catch (Exception e) {
@@ -294,13 +293,13 @@ public class WebBootService implements ApplicationListener<ContextRefreshedEvent
     }
 
 
-    public void initBaikeCategory() throws IOException {
+    public void initBaikeCategory() {
 
         //todo keywords despcrition
         List<WikiCategory> list = new ArrayList<>();
         WikiCategory parentWikiCategory = new WikiCategory(0L, null, "怀孕", CatetoryConstant.huaiyun, "", "", 1, false);
         parentWikiCategory = wikiCategoryRepository.save(parentWikiCategory);
-        list.add(new WikiCategory(0L, parentWikiCategory, "备孕", CatetoryConstant.huaiyun, "", "", 1, true));
+        list.add(new WikiCategory(0L, parentWikiCategory, "备孕", CatetoryConstant.yunqian, "", "", 1, true));
         list.add(new WikiCategory(0L, parentWikiCategory, "孕期", CatetoryConstant.yunqi, "", "", 2, true));
         list.add(new WikiCategory(0L, parentWikiCategory, "分娩", CatetoryConstant.fenmian, "", "", 3, true));
         list.add(new WikiCategory(0L, parentWikiCategory, "月子", CatetoryConstant.yuezi, "", "", 4, true));
