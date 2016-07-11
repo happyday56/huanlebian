@@ -20,6 +20,7 @@ import org.springframework.util.StringUtils;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -78,7 +79,7 @@ public class SpliderServiceImpl implements SpliderService {
     private WikiRepository wikiRepository;
 
     @Transactional
-    @Scheduled(initialDelay = 1000, fixedDelay = 1000 * 1000)
+//    @Scheduled(initialDelay = 1000, fixedDelay = 1000 * 1000)
     public void start() throws Exception {
 
         //1.读取配置文件
@@ -107,7 +108,7 @@ public class SpliderServiceImpl implements SpliderService {
      * @param blogSpliders
      * @param blogFilters
      */
-    private void handleConfigXml(ProjectRoot root, List<News> blogSpliders, List<NewsFilter> blogFilters) {
+    private void handleConfigXml(ProjectRoot root, List<News> blogSpliders, List<NewsFilter> blogFilters) throws InterruptedException {
         log.debug("handle config xml start");
 
         Date uploadTime = new Date(System.currentTimeMillis());
@@ -148,6 +149,8 @@ public class SpliderServiceImpl implements SpliderService {
             Kind kind = kindRepository.findByPath(project.getKind());
             List<Process> processes = project.getProcesses();
             for (String doFinalUrl : listUrl) {
+                Thread.sleep(2 * 1000);
+
                 News news = null;
                 try {
                     news = handleProcesses(doFinalUrl, processes);
@@ -542,30 +545,29 @@ public class SpliderServiceImpl implements SpliderService {
             Source source = new Source(url);
             Element element = source.getElementById("Jbaike");
             int oneCount = 0;
+            WikiCategory oneWikiCategory = null;
             for (Element element1 : element.getChildElements()) {
-                String one;
-                WikiCategory oneWikiCategory = null;
-                if (oneCount % 2 == 1) {
-                    one = element1.getChildElements().get(0).getTextExtractor().toString();
+                if (oneCount % 2 == 0) {
+                    String one = element1.getChildElements().get(0).getTextExtractor().toString();
                     oneWikiCategory = new WikiCategory(0L, wikiCategory, one, "", "", "", oneCount, false);
                     oneWikiCategory = wikiCategoryRepository.save(oneWikiCategory);
                 } else {
                     int towCount = 0;
                     for (Element element2 : element1.getChildElements()) {
-                        String two = element2.getFirstStartTag("dt").getFirstStartTag("a").getTextExtractor().toString();
+                        String two = element2.getFirstStartTag("dt").getElement().getChildElements().get(1).getTextExtractor().toString();
                         WikiCategory twoWikiCategory = new WikiCategory(0L, oneWikiCategory, two, "", "", "", towCount, false);
                         twoWikiCategory = wikiCategoryRepository.save(twoWikiCategory);
 
-                        int threeCount = 0;
-                        List<StartTag> startTags = element2.getFirstStartTag("dd").getAllStartTags("a");
+//                        int threeCount = 0;
+                        List<StartTag> startTags = element2.getFirstStartTag("dd").getElement().getAllStartTags("a");
                         for (StartTag startTag : startTags) {
-                            String three = startTag.getTextExtractor().toString();
+//                            String three = startTag.getTextExtractor().toString();
                             String targetUrl = startTag.getAttributeValue("href");
 //                        WikiCategory threeBaikeCategory = new WikiCategory(0L, twoWikiCategory, three, "", "", "", threeCount, false);
 //                        threeBaikeCategory = baikeCategoryRepository.save(threeBaikeCategory);
                             //web url;
                             spliderWikiDetail(targetUrl, twoWikiCategory);
-                            threeCount++;
+//                            threeCount++;
                         }
 
                         towCount++;
@@ -585,55 +587,61 @@ public class SpliderServiceImpl implements SpliderService {
      * @param twoWikiCategory
      */
     private void spliderWikiDetail(String targetUrl, WikiCategory twoWikiCategory) {
-        Source source = new Source(targetUrl);
 
-        String sourceHtml = "";
-        List<Element> elements = source.getAllElements(HTMLElementName.HTML);
-        for (Element element : elements) {
-            sourceHtml = element.getContent().toString();
-        }
+        try {
+            Thread.sleep(2 * 1000);
+            URL url = new URL(targetUrl);
+            Source source = new Source(url);
 
-        Wiki wiki = new Wiki();
-        String title = "";
-        String regexitle = "<p class=\"fl\">(.+?)</p>";
-        Pattern p = Pattern.compile(regexitle);
-        Matcher matcher = p.matcher(sourceHtml);
-        while (matcher.find()) {
-            title = matcher.group(1);
-            break;
-        }
-        wiki.setTitle(title);
+            String sourceHtml = "";
+            List<Element> elements = source.getAllElements(HTMLElementName.HTML);
+            for (Element element : elements) {
+                sourceHtml = element.getContent().toString();
+            }
 
-        String catalog = "";
-        Element elementCatalog = source.getElementById("Janchor");
-        catalog = elementCatalog.getChildElements().get(0).getContent().toString();
-        wiki.setCatalog(catalog);
+            Wiki wiki = new Wiki();
+            String title = "";
+            String regexitle = "<p class=\"fl\">(.+?)</p>";
+            Pattern p = Pattern.compile(regexitle);
+            Matcher matcher = p.matcher(sourceHtml);
+            while (matcher.find()) {
+                title = matcher.group(1);
+                break;
+            }
+            wiki.setTitle(title);
 
-        wiki.setCategory(twoWikiCategory);
-        String content = "";
-        String regexContent = "<div class=\"mb30 border shadow mt30\">(.+?)</div>";
-        p = Pattern.compile(regexContent);
-        matcher = p.matcher(sourceHtml);
-        while (matcher.find()) {
-            content = matcher.group(1);
-            break;
+            Element elementCatalog = source.getElementById("Janchor");
+            String catalog = elementCatalog.getChildElements().get(0).getContent().toString();
+            wiki.setCatalog(catalog);
+
+            wiki.setCategory(twoWikiCategory);
+            String content = "";
+            String regexContent = "<div class=\"mb30 border shadow mt30\">(.+?)</div>";
+            p = Pattern.compile(regexContent);
+            matcher = p.matcher(sourceHtml);
+            while (matcher.find()) {
+                content = matcher.group(1);
+                break;
+            }
+            wiki.setContent(content);
+            wiki.setSummary(getFilterSummary(content));
+            // 获取关键字
+            List<StartTag> keywords = source.getAllStartTags("name", "keywords", false);
+            for (StartTag tag : keywords) {
+                wiki.setKeywords(tag.getAttributeValue("content"));
+            }
+            // 获取描述
+            List<StartTag> description = source.getAllStartTags("name", "description", false);
+            for (StartTag tag : description) {
+                wiki.setDescription(tag.getAttributeValue("content"));
+            }
+            wiki.setPictureUrl("");
+            wiki.setUploadTime(new Date());
+            wiki.setViews(0L);
+            wikiRepository.save(wiki);
+        } catch (Exception ex) {
+            log.error("handle " + targetUrl, ex);
         }
-        wiki.setContent(content);
-        wiki.setSummary(getFilterSummary(content));
-        // 获取关键字
-        List<StartTag> keywords = source.getAllStartTags("name", "keywords", false);
-        for (StartTag tag : keywords) {
-            wiki.setKeywords(tag.getAttributeValue("content"));
-        }
-        // 获取描述
-        List<StartTag> description = source.getAllStartTags("name", "description", false);
-        for (StartTag tag : description) {
-            wiki.setDescription(tag.getAttributeValue("content"));
-        }
-        wiki.setPictureUrl("");
-        wiki.setUploadTime(new Date());
-        wiki.setViews(0L);
-        wikiRepository.save(wiki);
 
     }
 }
