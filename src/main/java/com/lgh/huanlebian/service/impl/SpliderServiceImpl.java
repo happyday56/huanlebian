@@ -397,7 +397,7 @@ public class SpliderServiceImpl implements SpliderService {
             result.setTitle(processContent);
         else if (field.equals("content")) {
             //内容中有图片进行下载处理
-//            processContent = doContentPicture(processContent);
+            processContent = handleContentPicture(processContent);
             //todo 过滤链接地址
             result.setContent(processContent);
 
