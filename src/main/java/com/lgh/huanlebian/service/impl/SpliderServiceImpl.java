@@ -6,6 +6,7 @@ import com.lgh.huanlebian.model.xml.Process;
 import com.lgh.huanlebian.repository.*;
 import com.lgh.huanlebian.service.*;
 import com.lgh.huanlebian.utils.FileUtil;
+import com.lgh.huanlebian.utils.RegexHelper;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import net.htmlparser.jericho.Source;
@@ -20,16 +21,16 @@ import org.springframework.util.StringUtils;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
+
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLConnection;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 
 /**
  * Created by lenovo on 2015/7/10.
@@ -57,8 +58,6 @@ public class SpliderServiceImpl implements SpliderService {
     @Autowired
     CategoryKindRepository categoryKindRepository;
 
-    @Autowired
-    StaticResourceService staticResourceService;
 
     @Autowired
     CommonConfigService commonConfigService;
@@ -202,9 +201,7 @@ public class SpliderServiceImpl implements SpliderService {
         //1.多个具体网址
         List<Single_Url> multi_url = target.getMulti_url();
         if (multi_url != null) {
-            for (Single_Url single_url : multi_url) {
-                listSourceUrl.add(single_url.getHref());
-            }
+            for (Single_Url single_url : multi_url) listSourceUrl.add(single_url.getHref());
         }
 
 
@@ -242,21 +239,9 @@ public class SpliderServiceImpl implements SpliderService {
                 // 下载页面
                 URL url = new URL(sourceurl);
                 Source source = new Source(url);
-
                 // 获取页面内容
-                String strBody = source.getSource().toString();
-//                List<Element> body = source
-//                        .getAllElements(HTMLElementName.BODY);
-//                for (Element e : body) {
-//                    strBody = e.getContent().toString();
-//                }
-
-                Pattern p = Pattern.compile(target_regex.getValue());
-                Matcher matcher = p.matcher(strBody);
-                while (matcher.find()) {
-                    String m = matcher.group(1);
-                    result.add(root + m);
-                }
+                List<String> targetUrls = RegexHelper.findAll(source.getSource().toString(), target_regex.getValue());
+                for (String targetUrl : targetUrls) result.add(root + targetUrl);
             }
         }
 
@@ -301,11 +286,6 @@ public class SpliderServiceImpl implements SpliderService {
         URL url = new URL(doFinalUrl);
         Source source = new Source(url);
 
-//        List<Element> elements = source.getAllElements(HTMLElementName.HTML);
-//        for (Element element : elements) {
-//            sourceHtml = element.getContent().toString();
-//        }
-
         //处理description和keywords
         // 获取关键字
         List<StartTag> keywords = source.getAllStartTags("name", "keywords", false);
@@ -345,11 +325,7 @@ public class SpliderServiceImpl implements SpliderService {
         //1.以正则方式获取内容
         String regex_filter = process.getProcess_regex_filter();
         if (!StringUtils.isEmpty(regex_filter)) {
-            Pattern p = Pattern.compile(regex_filter);
-            Matcher matcher = p.matcher(sourceHtml);//有缓存从缓存处理
-            if (matcher.find()) {
-                processContent = matcher.group(1);
-            }
+            processContent = RegexHelper.findOne(sourceHtml, regex_filter);
         }
 
         //2.以标签方式获取
@@ -396,10 +372,10 @@ public class SpliderServiceImpl implements SpliderService {
         if (field.equals("title"))
             result.setTitle(processContent);
         else if (field.equals("content")) {
-            //内容中有图片进行下载处理
-            processContent = handleContentPicture(processContent);
-            //todo 过滤链接地址
-            result.setContent(processContent);
+            //内容中有图片进行下载处理  //todo 过滤链接地址
+            processContent = RegexHelper.handlePicture(processContent);
+
+            result.setContent(RegexHelper.removeHref(processContent));
 
             //处理内容的同时处理简介summary
             if (!StringUtils.isEmpty(processContent)) {
@@ -417,7 +393,8 @@ public class SpliderServiceImpl implements SpliderService {
 //                    result.setPictureUrl("");
 //                }
             //下载并处理图片
-            processContent = downloadPicture(processContent);
+            FileUtil fileUtil = new FileUtil();
+            processContent = fileUtil.downloadPicture(processContent);
             result.setPictureUrl(processContent.replace(commonConfigService.getResourcesUri(), ""));
         }
     }
@@ -480,42 +457,6 @@ public class SpliderServiceImpl implements SpliderService {
     }
 
 
-    /**
-     * 下载图片并保存到本地
-     *
-     * @param pictureUrl
-     * @return
-     * @throws IOException
-     * @throws URISyntaxException
-     */
-    private String downloadPicture(String pictureUrl) throws IOException, URISyntaxException {
-        String suffix = "";
-        if (pictureUrl.lastIndexOf(".") >= 0) {
-            suffix = pictureUrl.substring(pictureUrl.lastIndexOf("."));
-        }
-        String newFileName = UUID.randomUUID().toString().replace("-", "") + suffix;
-        String newPath = StaticResourceService.news + "/" + newFileName;
-
-
-        URL url = new URL(pictureUrl);
-        URLConnection urlConnection = url.openConnection();
-        staticResourceService.uploadResource(newPath, urlConnection.getInputStream());
-        return staticResourceService.getResource(newPath).toString();
-    }
-
-
-    private String handleContentPicture(String content) throws IOException, URISyntaxException {
-        Pattern pattern = Pattern.compile("<img.*?src=\"([^\"]*)\"[^>]*>");
-        Matcher matcher = pattern.matcher(content);
-        while (matcher.find()) {
-            String pictureUrl = matcher.group(1);
-            String newPictureUrl = downloadPicture(pictureUrl);
-            content = content.replace(pictureUrl, newPictureUrl);
-        }
-        return content;
-    }
-
-
     @Transactional
     @Scheduled(initialDelay = 1000, fixedDelay = 1000 * 60 * 60 * 24)
     public void handleSlide() {
@@ -558,16 +499,10 @@ public class SpliderServiceImpl implements SpliderService {
                         WikiCategory twoWikiCategory = new WikiCategory(0L, oneWikiCategory, two, "", "", "", towCount, false);
                         twoWikiCategory = wikiCategoryRepository.save(twoWikiCategory);
 
-//                        int threeCount = 0;
                         List<StartTag> startTags = element2.getFirstStartTag("dd").getElement().getAllStartTags("a");
                         for (StartTag startTag : startTags) {
-//                            String three = startTag.getTextExtractor().toString();
                             String targetUrl = startTag.getAttributeValue("href");
-//                        WikiCategory threeBaikeCategory = new WikiCategory(0L, twoWikiCategory, three, "", "", "", threeCount, false);
-//                        threeBaikeCategory = baikeCategoryRepository.save(threeBaikeCategory);
-                            //web url;
                             spliderWikiDetail(targetUrl, twoWikiCategory);
-//                            threeCount++;
                         }
 
                         towCount++;
@@ -600,14 +535,7 @@ public class SpliderServiceImpl implements SpliderService {
             }
 
             Wiki wiki = new Wiki();
-            String title = "";
-            String regexitle = "<p class=\"fl\">(.+?)</p>";
-            Pattern p = Pattern.compile(regexitle);
-            Matcher matcher = p.matcher(sourceHtml);
-            while (matcher.find()) {
-                title = matcher.group(1);
-                break;
-            }
+            String title = RegexHelper.findOne(sourceHtml, "<p class=\"fl\">(.+?)</p>");
             wiki.setTitle(title);
 
             Element elementCatalog = source.getElementById("Janchor");
@@ -615,15 +543,8 @@ public class SpliderServiceImpl implements SpliderService {
             wiki.setCatalog(catalog);
 
             wiki.setCategory(twoWikiCategory);
-            String content = "";
-            String regexContent = "<div class=\"mb30 border shadow mt30\">(.+?)</div>";
-            p = Pattern.compile(regexContent);
-            matcher = p.matcher(sourceHtml);
-            while (matcher.find()) {
-                content = matcher.group(1);
-                break;
-            }
-            wiki.setContent(content);
+            String content = RegexHelper.findOne(sourceHtml, "<div class=\"mb30 border shadow mt30\">(.+?)</div>");
+            wiki.setContent(RegexHelper.removeHref(content));
             wiki.setSummary(getFilterSummary(content));
             // 获取关键字
             List<StartTag> keywords = source.getAllStartTags("name", "keywords", false);
