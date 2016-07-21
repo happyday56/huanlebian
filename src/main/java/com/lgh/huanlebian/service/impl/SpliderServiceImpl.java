@@ -78,7 +78,7 @@ public class SpliderServiceImpl implements SpliderService {
     private WikiRepository wikiRepository;
 
     @Transactional
-//    @Scheduled(initialDelay = 1000, fixedDelay = 1000 * 1000)
+    @Scheduled(initialDelay = 1000, fixedDelay = 1000 * 1000)
     public void start() throws Exception {
 
         //1.读取配置文件
@@ -458,7 +458,7 @@ public class SpliderServiceImpl implements SpliderService {
 
 
     @Transactional
-    @Scheduled(initialDelay = 1000, fixedDelay = 1000 * 60 * 60 * 24)
+//    @Scheduled(initialDelay = 1000, fixedDelay = 1000 * 60 * 60 * 24)
     public void handleSlide() {
         slideRepository.deleteAll();
         log.debug("****enter do slide****");
