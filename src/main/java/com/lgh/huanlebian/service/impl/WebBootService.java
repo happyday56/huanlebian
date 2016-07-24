@@ -85,7 +85,7 @@ public class WebBootService implements ApplicationListener<ContextRefreshedEvent
 
                             initCategoryKind();
 
-                            initBaikeCategory();
+//                            initBaikeCategory();
 
 
                         } catch (Exception e) {

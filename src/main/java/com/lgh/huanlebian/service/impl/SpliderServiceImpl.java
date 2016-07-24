@@ -25,9 +25,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.net.URLConnection;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -77,8 +76,17 @@ public class SpliderServiceImpl implements SpliderService {
     @Autowired
     private WikiRepository wikiRepository;
 
+    @Autowired
+    private StaticResourceService staticResourceService;
+
+    @Autowired
+    private SpiderPictureRepository spiderPictureRepository;
+
+    @Autowired
+    private SpiderUrlRepository spiderUrlRepository;
+
     @Transactional
-    @Scheduled(initialDelay = 1000, fixedDelay = 1000 * 1000)
+    @Scheduled(initialDelay = 120 * 000, fixedDelay = 1000 * 1000)
     public void start() throws Exception {
 
         //1.读取配置文件
@@ -93,11 +101,32 @@ public class SpliderServiceImpl implements SpliderService {
         //2.处理配置文件
         List<News> blogSpliders = new ArrayList<>();
         List<NewsFilter> blogFilters = new ArrayList<>();
-        handleConfigXml(root, blogSpliders, blogFilters);
+        HashMap<String, String> spiderPictures = new HashMap<>();
+        List<String> spiderUrls = new ArrayList<>();
+        handleConfigXml(root, blogSpliders, blogFilters, spiderPictures, spiderUrls);
 
         //3.插入数据
         newsRepository.save(blogSpliders);
         newsFilterRepository.save(blogFilters);
+
+        //4.保存爬虫的图片信息
+        List<SpiderPicture> spiderPictures1 = new ArrayList<>();
+        Iterator iterator = spiderPictures.keySet().iterator();
+        while (iterator.hasNext()) {
+            SpiderPicture spiderPicture = new SpiderPicture();
+            spiderPicture.setFromUrl(iterator.next().toString());
+            spiderPicture.setPictureUrl(spiderPictures.get(iterator.next()));
+            spiderPicture.setTime(new Date());
+            spiderPictures1.add(spiderPicture);
+        }
+        spiderPictureRepository.save(spiderPictures1);
+
+        //5.保存爬虫的网址
+        List<SpiderUrl> spiderUrls1 = new ArrayList<>();
+        for (String url : spiderUrls) {
+            spiderUrls1.add(new SpiderUrl(url, new Date()));
+        }
+        spiderUrlRepository.save(spiderUrls1);
     }
 
     /**
@@ -107,7 +136,8 @@ public class SpliderServiceImpl implements SpliderService {
      * @param blogSpliders
      * @param blogFilters
      */
-    private void handleConfigXml(ProjectRoot root, List<News> blogSpliders, List<NewsFilter> blogFilters) throws InterruptedException {
+    private void handleConfigXml(ProjectRoot root, List<News> blogSpliders, List<NewsFilter> blogFilters
+            , HashMap<String, String> spiderPictures, List<String> listUrl) throws InterruptedException {
         log.debug("handle config xml start");
 
         Date uploadTime = new Date(System.currentTimeMillis());
@@ -121,7 +151,7 @@ public class SpliderServiceImpl implements SpliderService {
 
         for (Project project : listProject) {
             //判断项目是否开启
-            if (!project.getEnabled()) {
+            if (!project.isEnabled()) {
                 log.error("project " + project.getName() + " no enabled");
                 continue;
             }
@@ -133,7 +163,7 @@ public class SpliderServiceImpl implements SpliderService {
 
             log.info(project.getName() + " start handleTarget....");
             // 获取项目处理目标，分析后，返回需要处理的具体页面
-            List<String> listUrl = new ArrayList<>();
+
             try {
                 listUrl = handleTarget(project.getTarget());
             } catch (Exception exp) {
@@ -152,7 +182,7 @@ public class SpliderServiceImpl implements SpliderService {
 
                 News news = null;
                 try {
-                    news = handleProcesses(doFinalUrl, processes);
+                    news = handleProcesses(doFinalUrl, processes, spiderPictures);
                 } catch (Exception exp) {
                     log.error("web url:" + listUrl, exp);
                     errorCount++;
@@ -173,6 +203,7 @@ public class SpliderServiceImpl implements SpliderService {
                     news.setKind(kind);
                     news.setUploadTime(uploadTime);
                     news.setViews(0L);
+                    news.setPictureUrl(getNewsPictureUrl(news.getContent()));
                     blogSpliders.add(news);
 
                     NewsFilter blogFilter = new NewsFilter(news.getTitle());
@@ -186,6 +217,11 @@ public class SpliderServiceImpl implements SpliderService {
 
 
         log.info("total：" + totalCount + " success：" + blogSpliders.size() + " error：" + errorCount + " repeat：" + repeatCount);
+    }
+
+    private String getNewsPictureUrl(String text) {
+        String url = RegexHelper.findOne(text, "<img.*?src=\"([^\"]*)\"[^>]*>");
+        return url.replace(commonConfigService.getResourcesUri(), "");
     }
 
     /**
@@ -280,7 +316,8 @@ public class SpliderServiceImpl implements SpliderService {
      * @throws IOException
      */
 
-    private News handleProcesses(String doFinalUrl, List<Process> listProcess) throws IOException, URISyntaxException {
+    private News handleProcesses(String doFinalUrl, List<Process> listProcess
+            , HashMap<String, String> spiderPictures) throws IOException, URISyntaxException {
         News result = new News();
 
         URL url = new URL(doFinalUrl);
@@ -299,25 +336,27 @@ public class SpliderServiceImpl implements SpliderService {
         }
 
         for (Process process : listProcess) {
-            handleProcess(source, process, result);
+            handleProcess(doFinalUrl, source, process, result, spiderPictures);
         }
 
         return result;
     }
 
     /**
-     * 处理单个process 一个process对应的一个字段 （标题 内容 图片）
+     * 处理单个process 一个process对应的一个字段 （单个文章的标题 内容 图片）
      * 步骤:
      * 1.以正则方式获取内容
      * 2.以标签方式获取
      * 3.对以1或2方式获取的内容进行过滤
      * 4.把处理内容保存到实体中
      *
+     * @param webUrl  请求的网址
      * @param source
      * @param process
      * @param result
      */
-    private void handleProcess(Source source, Process process, News result) throws IOException, URISyntaxException {
+    private void handleProcess(String webUrl, Source source, Process process, News result
+            , HashMap<String, String> spiderPictures) throws IOException, URISyntaxException {
         String sourceHtml = source.getSource().toString();
         //处理后的内容
         String processContent = "";
@@ -372,8 +411,13 @@ public class SpliderServiceImpl implements SpliderService {
         if (field.equals("title"))
             result.setTitle(processContent);
         else if (field.equals("content")) {
-            //内容中有图片进行下载处理  //todo 过滤链接地址
-            processContent = RegexHelper.handlePicture(processContent);
+            //内容中有图片进行下载处理
+            if (webUrl.lastIndexOf("pcbaby.com.cn") >= 0) {
+                processContent = processContent.replace("src=\"http://www1.pcbaby.com.cn/images/blank.gif\"", "");
+                processContent = processContent.replace("#src=\"", "src=\"");
+            }
+
+            processContent = handlePicture(processContent, spiderPictures);
 
             result.setContent(RegexHelper.removeHref(processContent));
 
@@ -383,7 +427,7 @@ public class SpliderServiceImpl implements SpliderService {
                 if (StringUtils.isEmpty(processSummary)) processSummary = result.getTitle();
                 result.setSummary(processSummary);
             }
-        } else if (field.equals("pictureUrl")) {
+//        } else if (field.equals("pictureUrl")) {
             //                //此内容会被下面的pictureUrl覆盖
 //                StartTag startTag = sourceSummary.getFirstStartTag("img");
 //                if (startTag != null) {
@@ -393,10 +437,67 @@ public class SpliderServiceImpl implements SpliderService {
 //                    result.setPictureUrl("");
 //                }
             //下载并处理图片
-            FileUtil fileUtil = new FileUtil();
-            processContent = fileUtil.downloadPicture(processContent);
-            result.setPictureUrl(processContent.replace(commonConfigService.getResourcesUri(), ""));
+//            processContent = downloadPicture(processContent);
+//            result.setPictureUrl(processContent.replace(commonConfigService.getResourcesUri(), ""));
         }
+    }
+
+
+    /**
+     * 正则方式处理图片地址,并下载到指定服务器
+     *
+     * @param text
+     * @return
+     * @throws IOException
+     * @throws URISyntaxException
+     */
+    public String handlePicture(String text, HashMap<String, String> spiderPictures) throws IOException, URISyntaxException {
+        List<String> list = RegexHelper.findAll(text, "<img.*?src=\"([^\"]*)\"[^>]*>");
+        for (String pictureUrl : list) {
+            if (!StringUtils.isEmpty(pictureUrl)) {
+                String newPictureUrl;
+                String findPicture = spiderPictures.get(pictureUrl);
+                if (!StringUtils.isEmpty(findPicture)) {
+                    newPictureUrl = findPicture;
+                } else {
+                    //数据库中查找
+                    SpiderPicture spiderPicture = spiderPictureRepository.findOne(pictureUrl);
+                    if (spiderPicture != null)
+                        newPictureUrl = spiderPicture.getPictureUrl();
+                    else {
+                        newPictureUrl = downloadPicture(pictureUrl);
+                        spiderPictures.put(pictureUrl, newPictureUrl);
+                    }
+                }
+
+                text = text.replace(pictureUrl, newPictureUrl);
+            }
+        }
+        return text;
+    }
+
+
+    /**
+     * 下载图片并保存到本地
+     *
+     * @param pictureUrl 图片地址
+     * @return
+     * @throws IOException
+     * @throws URISyntaxException
+     */
+    public String downloadPicture(String pictureUrl) throws IOException, URISyntaxException {
+        String suffix = "";
+        if (pictureUrl.lastIndexOf(".") >= 0) {
+            suffix = pictureUrl.substring(pictureUrl.lastIndexOf("."));
+        }
+        String newFileName = UUID.randomUUID().toString().replace("-", "") + suffix;
+        String newPath = StaticResourceService.news + "/" + newFileName;
+
+
+        URL url = new URL(pictureUrl);
+        URLConnection urlConnection = url.openConnection();
+        staticResourceService.uploadResource(newPath, urlConnection.getInputStream());
+        return staticResourceService.getResource(newPath).toString();
     }
 
     /**

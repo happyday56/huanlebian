@@ -8,6 +8,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -19,10 +20,6 @@ import java.util.UUID;
  * xml文件处理
  */
 public class FileUtil {
-
-
-    @Autowired
-    private StaticResourceService staticResourceService;
 
     /**
      * xml to bean
@@ -58,26 +55,5 @@ public class FileUtil {
     }
 
 
-    /**
-     * 下载图片并保存到本地
-     *
-     * @param pictureUrl
-     * @return
-     * @throws IOException
-     * @throws URISyntaxException
-     */
-    public String downloadPicture(String pictureUrl) throws IOException, URISyntaxException {
-        String suffix = "";
-        if (pictureUrl.lastIndexOf(".") >= 0) {
-            suffix = pictureUrl.substring(pictureUrl.lastIndexOf("."));
-        }
-        String newFileName = UUID.randomUUID().toString().replace("-", "") + suffix;
-        String newPath = StaticResourceService.news + "/" + newFileName;
 
-
-        URL url = new URL(pictureUrl);
-        URLConnection urlConnection = url.openConnection();
-        staticResourceService.uploadResource(newPath, urlConnection.getInputStream());
-        return staticResourceService.getResource(newPath).toString();
-    }
 }

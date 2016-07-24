@@ -14,6 +14,10 @@ public class Project {
      * 是否启用 false不启用 暂时不处理这个
      */
     private boolean enabled;
+    /**
+     * 爬虫的域名
+     */
+    private String domain;
 
     /**
      * 所属分类 必要的 插入数据库时使用
@@ -39,13 +43,23 @@ public class Project {
     private List<Process> processes;
 
 
-    public boolean getEnabled() {
+    public boolean isEnabled() {
         return enabled;
     }
 
     @XmlAttribute(name = "enabled")
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+
+    public String getDomain() {
+        return domain;
+    }
+
+    @XmlAttribute(name = "domain")
+    public void setDomain(String domain) {
+        this.domain = domain;
     }
 
     public String getCategory() {

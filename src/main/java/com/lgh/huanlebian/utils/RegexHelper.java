@@ -14,7 +14,7 @@ public class RegexHelper {
 
     private static String REGEX_HREF = "<a.*?href=\"(?<url>.+?)\".*?>(?<content>.+?)</a>";
 
-    private static String REGEX_PICTURE = "<img.*?src=\"([^\"]*)\"[^>]*>";
+
 
     /**
      * 移除超链接
@@ -66,20 +66,5 @@ public class RegexHelper {
         return result;
     }
 
-    /**
-     * 正则方式处理图片地址,并下载到指定服务器
-     *
-     * @param text
-     * @return
-     * @throws IOException
-     * @throws URISyntaxException
-     */
-    public static String handlePicture(String text) throws IOException, URISyntaxException {
-        FileUtil fileUtil = new FileUtil();
-        List<String> list = RegexHelper.findAll(text, REGEX_PICTURE);
-        for (String pictureUrl : list) {
-            text = text.replace(pictureUrl, fileUtil.downloadPicture(pictureUrl));
-        }
-        return text;
-    }
+
 }
