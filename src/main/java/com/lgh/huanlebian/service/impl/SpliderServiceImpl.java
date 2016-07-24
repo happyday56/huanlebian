@@ -111,11 +111,12 @@ public class SpliderServiceImpl implements SpliderService {
 
         //4.保存爬虫的图片信息
         List<SpiderPicture> spiderPictures1 = new ArrayList<>();
-        Iterator iterator = spiderPictures.keySet().iterator();
+        Iterator iterator = spiderPictures.entrySet().iterator();
         while (iterator.hasNext()) {
+            Map.Entry entry = (Map.Entry) iterator.next();
             SpiderPicture spiderPicture = new SpiderPicture();
-            spiderPicture.setFromUrl(iterator.next().toString());
-            spiderPicture.setPictureUrl(spiderPictures.get(iterator.next()));
+            spiderPicture.setFromUrl(entry.getKey().toString());
+            spiderPicture.setPictureUrl(entry.getValue().toString());
             spiderPicture.setTime(new Date());
             spiderPictures1.add(spiderPicture);
         }
@@ -137,7 +138,7 @@ public class SpliderServiceImpl implements SpliderService {
      * @param blogFilters
      */
     private void handleConfigXml(ProjectRoot root, List<News> blogSpliders, List<NewsFilter> blogFilters
-            , HashMap<String, String> spiderPictures, List<String> listUrl) throws InterruptedException {
+            , HashMap<String, String> spiderPictures, List<String> spiderUrls) throws InterruptedException {
         log.debug("handle config xml start");
 
         Date uploadTime = new Date(System.currentTimeMillis());
@@ -163,7 +164,7 @@ public class SpliderServiceImpl implements SpliderService {
 
             log.info(project.getName() + " start handleTarget....");
             // 获取项目处理目标，分析后，返回需要处理的具体页面
-
+            List<String> listUrl;
             try {
                 listUrl = handleTarget(project.getTarget());
             } catch (Exception exp) {
@@ -212,6 +213,9 @@ public class SpliderServiceImpl implements SpliderService {
                     listTitles.add(news.getTitle());
                 }
             }
+
+            spiderUrls.addAll(listUrl);
+
             log.info("project " + project.getName() + " finined");
         }
 

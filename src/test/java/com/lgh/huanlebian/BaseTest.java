@@ -5,6 +5,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,4 +32,17 @@ public class BaseTest {
 //        text = RegexHelper.removeHref(text);
 //        log.info(text);
     }
+
+    @Test
+    public void testList() {
+        List<String> list = new ArrayList<>();
+        addList(list);
+        System.out.print("list size :" + list.size());
+
+    }
+
+    public void addList(List<String> list) {
+        list.add("a");
+    }
+
 }

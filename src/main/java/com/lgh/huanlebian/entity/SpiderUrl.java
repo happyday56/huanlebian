@@ -23,7 +23,7 @@ public class SpiderUrl {
      * 爬虫的网址
      */
     @Id
-    @Column(length = 500)
+    @Column(length = 255)
     private String fromUrl;
 
     /**
