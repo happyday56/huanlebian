@@ -163,29 +163,39 @@ public class SpliderServiceImpl implements SpliderService {
             }
 
             log.info(project.getName() + " start handleTarget....");
+
+            List<String> listFinalUrl = new ArrayList<>();
             // 获取项目处理目标，分析后，返回需要处理的具体页面
-            List<String> listUrl;
             try {
-                listUrl = handleTarget(project.getTarget());
+                List<String> listUrl = handleTarget(project.getTarget());
+                //过滤重复的，及以前访问过的
+                for (String doFinalUrl : listUrl) {
+                    if (!spiderUrls.contains(doFinalUrl) && spiderUrlRepository.findOne(doFinalUrl) == null) {
+                        listFinalUrl.add(doFinalUrl);
+                    }
+                }
             } catch (Exception exp) {
                 log.error("handleTarget error " + exp.getMessage());
                 continue;
             }
-            totalCount += listUrl.size();
+
+
+            totalCount += listFinalUrl.size();
 
             log.info("start web page");
 
             Category category = categoryRepository.findByPath(project.getCategory());
             Kind kind = kindRepository.findByPath(project.getKind());
             List<Process> processes = project.getProcesses();
-            for (String doFinalUrl : listUrl) {
+            for (String doFinalUrl : listFinalUrl) {
+
                 Thread.sleep(2 * 1000);
 
                 News news = null;
                 try {
                     news = handleProcesses(doFinalUrl, processes, spiderPictures);
                 } catch (Exception exp) {
-                    log.error("web url:" + listUrl, exp);
+                    log.error("web url:" + doFinalUrl, exp);
                     errorCount++;
                 }
 
@@ -214,7 +224,7 @@ public class SpliderServiceImpl implements SpliderService {
                 }
             }
 
-            spiderUrls.addAll(listUrl);
+            spiderUrls.addAll(listFinalUrl);
 
             log.info("project " + project.getName() + " finined");
         }
