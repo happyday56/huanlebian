@@ -479,29 +479,30 @@ public class SpliderServiceImpl implements SpliderService {
                 String md5 = DigestUtils.md2Hex(IOUtils.toByteArray(inputStream));
 
 
-                SpiderPicture spiderPicture1;
-                SpiderPicture findPicture = spiderPictures.get(md5);
-                if (findPicture!=null) {
-                    spiderPicture1 = findPicture;
+                SpiderPicture newSpiderPicture;
+                SpiderPicture findSpiderPicture = spiderPictures.get(md5);
+                if (findSpiderPicture != null) {
+                    newSpiderPicture = findSpiderPicture;
                 } else {
                     //数据库中查找
                     SpiderPicture spiderPicture = spiderPictureRepository.findOne(md5);
                     if (spiderPicture != null)
-                        spiderPicture1 = spiderPicture;
+                        newSpiderPicture = spiderPicture;
                     else {
-                      String   newSpiderPictureUrl = downloadPicture(pictureUrl, inputStream);
+                        String newSpiderPictureUrl = downloadPicture(pictureUrl, inputStream);
 
-                        SpiderPicture spiderPicture = new SpiderPicture();
-            spiderPicture.setMd5();
-            spiderPicture.setFromUrl(entry.getKey().toString());
-            spiderPicture.setPictureUrl(.toString());
-            spiderPicture.setTime(new Date());
+                        spiderPicture = new SpiderPicture();
+                        spiderPicture.setMd5(md5);
+                        spiderPicture.setFromUrl(pictureUrl);
+                        spiderPicture.setPictureUrl(newSpiderPictureUrl);
+                        spiderPicture.setTime(new Date());
+                        spiderPictures.put(md5, spiderPicture);
 
-                        spiderPictures.put(md5, spiderPicture1);
+                        newSpiderPicture = spiderPicture;
                     }
                 }
 
-                text = text.replace(pictureUrl, spiderPicture1);
+                text = text.replace(pictureUrl, newSpiderPicture.getPictureUrl());
             }
         }
         return text;
