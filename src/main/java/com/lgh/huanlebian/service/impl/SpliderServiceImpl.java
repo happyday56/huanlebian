@@ -11,6 +11,8 @@ import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.HTMLElementName;
 import net.htmlparser.jericho.Source;
 import net.htmlparser.jericho.StartTag;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,7 @@ import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
 
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 
@@ -101,7 +104,7 @@ public class SpliderServiceImpl implements SpliderService {
         //2.处理配置文件
         List<News> blogSpliders = new ArrayList<>();
         List<NewsFilter> blogFilters = new ArrayList<>();
-        HashMap<String, String> spiderPictures = new HashMap<>();
+        HashMap<String, SpiderPicture> spiderPictures = new HashMap<>();
         List<String> spiderUrls = new ArrayList<>();
         handleConfigXml(root, blogSpliders, blogFilters, spiderPictures, spiderUrls);
 
@@ -114,11 +117,12 @@ public class SpliderServiceImpl implements SpliderService {
         Iterator iterator = spiderPictures.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry entry = (Map.Entry) iterator.next();
-            SpiderPicture spiderPicture = new SpiderPicture();
-            spiderPicture.setFromUrl(entry.getKey().toString());
-            spiderPicture.setPictureUrl(entry.getValue().toString());
-            spiderPicture.setTime(new Date());
-            spiderPictures1.add(spiderPicture);
+//            SpiderPicture spiderPicture = new SpiderPicture();
+//            spiderPicture.setMd5();
+//            spiderPicture.setFromUrl(entry.getKey().toString());
+//            spiderPicture.setPictureUrl(.toString());
+//            spiderPicture.setTime(new Date());
+            spiderPictures1.add((SpiderPicture) entry.getValue());
         }
         spiderPictureRepository.save(spiderPictures1);
 
@@ -138,7 +142,7 @@ public class SpliderServiceImpl implements SpliderService {
      * @param blogFilters
      */
     private void handleConfigXml(ProjectRoot root, List<News> blogSpliders, List<NewsFilter> blogFilters
-            , HashMap<String, String> spiderPictures, List<String> spiderUrls) throws InterruptedException {
+            , HashMap<String, SpiderPicture> spiderPictures, List<String> spiderUrls) throws InterruptedException {
         log.debug("handle config xml start");
 
         Date uploadTime = new Date(System.currentTimeMillis());
@@ -331,7 +335,7 @@ public class SpliderServiceImpl implements SpliderService {
      */
 
     private News handleProcesses(String doFinalUrl, List<Process> listProcess
-            , HashMap<String, String> spiderPictures) throws IOException, URISyntaxException {
+            , HashMap<String, SpiderPicture> spiderPictures) throws IOException, URISyntaxException {
         News result = new News();
 
         URL url = new URL(doFinalUrl);
@@ -370,7 +374,7 @@ public class SpliderServiceImpl implements SpliderService {
      * @param result
      */
     private void handleProcess(String webUrl, Source source, Process process, News result
-            , HashMap<String, String> spiderPictures) throws IOException, URISyntaxException {
+            , HashMap<String, SpiderPicture> spiderPictures) throws IOException, URISyntaxException {
         String sourceHtml = source.getSource().toString();
         //处理后的内容
         String processContent = "";
@@ -465,26 +469,39 @@ public class SpliderServiceImpl implements SpliderService {
      * @throws IOException
      * @throws URISyntaxException
      */
-    public String handlePicture(String text, HashMap<String, String> spiderPictures) throws IOException, URISyntaxException {
+    public String handlePicture(String text, HashMap<String, SpiderPicture> spiderPictures) throws IOException, URISyntaxException {
         List<String> list = RegexHelper.findAll(text, "<img.*?src=\"([^\"]*)\"[^>]*>");
         for (String pictureUrl : list) {
             if (!StringUtils.isEmpty(pictureUrl)) {
-                String newPictureUrl;
-                String findPicture = spiderPictures.get(pictureUrl);
-                if (!StringUtils.isEmpty(findPicture)) {
-                    newPictureUrl = findPicture;
+                URL url = new URL(pictureUrl);
+                URLConnection urlConnection = url.openConnection();
+                InputStream inputStream = urlConnection.getInputStream();
+                String md5 = DigestUtils.md2Hex(IOUtils.toByteArray(inputStream));
+
+
+                SpiderPicture spiderPicture1;
+                SpiderPicture findPicture = spiderPictures.get(md5);
+                if (findPicture!=null) {
+                    spiderPicture1 = findPicture;
                 } else {
                     //数据库中查找
-                    SpiderPicture spiderPicture = spiderPictureRepository.findOne(pictureUrl);
+                    SpiderPicture spiderPicture = spiderPictureRepository.findOne(md5);
                     if (spiderPicture != null)
-                        newPictureUrl = spiderPicture.getPictureUrl();
+                        spiderPicture1 = spiderPicture;
                     else {
-                        newPictureUrl = downloadPicture(pictureUrl);
-                        spiderPictures.put(pictureUrl, newPictureUrl);
+                      String   newSpiderPictureUrl = downloadPicture(pictureUrl, inputStream);
+
+                        SpiderPicture spiderPicture = new SpiderPicture();
+            spiderPicture.setMd5();
+            spiderPicture.setFromUrl(entry.getKey().toString());
+            spiderPicture.setPictureUrl(.toString());
+            spiderPicture.setTime(new Date());
+
+                        spiderPictures.put(md5, spiderPicture1);
                     }
                 }
 
-                text = text.replace(pictureUrl, newPictureUrl);
+                text = text.replace(pictureUrl, spiderPicture1);
             }
         }
         return text;
@@ -499,7 +516,7 @@ public class SpliderServiceImpl implements SpliderService {
      * @throws IOException
      * @throws URISyntaxException
      */
-    public String downloadPicture(String pictureUrl) throws IOException, URISyntaxException {
+    public String downloadPicture(String pictureUrl, InputStream inputStream) throws IOException, URISyntaxException {
         String suffix = "";
         if (pictureUrl.lastIndexOf(".") >= 0) {
             suffix = pictureUrl.substring(pictureUrl.lastIndexOf("."));
@@ -508,9 +525,7 @@ public class SpliderServiceImpl implements SpliderService {
         String newPath = StaticResourceService.news + "/" + newFileName;
 
 
-        URL url = new URL(pictureUrl);
-        URLConnection urlConnection = url.openConnection();
-        staticResourceService.uploadResource(newPath, urlConnection.getInputStream());
+        staticResourceService.uploadResource(newPath, inputStream);
         return staticResourceService.getResource(newPath).toString();
     }
 

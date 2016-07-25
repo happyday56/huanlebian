@@ -38,6 +38,7 @@ public class BaseTest {
         List<String> list = new ArrayList<>();
         addList(list);
         System.out.print("list size :" + list.size());
+        System.out.println(list.contains("a"));
 
     }
 
