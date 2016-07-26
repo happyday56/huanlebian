@@ -71,7 +71,7 @@ public class WebBootService implements ApplicationListener<ContextRefreshedEvent
                 systemConfigRepository.save(databaseVession);
             }
 
-
+            initBaikeCategory();
 
             //系统升级
             baseService.systemUpgrade("DatabaseVersion", CommonVersion.class, CommonVersion.Version101, (upgrade) -> {
@@ -84,9 +84,6 @@ public class WebBootService implements ApplicationListener<ContextRefreshedEvent
                             initKind();
 
                             initCategoryKind();
-
-//                            initBaikeCategory();
-
 
                         } catch (Exception e) {
                             log.info("upgrade to " + CommonVersion.Version101.ordinal() + " error", e);

@@ -1,5 +1,7 @@
 package com.lgh.huanlebian.utils;
 
+import org.springframework.util.StringUtils;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -23,11 +25,13 @@ public class RegexHelper {
      * @return
      */
     public static String removeHref(String text) {
-        Pattern pattern = Pattern.compile(REGEX_HREF);
-        Matcher matcher = pattern.matcher(text);
-        while (matcher.find()) {
-            String content = matcher.group("content");
-            text = text.replace(matcher.group(), content);
+        if(!StringUtils.isEmpty(text)) {
+            Pattern pattern = Pattern.compile(REGEX_HREF);
+            Matcher matcher = pattern.matcher(text);
+            while (matcher.find()) {
+                String content = matcher.group("content");
+                text = text.replace(matcher.group(), content);
+            }
         }
         return text;
     }
