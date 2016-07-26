@@ -21,10 +21,12 @@ import java.util.Date;
 @NoArgsConstructor
 public class SpiderPicture{
 
+    @Id
+    @Column(length = 32)
+    private String md5;
     /**
      * 爬虫的网址
      */
-    @Id
     @Column(length = 255)
     private String fromUrl;
 

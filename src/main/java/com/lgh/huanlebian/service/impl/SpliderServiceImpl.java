@@ -21,10 +21,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 
@@ -476,7 +481,17 @@ public class SpliderServiceImpl implements SpliderService {
                 URL url = new URL(pictureUrl);
                 URLConnection urlConnection = url.openConnection();
                 InputStream inputStream = urlConnection.getInputStream();
-                String md5 = DigestUtils.md2Hex(IOUtils.toByteArray(inputStream));
+
+                //读取文件到输出流中 方便第二次流操作
+                ByteArrayOutputStream byteArrayInputStream = new ByteArrayOutputStream();
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = inputStream.read(buffer)) != -1) {
+                    byteArrayInputStream.write(buffer, 0, length);
+                }
+                inputStream.close();
+
+                String md5 = DigestUtils.md5Hex(byteArrayInputStream.toByteArray());
 
 
                 SpiderPicture newSpiderPicture;
@@ -489,7 +504,9 @@ public class SpliderServiceImpl implements SpliderService {
                     if (spiderPicture != null)
                         newSpiderPicture = spiderPicture;
                     else {
-                        String newSpiderPictureUrl = downloadPicture(pictureUrl, inputStream);
+
+                        InputStream inputStream1 = new ByteArrayInputStream(byteArrayInputStream.toByteArray());
+                        String newSpiderPictureUrl = downloadPicture(pictureUrl, inputStream1);
 
                         spiderPicture = new SpiderPicture();
                         spiderPicture.setMd5(md5);
