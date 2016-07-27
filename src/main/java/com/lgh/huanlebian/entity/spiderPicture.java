@@ -10,7 +10,6 @@ import java.util.Date;
 
 
 /**
- *
  * 爬虫的图片
  * Created by Administrator on 2016/7/24.
  */
@@ -19,15 +18,16 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SpiderPicture{
+public class SpiderPicture {
 
     @Id
     @Column(length = 32)
     private String md5;
+
     /**
      * 爬虫的网址
      */
-    @Column(length = 255)
+    @Column(length = 500)
     private String fromUrl;
 
     /**

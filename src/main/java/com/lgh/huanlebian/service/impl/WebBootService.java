@@ -71,7 +71,7 @@ public class WebBootService implements ApplicationListener<ContextRefreshedEvent
                 systemConfigRepository.save(databaseVession);
             }
 
-            initBaikeCategory();
+//            initBaikeCategory();
 
             //系统升级
             baseService.systemUpgrade("DatabaseVersion", CommonVersion.class, CommonVersion.Version101, (upgrade) -> {

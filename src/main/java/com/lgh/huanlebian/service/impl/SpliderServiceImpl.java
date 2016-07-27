@@ -606,7 +606,7 @@ public class SpliderServiceImpl implements SpliderService {
 
 
     @Transactional
-//    @Scheduled(initialDelay = 1000, fixedDelay = 1000 * 60 * 60 * 24)
+   @Scheduled(initialDelay = 1000, fixedDelay = 1000 * 60 * 60 * 24)
     public void handleSlide() {
         slideRepository.deleteAll();
         log.debug("****enter do slide****");
