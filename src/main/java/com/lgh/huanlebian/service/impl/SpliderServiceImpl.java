@@ -94,7 +94,9 @@ public class SpliderServiceImpl implements SpliderService {
     private SpiderUrlRepository spiderUrlRepository;
 
     @Transactional
-//    @Scheduled(initialDelay = 120 * 000, fixedDelay = 1000 * 1000)
+    @Scheduled(cron = "0 0 9 * * ?")
+    @Scheduled(cron = "0 0 13 * * ?")
+    @Scheduled(cron = "0 0 18 * * ?")
     public void start() throws Exception {
 
         //1.读取配置文件
@@ -606,7 +608,7 @@ public class SpliderServiceImpl implements SpliderService {
 
 
     @Transactional
-   @Scheduled(initialDelay = 1000, fixedDelay = 1000 * 60 * 60 * 24)
+    @Scheduled(cron = "0 0 1 * * ?") //0 0 1 * * MON
     public void handleSlide() {
         slideRepository.deleteAll();
         log.debug("****enter do slide****");
