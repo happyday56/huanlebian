@@ -94,7 +94,7 @@ public class SpliderServiceImpl implements SpliderService {
     private SpiderUrlRepository spiderUrlRepository;
 
     @Transactional
-    @Scheduled(initialDelay = 120 * 000, fixedDelay = 1000 * 1000)
+//    @Scheduled(initialDelay = 120 * 000, fixedDelay = 1000 * 1000)
     public void start() throws Exception {
 
         //1.读取配置文件
