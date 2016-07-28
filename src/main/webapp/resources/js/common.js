@@ -1,7 +1,7 @@
 //定义加入收藏夹函数
 function addFav() {
     var siteUrl = 'http://www.huanlebian.com';
-    var siteName = '育儿知识大全_欢乐变亲子网';
+    var siteName = '育儿知识大全_欢乐变';
     if (document.all) {
         window.external.AddFavorite(siteName, siteUrl);
     } else if (window.sidebar) {
