@@ -44,7 +44,8 @@ public class NewsServiceImpl implements NewsService {
 
     @Autowired
     StaticResourceService  staticResourceService;
-
+    @Autowired
+    private WebService webService;
 
     public List<News> getTopByCategoryOrderById(Category category, Integer top) {
         List<News> result = new ArrayList<>();
@@ -57,7 +58,7 @@ public class NewsServiceImpl implements NewsService {
         else {
             hql.append(" where news.category=:category");
         }
-        hql.append(" order by news.id");
+        hql.append(" order by news.id desc");
 
         Query query = entityManager.createQuery(hql.toString());
         query.setParameter("category", category);
@@ -138,7 +139,7 @@ public class NewsServiceImpl implements NewsService {
         webNewsModel.setKeywords(news.getKeywords());
         webNewsModel.setContent(news.getContent());
         webNewsModel.setId(news.getId());
-        webNewsModel.setPictureUrl(staticResourceService.getResource(news.getPictureUrl()).toString());
+        webNewsModel.setPictureUrl(webService.handlePicture(news.getPictureUrl()).toString());
         webNewsModel.setSummary(news.getSummary());
         webNewsModel.setUploadTime(news.getUploadTime());
         webNewsModel.setViews(news.getViews());

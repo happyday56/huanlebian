@@ -9,6 +9,7 @@ import com.lgh.huanlebian.service.NewsService;
 import com.lgh.huanlebian.service.SlideService;
 import com.lgh.huanlebian.service.StaticResourceService;
 import com.lgh.huanlebian.service.URIService;
+import com.lgh.huanlebian.service.impl.WebService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,9 @@ public class IndexController {
     @Autowired
     private NewsService newsService;
 
+    @Autowired
+    private WebService webService;
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(Model model) throws URISyntaxException {
         WebIndexPageModel webIndexPageModel = new WebIndexPageModel();
@@ -71,7 +75,7 @@ public class IndexController {
         List<Slide> slides = slideService.findTopSlideList(null, 5);
         for (Slide slide : slides) {
             webSlideListSummaryModels.add(new WebSlideListSummaryModel(slide.getTitle()
-                    , staticResourceService.getResource(slide.getImageUrl()).toString()
+                    , webService.handlePicture(slide.getImageUrl())
                     , slide.getUrl(), slide.getSummary()));
         }
         webIndexPageModel.setSlideList(webSlideListSummaryModels);
@@ -86,11 +90,7 @@ public class IndexController {
             List<WebNewsListModel> webNewsListModels = new ArrayList<>();
             final int[] count = {0};
             newses.forEach(x -> {
-                String imageUrl = "";
-                try {
-                    imageUrl = staticResourceService.getResource(x.getPictureUrl()).toString();
-                } catch (URISyntaxException e) {
-                }
+                String imageUrl = webService.handlePicture(x.getPictureUrl());
 
                 if (count[0] == 0) {
                     webIndexContentListModel.setTitle(x.getTitle());

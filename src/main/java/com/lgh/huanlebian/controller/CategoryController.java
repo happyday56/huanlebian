@@ -2,17 +2,25 @@ package com.lgh.huanlebian.controller;
 
 import com.lgh.huanlebian.entity.Category;
 import com.lgh.huanlebian.entity.CategoryKind;
+import com.lgh.huanlebian.entity.Kind;
 import com.lgh.huanlebian.entity.News;
 import com.lgh.huanlebian.entity.Slide;
+import com.lgh.huanlebian.entity.pk.CategoryKindPK;
 import com.lgh.huanlebian.model.*;
 import com.lgh.huanlebian.repository.CategoryKindRepository;
 import com.lgh.huanlebian.repository.CategoryRepository;
+import com.lgh.huanlebian.repository.KindRepository;
 import com.lgh.huanlebian.repository.NewsRepository;
 import com.lgh.huanlebian.repository.SlideRepository;
 import com.lgh.huanlebian.service.*;
+import com.lgh.huanlebian.service.impl.WebService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,6 +70,12 @@ public class CategoryController {
     @Autowired
     URIService uriService;
 
+    @Autowired
+    private KindRepository kindRepository;
+
+    @Autowired
+    private WebService webService;
+
     /**
      * 一级分类
      *
@@ -95,7 +109,7 @@ public class CategoryController {
             List<Slide> slides = slideService.findTopSlideList(oneCategory, 5);
             for (Slide slide : slides) {
                 webSlideListModels.add(new WebSlideListModel(slide.getTitle()
-                        , staticResourceService.getResource(slide.getImageUrl()).toString(), slide.getUrl()));
+                        , webService.handlePicture(slide.getImageUrl()), slide.getUrl()));
             }
             webCategoryPageModel.setSlideList(webSlideListModels);
 
@@ -104,7 +118,7 @@ public class CategoryController {
             List<News> newsList = newsService.getTopByCategoryOrderById(oneCategory, 10);
             for (News news : newsList) {
                 webNewsListModels.add(new WebNewsListModel(news.getTitle(), uriService.getNewURI(news.getId())
-                        , staticResourceService.getResource(news.getPictureUrl()).toString(), news.getSummary()));
+                        , webService.handlePicture(news.getPictureUrl()), news.getSummary()));
             }
             webCategoryPageModel.setWebNewsList(webNewsListModels);
 
@@ -148,7 +162,7 @@ public class CategoryController {
             List<Slide> slides = slideService.findTopSlideList(secondCategory, 5);
             for (Slide slide : slides) {
                 webSlideListModels.add(new WebSlideListModel(slide.getTitle()
-                        , staticResourceService.getResource(slide.getImageUrl()).toString(), slide.getUrl()));
+                        , webService.handlePicture(slide.getImageUrl()), slide.getUrl()));
             }
             webSecondCategoryPageModel.setSlideList(webSlideListModels);
 
@@ -158,7 +172,7 @@ public class CategoryController {
             List<News> newsList = newsService.getTopByCategoryOrderById(secondCategory, 10);
             for (News news : newsList) {
                 webSubNewsListModels.add(new WebNewsListModel(news.getTitle(), uriService.getNewURI(news.getId())
-                        , staticResourceService.getResource(news.getPictureUrl()).toString(), news.getSummary()));
+                        , webService.handlePicture(news.getPictureUrl()), news.getSummary()));
             }
             webSecondCategoryPageModel.setWebNewsList(webSubNewsListModels);
 
@@ -172,12 +186,40 @@ public class CategoryController {
      * 二级分类和种类
      *
      * @param two
-     * @param kind  种类路径
+     * @param kindPath 种类路径
      * @param model
      * @return
      */
     @RequestMapping(value = "/{one}/{two}/{kind}", method = RequestMethod.GET)
-    public String three(@PathVariable("two") String two, @PathVariable("kind") String kind, Model model) {
-        return "category/index";
+    public String three(@PathVariable("two") String two, @PathVariable("kind") String kindPath, Model model) throws URISyntaxException {
+        Category secondCategory = categoryRepository.findByPath(two);
+        Kind kind = kindRepository.findByPath(kindPath);
+        if (secondCategory != null && kind != null) {
+            CategoryKindPK categoryKindPK = new CategoryKindPK(secondCategory.getId(), kind.getId());
+            CategoryKind categoryKind = categoryKindRepository.getOne(categoryKindPK);
+
+            WebThreeCategoryPageModel webThreeCategoryPageModel = new WebThreeCategoryPageModel();
+            webThreeCategoryPageModel.setTitle(secondCategory.getTitle());
+            webThreeCategoryPageModel.setKeywords(secondCategory.getKeywords());
+            webThreeCategoryPageModel.setDescription(secondCategory.getDescription());
+
+            webThreeCategoryPageModel.setHeadName(secondCategory.getParent().getTitle());
+            webThreeCategoryPageModel.setHeadUrl(uriService.getCategoryURI(secondCategory.getParent().getPath()));
+            webThreeCategoryPageModel.setTopNav(newsService.getFullPath(secondCategory, kind));
+
+
+            Pageable pageable = new PageRequest(0, 10, new Sort(Sort.Direction.DESC, "id"));
+            //子项列表
+            List<WebNewsListModel> webSubNewsListModels = new ArrayList<>();
+            Page<News> newsList = newsRepository.findAllByCategoryAndKind(secondCategory, kind, pageable);
+            for (News news : newsList) {
+                webSubNewsListModels.add(new WebNewsListModel(news.getTitle(), uriService.getNewURI(news.getId())
+                        ,webService.handlePicture(news.getPictureUrl()), news.getSummary()));
+            }
+            webThreeCategoryPageModel.setWebNewsList(webSubNewsListModels);
+
+            model.addAttribute("page", webThreeCategoryPageModel);
+        }
+        return "category/threeindex";
     }
 }

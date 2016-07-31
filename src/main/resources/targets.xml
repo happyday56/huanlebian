@@ -28,5 +28,109 @@
         </project>
 
 
+        <!-- 新生儿护理 -->
+        <project enabled="true" domain="pcbaby.com.cn" category="xinshenger" kind="huli" name="新生儿护理">
+            <target encode="utf-8" timeout="8000">
+                <multi_url>
+                    <single_url href="http://yuer.pcbaby.com.cn/xinshenger/huli/"></single_url>
+                </multi_url>
+                <wildcard_url href="http://yuer.pcbaby.com.cn/xinshenger/huli/index_(*).html"
+                              startpos="1" endpos="1"/>
+                <target_filter root="" suffix="_all" key="class" value="aList-title"/>
+            </target>
+            <processes>
+                <process flow="false" table="" field="title">
+                    <process_regex_filter><![CDATA[<h1 class=\"artTit\">(.+?)</h1>]]></process_regex_filter>
+                </process>
+                <process flow="false" table="" field="content">
+                    <process_tag_filter pos="1" key="class" value="artText" childrenLevel="3"/>
+                    <process_clean>
+                        <clean_tag type="attribute" key="class" value="pageNumber"/>
+                    </process_clean>
+                </process>
+                <process flow="false" table="" field="pictureUrl">
+                    <process_regex_filter><![CDATA[#src=\"(.+?)\"]]></process_regex_filter>
+                </process>
+            </processes>
+        </project>
+
+
+        <!-- 新生儿疾病 -->
+        <project enabled="true" domain="pcbaby.com.cn" category="xinshenger" kind="jibing" name="新生儿疾病">
+            <target encode="utf-8" timeout="8000">
+                <multi_url>
+                    <single_url href="http://yuer.pcbaby.com.cn/xinshenger/jibing/"></single_url>
+                </multi_url>
+                <wildcard_url href="http://yuer.pcbaby.com.cn/xinshenger/jibing/index_(*).html"
+                              startpos="1" endpos="1"/>
+                <target_filter root="" suffix="_all" key="class" value="aList-title"/>
+            </target>
+            <processes>
+                <process flow="false" table="" field="title">
+                    <process_regex_filter><![CDATA[<h1 class=\"artTit\">(.+?)</h1>]]></process_regex_filter>
+                </process>
+                <process flow="false" table="" field="content">
+                    <process_tag_filter pos="1" key="class" value="artText" childrenLevel="3"/>
+                    <process_clean>
+                        <clean_tag type="attribute" key="class" value="pageNumber"/>
+                    </process_clean>
+                </process>
+                <process flow="false" table="" field="pictureUrl">
+                    <process_regex_filter><![CDATA[#src=\"(.+?)\"]]></process_regex_filter>
+                </process>
+            </processes>
+        </project>
+
+
+        <!-- 0-1岁护理 -->
+        <project enabled="true" domain="pcbaby.com.cn" category="yinger" kind="huli" name="0-1岁护理">
+            <target encode="utf-8" timeout="8000">
+                <multi_url>
+                    <single_url href="http://yuer.pcbaby.com.cn/yinger/huli/"></single_url>
+                </multi_url>
+                <wildcard_url href="http://yuer.pcbaby.com.cn/yinger/huli/index_(*).html"
+                              startpos="1" endpos="1"/>
+                <target_filter root="" suffix="_all" key="class" value="aList-title"/>
+            </target>
+            <processes>
+                <process flow="false" table="" field="title">
+                    <process_regex_filter><![CDATA[<h1 class=\"artTit\">(.+?)</h1>]]></process_regex_filter>
+                </process>
+                <process flow="false" table="" field="content">
+                    <process_tag_filter pos="1" key="class" value="artText" childrenLevel="3"/>
+                    <process_clean>
+                        <clean_tag type="attribute" key="class" value="pageNumber"/>
+                    </process_clean>
+                </process>
+                <process flow="false" table="" field="pictureUrl">
+                    <process_regex_filter><![CDATA[#src=\"(.+?)\"]]></process_regex_filter>
+                </process>
+            </processes>
+        </project>
+        <!-- 0-1岁疾病 -->
+        <project enabled="true" domain="pcbaby.com.cn" category="yinger" kind="huli" name="0-1岁疾病">
+            <target encode="utf-8" timeout="8000">
+                <multi_url>
+                    <single_url href="http://yuer.pcbaby.com.cn/yinger/jibing/"></single_url>
+                </multi_url>
+                <wildcard_url href="http://yuer.pcbaby.com.cn/yinger/jibing/index_(*).html"
+                              startpos="1" endpos="1"/>
+                <target_filter root="" suffix="_all" key="class" value="aList-title"/>
+            </target>
+            <processes>
+                <process flow="false" table="" field="title">
+                    <process_regex_filter><![CDATA[<h1 class=\"artTit\">(.+?)</h1>]]></process_regex_filter>
+                </process>
+                <process flow="false" table="" field="content">
+                    <process_tag_filter pos="1" key="class" value="artText" childrenLevel="3"/>
+                    <process_clean>
+                        <clean_tag type="attribute" key="class" value="pageNumber"/>
+                    </process_clean>
+                </process>
+                <process flow="false" table="" field="pictureUrl">
+                    <process_regex_filter><![CDATA[#src=\"(.+?)\"]]></process_regex_filter>
+                </process>
+            </processes>
+        </project>
     </projects>
 </projectroot>

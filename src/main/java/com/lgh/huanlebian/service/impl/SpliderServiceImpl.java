@@ -93,10 +93,16 @@ public class SpliderServiceImpl implements SpliderService {
     @Autowired
     private SpiderUrlRepository spiderUrlRepository;
 
+
+    @Autowired
+    private WebService webService;
+
+
     @Transactional
-    @Scheduled(cron = "0 0 9 * * ?")
-    @Scheduled(cron = "0 0 13 * * ?")
-    @Scheduled(cron = "0 0 18 * * ?")
+//    @Scheduled(cron = "0 0 9 * * ?")
+//    @Scheduled(cron = "0 0 13 * * ?")
+//    @Scheduled(cron = "0 0 18 * * ?")
+    @Scheduled(initialDelay = 1000,fixedDelay = 1000 * 60 * 60 )
     public void start() throws Exception {
 
         //1.读取配置文件
@@ -241,12 +247,13 @@ public class SpliderServiceImpl implements SpliderService {
         }
 
 
-        log.info("total：" + totalCount + " success：" + blogSpliders.size() + " error：" + errorCount + " repeat：" + repeatCount);
+        log.info("total:" + totalCount + " success:" + blogSpliders.size() + " error:" + errorCount + " repeat:" + repeatCount);
     }
 
     private String getNewsPictureUrl(String text) {
         String url = RegexHelper.findOne(text, "<img.*?src=\"([^\"]*)\"[^>]*>");
-        return url.replace(commonConfigService.getResourcesUri(), "");
+        if (url != null) url.replace(commonConfigService.getResourcesUri(), "");
+        return null;
     }
 
     /**
@@ -546,7 +553,7 @@ public class SpliderServiceImpl implements SpliderService {
 
 
         staticResourceService.uploadResource(newPath, inputStream);
-        return staticResourceService.getResource(newPath).toString();
+        return webService.handlePicture(newPath).toString();
     }
 
     /**
