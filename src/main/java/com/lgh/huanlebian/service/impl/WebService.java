@@ -1,5 +1,6 @@
 package com.lgh.huanlebian.service.impl;
 
+import com.lgh.huanlebian.service.CommonConfigService;
 import com.lgh.huanlebian.service.StaticResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,9 @@ public class WebService {
     @Autowired
     private StaticResourceService staticResourceService;
 
+    @Autowired
+    private CommonConfigService commonConfigService;
+
     /**
      * 处理图片不存在情况
      * @param url
@@ -24,9 +28,9 @@ public class WebService {
     public String handlePicture(String url) {
         try {
             return staticResourceService.getResource(url).toString();
-        } catch (URISyntaxException e) {
+        } catch (Exception ex) {
         }
 
-        return "default.png";
+        return commonConfigService.getResourcesUri()  + "newdefault.png";
     }
 }

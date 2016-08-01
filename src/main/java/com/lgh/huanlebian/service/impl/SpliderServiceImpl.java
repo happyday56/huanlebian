@@ -102,7 +102,7 @@ public class SpliderServiceImpl implements SpliderService {
 //    @Scheduled(cron = "0 0 9 * * ?")
 //    @Scheduled(cron = "0 0 13 * * ?")
 //    @Scheduled(cron = "0 0 18 * * ?")
-    @Scheduled(initialDelay = 1000,fixedDelay = 1000 * 60 * 60 )
+//    @Scheduled(initialDelay = 1000,fixedDelay = 1000 * 60 * 60 )
     public void start() throws Exception {
 
         //1.读取配置文件
@@ -252,8 +252,8 @@ public class SpliderServiceImpl implements SpliderService {
 
     private String getNewsPictureUrl(String text) {
         String url = RegexHelper.findOne(text, "<img.*?src=\"([^\"]*)\"[^>]*>");
-        if (url != null) url.replace(commonConfigService.getResourcesUri(), "");
-        return null;
+        if (url != null) return url.replace(commonConfigService.getResourcesUri(), "");
+        return "newdefault.png";
     }
 
     /**

@@ -12,7 +12,7 @@
 <!-- 顶部导航 -->
 <div class="topNav" th:include="fragments/top::top"></div>
 
-<div class="main position mb30 head-art" >
+<div class="main position mb30 head-art">
     <a href="http://www.huanlebian.com" title="育儿知识大全_欢乐变" rel="sidebar" onclick="addFav();"
        class="head-favorite">收藏<em></em></a>
     <a href="/" target="_blank"><em class="head-title"></em></a>
@@ -27,12 +27,7 @@
 
 <!-- news -->
 <div id="tab3" class="tab3 main">
-
-
-
     <div id="left660" class="left660 border shadow fl">
-
-
         <div id="conList" class="conList">
             <th:block th:each="item:${page.webNewsList}">
                 <div class="pic-txt">
@@ -51,11 +46,28 @@
             </th:block>
         </div>
 
+        <div id="pages" class="pcbaby_page">
+            <a target="_self" href="http://yuer.pcbaby.com.cn/xinshenger/weiyang/index_42.html"
+               class="prev">上一页</a><a href="http://yuer.pcbaby.com.cn/xinshenger/weiyang/" target="_self">1</a>
+            ...<a href="http://yuer.pcbaby.com.cn/xinshenger/weiyang/index_40.html" target="_self">41</a><a
+                href="http://yuer.pcbaby.com.cn/xinshenger/weiyang/index_41.html" target="_self">42</a><a
+                href="http://yuer.pcbaby.com.cn/xinshenger/weiyang/index_42.html" target="_self">43</a><span>44</span><a
+                href="http://yuer.pcbaby.com.cn/xinshenger/weiyang/index_44.html" target="_self">45</a><a
+                href="http://yuer.pcbaby.com.cn/xinshenger/weiyang/index_45.html" target="_self">46</a><a
+                href="http://yuer.pcbaby.com.cn/xinshenger/weiyang/index_46.html" target="_self">47</a>...<a
+                href="http://yuer.pcbaby.com.cn/xinshenger/weiyang/index_50.html" target="_self">51</a>
+            <a target="_self" href="http://yuer.pcbaby.com.cn/xinshenger/weiyang/index_44.html" class="next">下一页</a>
+        </div>
+
     </div>
     <div class="fr" style="width:306px;">
 
     </div>
+
+
+
 </div>
+
 
 
 
