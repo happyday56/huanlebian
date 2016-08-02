@@ -25,4 +25,9 @@ public class WebThreeCategoryPageModel extends WebBasePageModel {
 
     private List<WebNewsListModel> webNewsList;
 
+    /**
+     * 分页
+     */
+    private Paging paging;
+
 }
