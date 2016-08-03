@@ -47,16 +47,24 @@
         </div>
 
         <div id="pages" class="pcbaby_page">
-            <a target="_self" href="http://yuer.pcbaby.com.cn/xinshenger/weiyang/index_42.html"
-               class="prev">上一页</a><a href="http://yuer.pcbaby.com.cn/xinshenger/weiyang/" target="_self">1</a>
-            ...<a href="http://yuer.pcbaby.com.cn/xinshenger/weiyang/index_40.html" target="_self">41</a><a
-                href="http://yuer.pcbaby.com.cn/xinshenger/weiyang/index_41.html" target="_self">42</a><a
-                href="http://yuer.pcbaby.com.cn/xinshenger/weiyang/index_42.html" target="_self">43</a><span>44</span><a
-                href="http://yuer.pcbaby.com.cn/xinshenger/weiyang/index_44.html" target="_self">45</a><a
-                href="http://yuer.pcbaby.com.cn/xinshenger/weiyang/index_45.html" target="_self">46</a><a
-                href="http://yuer.pcbaby.com.cn/xinshenger/weiyang/index_46.html" target="_self">47</a>...<a
-                href="http://yuer.pcbaby.com.cn/xinshenger/weiyang/index_50.html" target="_self">51</a>
-            <a target="_self" href="http://yuer.pcbaby.com.cn/xinshenger/weiyang/index_44.html" class="next">下一页</a>
+            <a target="_self" th:if="${page.paging.pageNumber>0}"
+               th:href="${strings.replace(page.paging.url,'{number}',strings.toString(page.paging.pageNumber-1)}"
+               class="prev">上一页</a>
+            <a th:href="${strings.replace(page.paging.url,'{number}','0'}" target="_self">1</a>
+            <th:block th:if="${page.paging.pageNumber>1}">...</th:block>
+
+            <th:block th:="">
+                <a href="http://yuer.pcbaby.com.cn/xinshenger/weiyang/index_42.html"
+                   target="_self">43</a><span>44</span>
+            </th:block>
+
+            <th:block th:if="${page.paging.pageNumber+4<page.paging.totalPage}"> ...</th:block>
+            <a th:href="${strings.replace(page.paging.url,'{number}',strings.toString(page.paging.pageNumber + 5)}"
+               target="_self" th:text="${page.paging.pageNumber + 6}"></a>
+
+            <a target="_self" th:if="${page.paging.pageNumber!=page.paging.totalPage}"
+               th:href="${strings.replace(page.paging.url,'{number}',strings.toString(page.paging.pageNumber+1)}"
+               class="next">下一页</a>
         </div>
 
     </div>
@@ -65,10 +73,7 @@
     </div>
 
 
-
 </div>
-
-
 
 
 <div th:include="fragments/bot::bot"></div>

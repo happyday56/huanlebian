@@ -5,7 +5,6 @@ import com.lgh.huanlebian.entity.CategoryKind;
 import com.lgh.huanlebian.entity.Kind;
 import com.lgh.huanlebian.entity.News;
 import com.lgh.huanlebian.entity.Slide;
-import com.lgh.huanlebian.entity.pk.CategoryKindPK;
 import com.lgh.huanlebian.model.*;
 import com.lgh.huanlebian.repository.CategoryKindRepository;
 import com.lgh.huanlebian.repository.CategoryRepository;
@@ -42,6 +41,7 @@ public class CategoryController {
 
     private static Log log = LogFactory.getLog(CategoryController.class);
 
+    private static Integer PAGE_SIZE = 10;
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -192,25 +192,27 @@ public class CategoryController {
      */
     @RequestMapping(value = "/{one}/{two}/{kind}", method = RequestMethod.GET)
     public String three(@PathVariable("two") String two, @PathVariable("kind") String kindPath, Model model) throws URISyntaxException {
-        loadThreeIndex(two, kindPath, 0, model);
+        loadThreeIndex(two, kindPath, 0, PAGE_SIZE, model);
         return "category/threeindex";
     }
 
     @RequestMapping(value = "/{one}/{two}/{kind}/index_{page}.html", method = RequestMethod.GET)
     public String three(@PathVariable("two") String two, @PathVariable("kind") String kindPath
             , @PathVariable("page") Integer page, Model model) throws URISyntaxException {
-        loadThreeIndex(two, kindPath, page, model);
+        loadThreeIndex(two, kindPath, page, PAGE_SIZE, model);
         return "category/threeindex";
     }
 
     /**
-     *  获取二级分类及种类
+     * 获取二级分类及种类
+     *
      * @param two
      * @param kindPath
-     * @param page
+     * @param pageNumber
+     * @param pageSize
      * @param model
      */
-    private void loadThreeIndex(String two, String kindPath, Integer page, Model model) {
+    private void loadThreeIndex(String two, String kindPath, Integer pageNumber, Integer pageSize, Model model) {
         Category secondCategory = categoryRepository.findByPath(two);
         Kind kind = kindRepository.findByPath(kindPath);
         if (secondCategory != null && kind != null) {
@@ -226,10 +228,8 @@ public class CategoryController {
             webThreeCategoryPageModel.setHeadUrl(uriService.getCategoryURI(secondCategory.getParent().getPath()));
             webThreeCategoryPageModel.setTopNav(newsService.getFullPath(secondCategory, kind));
 
-
-            Integer size = 10;
-            Pageable pageable = new PageRequest(page, size, new Sort(Sort.Direction.DESC, "id"));
-            //子项列表
+            Pageable pageable = new PageRequest(pageNumber, pageSize, new Sort(Sort.Direction.DESC, "id"));
+            //sub item list
             List<WebNewsListModel> webSubNewsListModels = new ArrayList<>();
             Page<News> newsList = newsRepository.findAllByCategoryAndKind(secondCategory, kind, pageable);
             for (News news : newsList) {
@@ -238,9 +238,13 @@ public class CategoryController {
             }
             webThreeCategoryPageModel.setWebNewsList(webSubNewsListModels);
             Paging paging = new Paging();
-            paging.setSize(size);
-            paging.setPage(page);
-            paging.setCount(pageable.());
+            paging.setPageSize(pageSize);
+            paging.setPageNumber(pageNumber);
+            paging.setTotalCount(newsList.getTotalElements());
+            paging.setTotalPage(newsList.getTotalPages());
+            String url = uriService.getCategoryURI(secondCategory.getParent().getPath(), secondCategory.getPath(), kindPath);
+            paging.setUrl(url + "/index_{number}.html");
+
             webThreeCategoryPageModel.setPaging(paging);
             model.addAttribute("page", webThreeCategoryPageModel);
         }

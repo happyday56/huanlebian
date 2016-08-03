@@ -11,9 +11,29 @@ import lombok.Setter;
 @Setter
 public class Paging {
 
-    private Integer page;
+    /**
+     * page index
+     */
+    private Integer pageNumber;
 
-    private Integer size;
+    /**
+     * page size
+     */
+    private Integer pageSize;
 
-    private Integer count;
+    /**
+     * 总条数
+     */
+    private Long totalCount;
+
+    /**
+     * 总页数
+     */
+    private Integer totalPage;
+
+    /**
+     * page url
+     * {number} replace
+     */
+    private String url;
 }
