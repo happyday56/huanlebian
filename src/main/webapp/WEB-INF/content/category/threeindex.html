@@ -53,9 +53,11 @@
             <a th:href="${strings.replace(page.paging.url,'{number}','0'}" target="_self">1</a>
             <th:block th:if="${page.paging.pageNumber>1}">...</th:block>
 
-            <th:block th:="">
-                <a href="http://yuer.pcbaby.com.cn/xinshenger/weiyang/index_42.html"
-                   target="_self">43</a><span>44</span>
+            <th:block th:each="item:${page.paging.pages}">
+                <a th:if="${item!=page.paging.pageNumber}"
+                   th:href="${strings.replace(page.paging.url,'{number}',strings.toString(item)}"
+                   target="_self" th:text="${item}"></a>
+                <span th:if="${item==page.paging.pageNumber}" th:text="${item}"></span>
             </th:block>
 
             <th:block th:if="${page.paging.pageNumber+4<page.paging.totalPage}"> ...</th:block>
