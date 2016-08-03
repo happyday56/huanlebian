@@ -192,11 +192,30 @@ public class CategoryController {
      */
     @RequestMapping(value = "/{one}/{two}/{kind}", method = RequestMethod.GET)
     public String three(@PathVariable("two") String two, @PathVariable("kind") String kindPath, Model model) throws URISyntaxException {
+        loadThreeIndex(two, kindPath, 0, model);
+        return "category/threeindex";
+    }
+
+    @RequestMapping(value = "/{one}/{two}/{kind}/index_{page}.html", method = RequestMethod.GET)
+    public String three(@PathVariable("two") String two, @PathVariable("kind") String kindPath
+            , @PathVariable("page") Integer page, Model model) throws URISyntaxException {
+        loadThreeIndex(two, kindPath, page, model);
+        return "category/threeindex";
+    }
+
+    /**
+     *  获取二级分类及种类
+     * @param two
+     * @param kindPath
+     * @param page
+     * @param model
+     */
+    private void loadThreeIndex(String two, String kindPath, Integer page, Model model) {
         Category secondCategory = categoryRepository.findByPath(two);
         Kind kind = kindRepository.findByPath(kindPath);
         if (secondCategory != null && kind != null) {
-            CategoryKindPK categoryKindPK = new CategoryKindPK(secondCategory.getId(), kind.getId());
-            CategoryKind categoryKind = categoryKindRepository.getOne(categoryKindPK);
+//            CategoryKindPK categoryKindPK = new CategoryKindPK(secondCategory.getId(), kind.getId());
+//            CategoryKind categoryKind = categoryKindRepository.getOne(categoryKindPK);
 
             WebThreeCategoryPageModel webThreeCategoryPageModel = new WebThreeCategoryPageModel();
             webThreeCategoryPageModel.setTitle(secondCategory.getTitle());
@@ -208,18 +227,22 @@ public class CategoryController {
             webThreeCategoryPageModel.setTopNav(newsService.getFullPath(secondCategory, kind));
 
 
-            Pageable pageable = new PageRequest(0, 10, new Sort(Sort.Direction.DESC, "id"));
+            Integer size = 10;
+            Pageable pageable = new PageRequest(page, size, new Sort(Sort.Direction.DESC, "id"));
             //子项列表
             List<WebNewsListModel> webSubNewsListModels = new ArrayList<>();
             Page<News> newsList = newsRepository.findAllByCategoryAndKind(secondCategory, kind, pageable);
             for (News news : newsList) {
                 webSubNewsListModels.add(new WebNewsListModel(news.getTitle(), uriService.getNewURI(news.getId())
-                        ,webService.handlePicture(news.getPictureUrl()), news.getSummary()));
+                        , webService.handlePicture(news.getPictureUrl()), news.getSummary()));
             }
             webThreeCategoryPageModel.setWebNewsList(webSubNewsListModels);
-
+            Paging paging = new Paging();
+            paging.setSize(size);
+            paging.setPage(page);
+            paging.setCount(pageable.());
+            webThreeCategoryPageModel.setPaging(paging);
             model.addAttribute("page", webThreeCategoryPageModel);
         }
-        return "category/threeindex";
     }
 }
