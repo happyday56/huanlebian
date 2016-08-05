@@ -12,3 +12,4 @@ target/
 *.log
 platform.log*
 iqiyi.log*
+_resources/
