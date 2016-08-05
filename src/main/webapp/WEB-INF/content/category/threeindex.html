@@ -47,11 +47,11 @@
         </div>
 
         <div id="pages" class="pcbaby_page">
-            <a target="_self" th:if="${page.paging.pageNumber>0}"
+            <a target="_self" th:if="${page.paging.pageNumber} &gt; 0"
                th:href="${strings.replace(page.paging.url,'{number}',strings.toString(page.paging.pageNumber-1)}"
                class="prev">上一页</a>
             <a th:href="${strings.replace(page.paging.url,'{number}','0'}" target="_self">1</a>
-            <th:block th:if="${page.paging.pageNumber>1}">...</th:block>
+            <th:block th:if="${page.paging.pageNumber}&gt; 1">...</th:block>
 
             <th:block th:each="item:${page.paging.pages}">
                 <a th:if="${item!=page.paging.pageNumber}"
@@ -60,7 +60,7 @@
                 <span th:if="${item==page.paging.pageNumber}" th:text="${item}"></span>
             </th:block>
 
-            <th:block th:if="${page.paging.pageNumber+4<page.paging.totalPage}"> ...</th:block>
+            <th:block th:if="${page.paging.pageNumber+4} &lt; ${page.paging.totalPage}"> ...</th:block>
             <a th:href="${strings.replace(page.paging.url,'{number}',strings.toString(page.paging.pageNumber + 5)}"
                target="_self" th:text="${page.paging.pageNumber + 6}"></a>
 
