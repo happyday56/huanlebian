@@ -243,7 +243,7 @@ public class CategoryController {
             paging.setTotalCount(newsList.getTotalElements());
             paging.setTotalPage(newsList.getTotalPages());
             String url = uriService.getCategoryURI(secondCategory.getParent().getPath(), secondCategory.getPath(), kindPath);
-            paging.setUrl(url + "/index_{number}.html");
+            paging.setUrl(url + "/index_[number].html");
 
             webThreeCategoryPageModel.setPaging(paging);
             model.addAttribute("page", webThreeCategoryPageModel);
