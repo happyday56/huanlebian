@@ -99,9 +99,9 @@ public class SpliderServiceImpl implements SpliderService {
 
 
     @Transactional
-//    @Scheduled(cron = "0 0 9 * * ?")
-//    @Scheduled(cron = "0 0 13 * * ?")
-//    @Scheduled(cron = "0 0 18 * * ?")
+    @Scheduled(cron = "0 0 9 * * ?")
+    @Scheduled(cron = "0 0 13 * * ?")
+    @Scheduled(cron = "0 0 18 * * ?")
 //    @Scheduled(initialDelay = 1000,fixedDelay = 1000 * 60 * 60 )
     public void start() throws Exception {
 
