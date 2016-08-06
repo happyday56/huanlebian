@@ -563,15 +563,19 @@ public class SpliderServiceImpl implements SpliderService {
      * @return
      */
     private String getFilterSummary(String processContent) {
-        Source sourceSummary = new Source(processContent);
-        String processSummary = sourceSummary.getTextExtractor().toString();
-        if (processSummary.length() > 150) processSummary = processSummary.substring(0, 150);
-        if (processSummary.lastIndexOf("。") > 0) {
-            processSummary = processSummary.substring(0, processSummary.lastIndexOf("。") + 1);
-        } else if (processSummary.lastIndexOf("！") > 0) {
-            processSummary = processSummary.substring(0, processSummary.lastIndexOf("！") + 1);
+        if (!StringUtils.isEmpty(processContent)) {
+            Source sourceSummary = new Source(processContent);
+            String processSummary = sourceSummary.getTextExtractor().toString();
+            if (processSummary.length() > 150)
+                processSummary = processSummary.substring(0, 150);
+            if (processSummary.lastIndexOf("。") > 0) {
+                processSummary = processSummary.substring(0, processSummary.lastIndexOf("。") + 1);
+            } else if (processSummary.lastIndexOf("！") > 0) {
+                processSummary = processSummary.substring(0, processSummary.lastIndexOf("！") + 1);
+            }
+            return processSummary;
         }
-        return processSummary;
+        return null;
     }
 
     /**
@@ -701,6 +705,8 @@ public class SpliderServiceImpl implements SpliderService {
 
             wiki.setCategory(twoWikiCategory);
             String content = RegexHelper.findOne(sourceHtml, "<div class=\"mb30 border shadow mt30\">(.+?)</div>");
+            if (StringUtils.isEmpty(content)) log.debug(targetUrl + " content is null");
+
             wiki.setContent(RegexHelper.removeHref(content));
             wiki.setSummary(getFilterSummary(content));
             // 获取关键字

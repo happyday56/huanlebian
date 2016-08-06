@@ -41,7 +41,7 @@ public class CategoryController {
 
     private static Log log = LogFactory.getLog(CategoryController.class);
 
-    private static Integer PAGE_SIZE = 10;
+    private static Integer PAGE_SIZE = 1;
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -244,6 +244,7 @@ public class CategoryController {
             paging.setTotalPage(newsList.getTotalPages());
             String url = uriService.getCategoryURI(secondCategory.getParent().getPath(), secondCategory.getPath(), kindPath);
             paging.setUrl(url + "/index_[number].html");
+            paging.setPages(paging.getPages());
 
             webThreeCategoryPageModel.setPaging(paging);
             model.addAttribute("page", webThreeCategoryPageModel);
