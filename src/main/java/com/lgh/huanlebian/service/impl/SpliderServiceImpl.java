@@ -705,7 +705,7 @@ public class SpliderServiceImpl implements SpliderService {
 
             wiki.setCategory(twoWikiCategory);
             String content = RegexHelper.findOne(sourceHtml, "<div class=\"mb30 border shadow mt30\">(.+?)</div>");
-            if (StringUtils.isEmpty(content)) log.debug(targetUrl + " content is null");
+            if (StringUtils.isEmpty(content)) log.error(targetUrl + " content is null");
 
             wiki.setContent(RegexHelper.removeHref(content));
             wiki.setSummary(getFilterSummary(content));
