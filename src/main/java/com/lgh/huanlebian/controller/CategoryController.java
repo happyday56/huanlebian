@@ -41,7 +41,7 @@ public class CategoryController {
 
     private static Log log = LogFactory.getLog(CategoryController.class);
 
-    private static Integer PAGE_SIZE = 1;
+    private static Integer PAGE_SIZE = 10;
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -118,7 +118,7 @@ public class CategoryController {
             List<News> newsList = newsService.getTopByCategoryOrderById(oneCategory, 10);
             for (News news : newsList) {
                 webNewsListModels.add(new WebNewsListModel(news.getTitle(), uriService.getNewURI(news.getId())
-                        , webService.handlePicture(news.getPictureUrl()), news.getSummary()));
+                        , webService.handlePicture(news.getPictureUrl()), news.getSummary(),news.getUploadTime()));
             }
             webCategoryPageModel.setWebNewsList(webNewsListModels);
 
@@ -172,7 +172,7 @@ public class CategoryController {
             List<News> newsList = newsService.getTopByCategoryOrderById(secondCategory, 10);
             for (News news : newsList) {
                 webSubNewsListModels.add(new WebNewsListModel(news.getTitle(), uriService.getNewURI(news.getId())
-                        , webService.handlePicture(news.getPictureUrl()), news.getSummary()));
+                        , webService.handlePicture(news.getPictureUrl()), news.getSummary(),news.getUploadTime()));
             }
             webSecondCategoryPageModel.setWebNewsList(webSubNewsListModels);
 
@@ -234,7 +234,7 @@ public class CategoryController {
             Page<News> newsList = newsRepository.findAllByCategoryAndKind(secondCategory, kind, pageable);
             for (News news : newsList) {
                 webSubNewsListModels.add(new WebNewsListModel(news.getTitle(), uriService.getNewURI(news.getId())
-                        , webService.handlePicture(news.getPictureUrl()), news.getSummary()));
+                        , webService.handlePicture(news.getPictureUrl()), news.getSummary(),news.getUploadTime()));
             }
             webThreeCategoryPageModel.setWebNewsList(webSubNewsListModels);
             Paging paging = new Paging();

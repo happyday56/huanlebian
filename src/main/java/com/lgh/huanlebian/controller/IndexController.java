@@ -5,10 +5,7 @@ import com.lgh.huanlebian.entity.News;
 import com.lgh.huanlebian.entity.Slide;
 import com.lgh.huanlebian.model.*;
 import com.lgh.huanlebian.repository.CategoryRepository;
-import com.lgh.huanlebian.service.NewsService;
-import com.lgh.huanlebian.service.SlideService;
-import com.lgh.huanlebian.service.StaticResourceService;
-import com.lgh.huanlebian.service.URIService;
+import com.lgh.huanlebian.service.*;
 import com.lgh.huanlebian.service.impl.WebService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -48,6 +46,9 @@ public class IndexController {
 
     @Autowired
     private WebService webService;
+
+    @Autowired
+    private WikiSerice wikiSerice;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(Model model) throws URISyntaxException {
@@ -101,7 +102,7 @@ public class IndexController {
                             x.getTitle()
                             , uriService.getNewURI(x.getId()).toString()
                             , imageUrl
-                            , x.getSummary()));
+                            , x.getSummary(),x.getUploadTime()));
                 }
                 count[0]++;
             });
@@ -136,9 +137,17 @@ public class IndexController {
 
 
         List<WebNewsListModel> webNewsListModels = new ArrayList<>();
-        webNewsListModels.add(new WebNewsListModel("开心", "a", "", ""));
-        webNewsListModels.add(new WebNewsListModel("快乐", "b", "", ""));
+//        webNewsListModels.add(new WebNewsListModel("开心", "a", "", ""));
+//        webNewsListModels.add(new WebNewsListModel("快乐", "b", "", ""));
         model.addAttribute("page", webCategoryPageModel);
         return "test";
+    }
+
+
+    @RequestMapping(value = "/initbaike", method = RequestMethod.GET)
+    @ResponseBody
+    public String initBaike() {
+        wikiSerice.initBaikeCategory();
+        return "ok";
     }
 }

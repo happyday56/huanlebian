@@ -38,7 +38,7 @@
                     <div class="artTop">
                         <h1 class="artTit" th:text="${page.data.title}">标题</h1>
                         <p class="artSub">
-                            <span th:text="${#calendars.format(page.data.uploadTime,'yyyy-MM-dd hh:mm:ss')}">时间</span>
+                            <span th:text="${#calendars.format(page.data.uploadTime,'yyyy-MM-dd HH:mm:ss')}">时间</span>
                             <span>出处：<a th:href="${page.data.url}" target="_blank">欢乐变</a></span><span>作者：佚名</span>
                         </p>
                     </div>

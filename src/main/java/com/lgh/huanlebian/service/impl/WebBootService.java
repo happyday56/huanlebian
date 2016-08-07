@@ -42,8 +42,6 @@ public class WebBootService implements ApplicationListener<ContextRefreshedEvent
     @Autowired
     private BaseService baseService;
 
-    @Autowired
-    private JdbcService jdbcService;
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -54,11 +52,7 @@ public class WebBootService implements ApplicationListener<ContextRefreshedEvent
     @Autowired
     CategoryKindRepository categoryKindRepository;
 
-    @Autowired
-    private WikiCategoryRepository wikiCategoryRepository;
 
-    @Autowired
-    private SpliderService spliderService;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -70,8 +64,6 @@ public class WebBootService implements ApplicationListener<ContextRefreshedEvent
                 databaseVession.setValueForCode(String.valueOf(CommonVersion.initVersion.ordinal()));
                 systemConfigRepository.save(databaseVession);
             }
-
-//            initBaikeCategory();
 
             //系统升级
             baseService.systemUpgrade("DatabaseVersion", CommonVersion.class, CommonVersion.Version101, (upgrade) -> {
@@ -290,43 +282,5 @@ public class WebBootService implements ApplicationListener<ContextRefreshedEvent
     }
 
 
-    public void initBaikeCategory() {
 
-        //todo keywords despcrition
-        List<WikiCategory> list = new ArrayList<>();
-        WikiCategory parentWikiCategory = new WikiCategory(0L, null, "怀孕", CatetoryConstant.huaiyun, "", "", 1, false);
-        parentWikiCategory = wikiCategoryRepository.save(parentWikiCategory);
-        list.add(new WikiCategory(0L, parentWikiCategory, "备孕", CatetoryConstant.yunqian, "", "", 1, true));
-        list.add(new WikiCategory(0L, parentWikiCategory, "孕期", CatetoryConstant.yunqi, "", "", 2, true));
-        list.add(new WikiCategory(0L, parentWikiCategory, "分娩", CatetoryConstant.fenmian, "", "", 3, true));
-        list.add(new WikiCategory(0L, parentWikiCategory, "月子", CatetoryConstant.yuezi, "", "", 4, true));
-        list = wikiCategoryRepository.save(list);
-        for(WikiCategory wikiCategory :list) {
-            spliderService.initWikiData(wikiCategory);
-        }
-
-        parentWikiCategory = new WikiCategory(0L, null, "育儿", CatetoryConstant.yuer, "", "", 2, false);
-        parentWikiCategory = wikiCategoryRepository.save(parentWikiCategory);
-        list.add(new WikiCategory(0L, parentWikiCategory, "新生儿", CatetoryConstant.xinshenger, "", "", 1, true));
-        list.add(new WikiCategory(0L, parentWikiCategory, "0-1岁", CatetoryConstant.yinger, "", "", 2, true));
-        list.add(new WikiCategory(0L, parentWikiCategory, "1-3岁", CatetoryConstant.youer, "", "", 3, true));
-        list.add(new WikiCategory(0L, parentWikiCategory, "3-6岁", CatetoryConstant.xuelingqian, "", "", 4, true));
-        list = wikiCategoryRepository.save(list);
-        for(WikiCategory wikiCategory :list) {
-            spliderService.initWikiData(wikiCategory);
-        }
-
-        parentWikiCategory = new WikiCategory(0L, null, "营养", CatetoryConstant.meishi, "", "", 3, true);
-        parentWikiCategory = wikiCategoryRepository.save(parentWikiCategory);
-        spliderService.initWikiData(parentWikiCategory);
-
-        parentWikiCategory = new WikiCategory(0L, null, "生活", CatetoryConstant.shenghuo, "", "", 4, true);
-        parentWikiCategory = wikiCategoryRepository.save(parentWikiCategory);
-        spliderService.initWikiData(parentWikiCategory);
-
-        parentWikiCategory = new WikiCategory(0L, null, "用品", CatetoryConstant.yongpin, "", "", 5, true);
-        parentWikiCategory = wikiCategoryRepository.save(parentWikiCategory);
-        spliderService.initWikiData(parentWikiCategory);
-
-    }
 }
