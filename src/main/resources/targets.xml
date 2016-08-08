@@ -8,7 +8,7 @@
                     <single_url href="http://huaiyun.pcbaby.com.cn/yunqian/zhunbei/"></single_url>
                 </multi_url>
                 <wildcard_url href="http://huaiyun.pcbaby.com.cn/yunqian/zhunbei/index_(*).html"
-                              startpos="1" endpos="5"/>
+                              startpos="1" endpos="1"/>
                 <target_filter root="" suffix="_all" key="class" value="aList-title"/>
             </target>
             <processes>
@@ -32,7 +32,7 @@
                     <single_url href="http://huaiyun.pcbaby.com.cn/yunqian/shengyu/"></single_url>
                 </multi_url>
                 <wildcard_url href="http://huaiyun.pcbaby.com.cn/yunqian/shengyu/index_(*).html"
-                              startpos="1" endpos="5"/>
+                              startpos="1" endpos="1"/>
                 <target_filter root="" suffix="_all" key="class" value="aList-title"/>
             </target>
             <processes>
@@ -56,7 +56,7 @@
                     <single_url href="http://huaiyun.pcbaby.com.cn/yunqian/yichuan/"></single_url>
                 </multi_url>
                 <wildcard_url href="http://huaiyun.pcbaby.com.cn/yunqian/yichuan/index_(*).html"
-                              startpos="1" endpos="5"/>
+                              startpos="1" endpos="1"/>
                 <target_filter root="" suffix="_all" key="class" value="aList-title"/>
             </target>
             <processes>
@@ -83,7 +83,7 @@
                     <single_url href="http://huaiyun.pcbaby.com.cn/fenmian/daichan/"></single_url>
                 </multi_url>
                 <wildcard_url href="http://huaiyun.pcbaby.com.cn/fenmian/daichan/index_(*).html"
-                              startpos="1" endpos="5"/>
+                              startpos="1" endpos="1"/>
                 <target_filter root="" suffix="_all" key="class" value="aList-title"/>
             </target>
             <processes>
@@ -107,7 +107,7 @@
                     <single_url href="http://huaiyun.pcbaby.com.cn/fenmian/fangshi/"></single_url>
                 </multi_url>
                 <wildcard_url href="http://huaiyun.pcbaby.com.cn/fenmian/fangshi/index_(*).html"
-                              startpos="1" endpos="5"/>
+                              startpos="1" endpos="1"/>
                 <target_filter root="" suffix="_all" key="class" value="aList-title"/>
             </target>
             <processes>
@@ -134,7 +134,7 @@
                     <single_url href="http://yuer.pcbaby.com.cn/xinshenger/weiyang/"></single_url>
                 </multi_url>
                 <wildcard_url href="http://yuer.pcbaby.com.cn/xinshenger/weiyang/index_(*).html"
-                              startpos="1" endpos="5"/>
+                              startpos="1" endpos="1"/>
                 <target_filter root="" suffix="_all" key="class" value="aList-title"/>
             </target>
             <processes>
@@ -158,7 +158,7 @@
                     <single_url href="http://yuer.pcbaby.com.cn/xinshenger/huli/"></single_url>
                 </multi_url>
                 <wildcard_url href="http://yuer.pcbaby.com.cn/xinshenger/huli/index_(*).html"
-                              startpos="1" endpos="5"/>
+                              startpos="1" endpos="1"/>
                 <target_filter root="" suffix="_all" key="class" value="aList-title"/>
             </target>
             <processes>
@@ -182,7 +182,7 @@
                     <single_url href="http://yuer.pcbaby.com.cn/xinshenger/jibing/"></single_url>
                 </multi_url>
                 <wildcard_url href="http://yuer.pcbaby.com.cn/xinshenger/jibing/index_(*).html"
-                              startpos="1" endpos="5"/>
+                              startpos="1" endpos="1"/>
                 <target_filter root="" suffix="_all" key="class" value="aList-title"/>
             </target>
             <processes>
@@ -208,7 +208,7 @@
                     <single_url href="http://yuer.pcbaby.com.cn/yinger/huli/"></single_url>
                 </multi_url>
                 <wildcard_url href="http://yuer.pcbaby.com.cn/yinger/huli/index_(*).html"
-                              startpos="1" endpos="5"/>
+                              startpos="1" endpos="1"/>
                 <target_filter root="" suffix="_all" key="class" value="aList-title"/>
             </target>
             <processes>
@@ -232,7 +232,7 @@
                     <single_url href="http://yuer.pcbaby.com.cn/yinger/jibing/"></single_url>
                 </multi_url>
                 <wildcard_url href="http://yuer.pcbaby.com.cn/yinger/jibing/index_(*).html"
-                              startpos="1" endpos="5"/>
+                              startpos="1" endpos="1"/>
                 <target_filter root="" suffix="_all" key="class" value="aList-title"/>
             </target>
             <processes>
@@ -258,7 +258,7 @@
                     <single_url href="http://yuer.pcbaby.com.cn/youer/huli/"></single_url>
                 </multi_url>
                 <wildcard_url href="http://yuer.pcbaby.com.cn/youer/huli/index_(*).html"
-                              startpos="1" endpos="5"/>
+                              startpos="1" endpos="1"/>
                 <target_filter root="" suffix="_all" key="class" value="aList-title"/>
             </target>
             <processes>
@@ -282,7 +282,7 @@
                     <single_url href="http://yuer.pcbaby.com.cn/youer/jibing/"></single_url>
                 </multi_url>
                 <wildcard_url href="http://yuer.pcbaby.com.cn/youer/jibing/index_(*).html"
-                              startpos="1" endpos="5"/>
+                              startpos="1" endpos="1"/>
                 <target_filter root="" suffix="_all" key="class" value="aList-title"/>
             </target>
             <processes>
@@ -308,7 +308,7 @@
                     <single_url href="http://yuer.pcbaby.com.cn/xuelingqian/huli/"></single_url>
                 </multi_url>
                 <wildcard_url href="http://yuer.pcbaby.com.cn/xuelingqian/huli/index_(*).html"
-                              startpos="1" endpos="5"/>
+                              startpos="1" endpos="1"/>
                 <target_filter root="" suffix="_all" key="class" value="aList-title"/>
             </target>
             <processes>
@@ -332,7 +332,7 @@
                     <single_url href="http://yuer.pcbaby.com.cn/xuelingqian/jibing/"></single_url>
                 </multi_url>
                 <wildcard_url href="http://yuer.pcbaby.com.cn/xuelingqian/jibing/index_(*).html"
-                              startpos="1" endpos="5"/>
+                              startpos="1" endpos="1"/>
                 <target_filter root="" suffix="_all" key="class" value="aList-title"/>
             </target>
             <processes>

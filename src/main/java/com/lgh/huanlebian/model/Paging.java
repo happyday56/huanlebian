@@ -44,8 +44,8 @@ public class Paging {
 
     public List<Integer> getPages() {
         List<Integer> result = new ArrayList<>();
-        Integer current = pageNumber - 4;
-        while (current <= pageNumber + 4) {
+        Integer current = pageNumber - 3;
+        while (current <= pageNumber + 3) {
             if (current >= 0 && current < totalPage)
                 result.add(current);
             current++;

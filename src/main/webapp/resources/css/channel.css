@@ -10,9 +10,9 @@ a{text-decoration:none;color:#333}
 a:hover{text-decoration:none;color:#ff4444;}
 noscript,.spanclass,.contentdiv,.hidden{display:none;}
 .show,.block{display:block;}
-.mark,.fl,.subMark,.fr{display:inline;}
+.mark,.fl,.fr{display:inline;}
 .mark,.fl{float:left;}
-.subMark,.fr{float:right;}
+.fr{float:right;}
 .f14{font-size:14px;}
 .f16{font-size:16px;}
 .clear{clear:both;height:0;line-height:0;font-size:0;overflow:hidden;}
@@ -131,13 +131,14 @@ input{background-color:none;}
 .pic-txt{height: 195px;}
 .pic-txt:hover{background: #fcfcfc;}
 .pic-txt .pic{display: inline;float: left;margin: 25px 15px 0px 18px;}
-.pic-txt .tit{padding-top: 32px; height: 47px;line-height: 47px;font-size: 18px; overflow: hidden;}
+.pic-txt .tit{padding-top: 32px; height: 47px;line-height: 47px;font-size: 18px; overflow: hidden;padding-right: 24px;}
 .pic-txt .txt {width: 384px;line-height: 22px;height: 66px; color: #999; overflow: hidden;}
 .pic-txt-line{border-top: 1px dashed #ececec;height: 0px;overflow: hidden;margin: 0px 20px 0;}
 .tab3 .right306{ width: 306px;border-radius: 3px;}
 .tab3 .fixed{ position: fixed;bottom: 0; }
 .tab3 .posiRe{position: relative; }
 .tab3 .mr30{ margin-right: 31px; display: inline; }
+.submark{color:#999;display:inline;float:right;font-size: 12px;}
 
 .slide03{width: 264px;padding:12px 20px 9px; background-color: #fff; border-radius: 3px;}
 .slide03 .control{height: 37px; background: url(../images/deshed.png) repeat-x 0 36px; }

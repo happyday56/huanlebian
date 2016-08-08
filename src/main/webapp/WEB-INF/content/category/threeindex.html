@@ -18,11 +18,11 @@
     <a href="/" target="_blank"><em class="head-title"></em></a>
     <a th:href="${page.headUrl}" target="_blank"><em class="head-channel" th:text="${page.headName}"></em></a>
     <em class="head-zq">列表页</em>
-    <em class="arr"></em><a href="/" target="_blank">首页</a>&nbsp;/&nbsp;
+    <em class="arr"></em><a href="/" target="_blank">首页</a>
     <th:block th:each="item:${page.topNav}">
-        <a th:href="${item.url}" th:text="${item.title}" target="_blank"></a>&nbsp;/&nbsp;
+        &nbsp;/&nbsp;<a th:href="${item.url}" th:text="${item.title}" target="_blank"></a>
     </th:block>
-    <i>正文</i>
+
 </div>
 
 <!-- news -->
@@ -37,6 +37,7 @@
                         </a>
                     </p>
                     <p class="tit">
+                        <span class="submark" th:text="${#dates.format(item.time,'yyyy-MM-dd')}"></span>
                         <a th:href="${item.url}" target="_blank" th:text="${item.title}"></a>
                     </p>
                     <p class="txt" th:text="${item.summary}"></p>
@@ -50,9 +51,9 @@
             <a target="_self" th:if="${page.paging.pageNumber} &gt; 0"
                th:href="${#strings.replace(page.paging.url,'[number]',#strings.toString(page.paging.pageNumber-1))}"
                class="prev">上一页</a>
-            <a th:if="${ page.paging.pageNumber} &gt; 4" th:href="${#strings.replace(page.paging.url,'[number]','0')}"
+            <a th:if="${ page.paging.pageNumber} &gt; 3" th:href="${#strings.replace(page.paging.url,'[number]','0')}"
                target="_self">1</a>
-            <th:block th:if="${page.paging.pageNumber} &gt; 4">...</th:block>
+            <th:block th:if="${page.paging.pageNumber} &gt; 3">...</th:block>
 
             <th:block th:each="item:${page.paging.pages}">
                 <a th:if="${item != page.paging.pageNumber}"
@@ -61,10 +62,10 @@
                 <span th:if="${item==page.paging.pageNumber}" th:text="${item+1}"></span>
             </th:block>
 
-            <th:block th:if="${page.paging.pageNumber+4} &lt; ${page.paging.totalPage}"> ...</th:block>
-            <a th:if="${page.paging.pageNumber+4} &lt; ${page.paging.totalPage}"
-               th:href="${#strings.replace(page.paging.url,'[number]',#strings.toString(page.paging.pageNumber + 5))}"
-               target="_self" th:text="${page.paging.pageNumber + 6}"></a>
+            <th:block th:if="${page.paging.pageNumber+3} &lt; ${page.paging.totalPage}"> ...</th:block>
+            <a th:if="${page.paging.pageNumber+3} &lt; ${page.paging.totalPage}"
+               th:href="${#strings.replace(page.paging.url,'[number]',#strings.toString(page.paging.pageNumber + 4))}"
+               target="_self" th:text="${page.paging.pageNumber + 5}"></a>
 
             <a target="_self" th:if="${page.paging.pageNumber + 1} &lt; ${page.paging.totalPage}"
                th:href="${#strings.replace(page.paging.url,'[number]',#strings.toString(page.paging.pageNumber+1))}"
