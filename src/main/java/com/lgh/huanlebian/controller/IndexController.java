@@ -28,6 +28,8 @@ import java.util.List;
 public class IndexController {
 
     private static Log log = LogFactory.getLog(IndexController.class);
+    private static Integer NEWS_PAGE_SIZE = 5;
+    private static Integer SLIDE_PAGE_SIZE=2;
 
     @Autowired
     private URIService uriService;
@@ -73,7 +75,7 @@ public class IndexController {
 
         //轮播
         List<WebSlideListSummaryModel> webSlideListSummaryModels = new ArrayList<>();
-        List<Slide> slides = slideService.findTopSlideList(null, 5);
+        List<Slide> slides = slideService.findTopSlideList(null, SLIDE_PAGE_SIZE);
         for (Slide slide : slides) {
             webSlideListSummaryModels.add(new WebSlideListSummaryModel(slide.getTitle()
                     , webService.handlePicture(slide.getImageUrl())
@@ -85,7 +87,7 @@ public class IndexController {
         //内容列表
         List<WebIndexContentListModel> webIndexContentListModels = new ArrayList<>();
         for (Category category : categories) {
-            List<News> newses = newsService.getTopByCategoryOrderById(category, 5);
+            List<News> newses = newsService.getTopByCategoryOrderById(category, NEWS_PAGE_SIZE);
             WebIndexContentListModel webIndexContentListModel = new WebIndexContentListModel();
 
             List<WebNewsListModel> webNewsListModels = new ArrayList<>();

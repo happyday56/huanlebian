@@ -41,7 +41,8 @@ public class CategoryController {
 
     private static Log log = LogFactory.getLog(CategoryController.class);
 
-    private static Integer PAGE_SIZE = 10;
+    private static Integer NEWS_PAGE_SIZE = 5;
+    private static Integer SLIDE_PAGE_SIZE=2;
 
     @Autowired
     private CategoryRepository categoryRepository;
@@ -106,7 +107,7 @@ public class CategoryController {
 
             //轮播部分
             List<WebSlideListModel> webSlideListModels = new ArrayList<>();
-            List<Slide> slides = slideService.findTopSlideList(oneCategory, 5);
+            List<Slide> slides = slideService.findTopSlideList(oneCategory, SLIDE_PAGE_SIZE);
             for (Slide slide : slides) {
                 webSlideListModels.add(new WebSlideListModel(slide.getTitle()
                         , webService.handlePicture(slide.getImageUrl()), slide.getUrl()));
@@ -115,7 +116,7 @@ public class CategoryController {
 
             //子项列表
             List<WebNewsListModel> webNewsListModels = new ArrayList<>();
-            List<News> newsList = newsService.getTopByCategoryOrderById(oneCategory, 10);
+            List<News> newsList = newsService.getTopByCategoryOrderById(oneCategory, NEWS_PAGE_SIZE);
             for (News news : newsList) {
                 webNewsListModels.add(new WebNewsListModel(news.getTitle(), uriService.getNewURI(news.getId())
                         , webService.handlePicture(news.getPictureUrl()), news.getSummary(),news.getUploadTime()));
@@ -159,7 +160,7 @@ public class CategoryController {
 
             //轮播部分
             List<WebSlideListModel> webSlideListModels = new ArrayList<>();
-            List<Slide> slides = slideService.findTopSlideList(secondCategory, 5);
+            List<Slide> slides = slideService.findTopSlideList(secondCategory, SLIDE_PAGE_SIZE);
             for (Slide slide : slides) {
                 webSlideListModels.add(new WebSlideListModel(slide.getTitle()
                         , webService.handlePicture(slide.getImageUrl()), slide.getUrl()));
@@ -169,7 +170,7 @@ public class CategoryController {
 
             //子项列表
             List<WebNewsListModel> webSubNewsListModels = new ArrayList<>();
-            List<News> newsList = newsService.getTopByCategoryOrderById(secondCategory, 10);
+            List<News> newsList = newsService.getTopByCategoryOrderById(secondCategory, NEWS_PAGE_SIZE);
             for (News news : newsList) {
                 webSubNewsListModels.add(new WebNewsListModel(news.getTitle(), uriService.getNewURI(news.getId())
                         , webService.handlePicture(news.getPictureUrl()), news.getSummary(),news.getUploadTime()));
@@ -192,14 +193,14 @@ public class CategoryController {
      */
     @RequestMapping(value = "/{one}/{two}/{kind}", method = RequestMethod.GET)
     public String three(@PathVariable("two") String two, @PathVariable("kind") String kindPath, Model model) throws URISyntaxException {
-        loadThreeIndex(two, kindPath, 0, PAGE_SIZE, model);
+        loadThreeIndex(two, kindPath, 0, NEWS_PAGE_SIZE, model);
         return "category/threeindex";
     }
 
     @RequestMapping(value = "/{one}/{two}/{kind}/index_{page}.html", method = RequestMethod.GET)
     public String three(@PathVariable("two") String two, @PathVariable("kind") String kindPath
             , @PathVariable("page") Integer page, Model model) throws URISyntaxException {
-        loadThreeIndex(two, kindPath, page, PAGE_SIZE, model);
+        loadThreeIndex(two, kindPath, page, NEWS_PAGE_SIZE, model);
         return "category/threeindex";
     }
 
