@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312"/>
+    <title>亲子百科</title>
+    <meta name="author" content="sunwukong"/>
+    <meta name="description" content="欢乐变亲子网亲子百科，提供全面的生活百科和疾病百科资讯。欢乐变亲子网，让新手爸爸妈妈学会如何育儿！"/>
+    <meta name="keywords" content="亲子百科，育儿宝典，怀孕宝典，育儿百科，怀孕百科"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/baike.css}"/>
+    <script type="text/javascript" th:src="@{/resources/js/main.js}"></script>
+
+</head>
+<body>
+<!-- topNav -->
+<div class="topNav" th:include="fragments/top::top"></div>
+
+<!-- head-->
+<div class="head">
+    <div class="main">
+        <a class="logo" href="http://www.pcbaby.com.cn/" target="_blank"></a>
+        <a href="http://baike.pcbaby.com.cn" class="name fl">百科</a>
+        <a data="{'type':'3','id':'http://baike.pcbaby.com.cn','title':'亲子百科首页','intro':'','picurl':''}"
+           class="head-favorite" id="pFavorite" href="javascript:void(0)">收藏<em></em></a>
+        <div class="JsAdBkGm" style="float: left;margin-top: 15px;margin-left: 10px;line-height: 22px;height: 22px;">
+            <script src="http://ivy.pconline.com.cn/adpuba/show?id=pckids.baby.shouye.pdgm.&media=js&channel=inline&trace=1"></script>
+        </div>
+        <div class="search">
+            <div id="s-form" class="form">
+                <form id="search" class="clearfix" target="_blank" method="get"
+                      action="http://ks.pcbaby.com.cn/kids_index.jsp">
+                    <input type="hidden" style="display:none;" value="time" name="sort">
+                    <input type="hidden" style="display:none;" value="" name="menu">
+                    <input type="hidden" style="display:none;" value="" name="key">
+                    <input type="hidden" style="display:none;" value="" name="qt2">
+                    <input type="hidden" style="display:none;" value="inner" name="dispatch">
+                    <input id="q" class="input" type="text" name="q" value="">
+                    <a class="sbtn" title="搜索" onClick="document.getElementById('search').submit();"
+                       href="javascript:void(0)"></a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 导航 -->
+<div class="nav shadow">
+    <div class="main">
+        <div id="subNav" class="subNav fl">
+            <a href="/baike" target="_blank">百科首页</a>
+            <span class="drop">
+<a href="javascript:;">怀孕</a><em class="drop-btn"></em>
+<ul class="drop-menu">
+<li><a href="http://baike.pcbaby.com.cn/yunqian.html" target="_blank"><em></em>备孕</a></li>
+<li><a href="http://baike.pcbaby.com.cn/yunqi.html" target="_blank"><em></em>孕期</a></li>
+<li><a href="http://baike.pcbaby.com.cn/fenmian.html" target="_blank"><em></em>分娩</a></li>
+<li><a href="http://baike.pcbaby.com.cn/yuezi.html" target="_blank"><em></em>月子</a></li>
+</ul>
+</span>
+            <span class="drop">
+<a href="javascript:;">育儿</a><em class="drop-btn"></em>
+<ul class="drop-menu">
+<li><a href="http://baike.pcbaby.com.cn/xinshenger.html" target="_blank"><em></em>新生儿</a></li>
+<li><a href="http://baike.pcbaby.com.cn/yinger.html" target="_blank"><em></em>0-1岁</a></li>
+<li><a href="http://baike.pcbaby.com.cn/youer.html" target="_blank"><em></em>1-3岁</a></li>
+<li><a href="http://baike.pcbaby.com.cn/xuelingqian.html" target="_blank"><em></em>3-6岁</a></li>
+</ul>
+</span>
+            <a href="http://baike.pcbaby.com.cn/meishi.html" target="_blank">营养</a>
+            <a href="http://baike.pcbaby.com.cn/shenghuo.html" target="_blank">生活</a>
+            <a href="http://baike.pcbaby.com.cn/yongpin.html" target="_blank">用品</a>
+        </div>
+        <div class="th-b fr">
+            <a target="_blank" href="#" title="生男生女早知道">生男生女</a><em></em>
+            <a target="_blank" href="#"
+               title="食谱_食谱大全_健康食谱_营养食谱_母婴食谱_太平洋亲子网">食谱</a><em></em>
+            <a href="#" title="用品常识_亲子百科_太平洋亲子网" target="_blank">用品常识</a>
+        </div>
+    </div>
+</div>
+
+<div id="Jbaike" class="box-baike">
+
+    <div class="baike-th main" style="margin-top:0;">
+        <a class="baike-th-name" href="http://baike.pcbaby.com.cn/yunqian.html" target="_blank">备孕百科</a>
+        <em class="icon-tit1"></em>
+    </div>
+    <div class="baike-tb main clearfix">
+
+        <div class="baike-tb-dl">
+            <dl>
+                <dt><i class=""></i>不孕不育</dt>
+                <dd>
+
+                    <span><a title="不孕不育" target="_blank"
+                             href="http://baike.pcbaby.com.cn/qzbd/1132261.html">不孕不育</a></span>
+
+                    <span><a title="女性不孕" target="_blank"
+                             href="http://baike.pcbaby.com.cn/qzbd/13035.html">女性不孕</a></span>
+
+                    <span><a title="男性不育" target="_blank"
+                             href="http://baike.pcbaby.com.cn/qzbd/13036.html">男性不育</a></span>
+
+                    <span><a title="试管婴儿" target="_blank"
+                             href="http://baike.pcbaby.com.cn/qzbd/1628.html">试管婴儿</a></span>
+
+                    <span><a title="人工受孕" target="_blank"
+                             href="http://baike.pcbaby.com.cn/qzbd/939855.html">人工受孕</a></span>
+
+                    <span><a title="艾滋病" target="_blank"
+                             href="http://baike.pcbaby.com.cn/qzbd/953629.html">艾滋病</a></span>
+
+                    <span><a title="妇科炎症" target="_blank"
+                             href="http://baike.pcbaby.com.cn/qzbd/10575.html">妇科炎症</a></span>
+
+                    <span><a title="阴道炎" target="_blank"
+                             href="http://baike.pcbaby.com.cn/qzbd/953698.html">阴道炎</a></span>
+
+                    <span><a title="盆腔炎" target="_blank"
+                             href="http://baike.pcbaby.com.cn/qzbd/1269935.html">盆腔炎</a></span>
+
+                    <span><a title="卵巢囊肿" target="_blank"
+                             href="http://baike.pcbaby.com.cn/qzbd/4240.html">卵巢囊肿</a></span>
+
+                    <span><a title="多囊卵巢综合征" target="_blank"
+                             href="http://baike.pcbaby.com.cn/qzbd/953965.html">多囊卵巢综合征</a></span>
+
+                    <span><a title="宫颈癌" target="_blank"
+                             href="http://baike.pcbaby.com.cn/qzbd/10792.html">宫颈癌</a></span>
+
+                    <span><a title="子宫肌瘤" target="_blank"
+                             href="http://baike.pcbaby.com.cn/qzbd/953789.html">子宫肌瘤</a></span>
+
+                    <span><a title="宫颈糜烂" target="_blank"
+                             href="http://baike.pcbaby.com.cn/qzbd/953696.html">宫颈糜烂</a></span>
+
+                    <span><a title="子宫内膜异位症" target="_blank"
+                             href="http://baike.pcbaby.com.cn/qzbd/951409.html">子宫内膜异位症</a></span>
+
+                    <span><a title="前列腺炎" target="_blank"
+                             href="http://baike.pcbaby.com.cn/qzbd/4234.html">前列腺炎</a></span>
+
+                    <span><a title="生殖道感染" target="_blank"
+                             href="http://baike.pcbaby.com.cn/qzbd/13037.html">生殖道感染</a></span>
+
+                    <span><a title="性病" target="_blank" href="http://baike.pcbaby.com.cn/qzbd/13033.html">性病</a></span>
+
+                </dd>
+            </dl>
+        </div>
+
+        <div class="baike-tb-dl">
+            <dl>
+                <dt><i class=""></i>备孕指南</dt>
+                <dd>
+
+                    <span><a title="怀孕前的准备" target="_blank"
+                             href="http://baike.pcbaby.com.cn/qzbd/939850.html">怀孕前的准备</a></span>
+
+                    <span><a title="婚检" target="_blank" href="http://baike.pcbaby.com.cn/qzbd/9346.html">婚检</a></span>
+
+                    <span><a title="取环" target="_blank"
+                             href="http://baike.pcbaby.com.cn/qzbd/1141177.html">取环</a></span>
+
+                    <span><a title="孕前检查" target="_blank"
+                             href="http://baike.pcbaby.com.cn/qzbd/1612.html">孕前检查</a></span>
+
+                    <span><a title="妇科检查" target="_blank"
+                             href="http://baike.pcbaby.com.cn/qzbd/13026.html">妇科检查</a></span>
+
+                    <span><a title="男科检查" target="_blank"
+                             href="http://baike.pcbaby.com.cn/qzbd/13029.html">男科检查</a></span>
+
+                    <span><a title="血液检查" target="_blank"
+                             href="http://baike.pcbaby.com.cn/qzbd/13023.html">血液检查</a></span>
+
+                    <span><a title="孕前接种疫苗" target="_blank" href="http://baike.pcbaby.com.cn/qzbd/13024.html">孕前接种疫苗</a></span>
+
+                    <span><a title="宫颈" target="_blank" href="http://baike.pcbaby.com.cn/qzbd/13034.html">宫颈</a></span>
+
+                    <span><a title="输卵管" target="_blank"
+                             href="http://baike.pcbaby.com.cn/qzbd/13032.html">输卵管</a></span>
+
+                    <span><a title="卵巢" target="_blank" href="http://baike.pcbaby.com.cn/qzbd/13040.html">卵巢</a></span>
+
+                    <span><a title="内分泌失调" target="_blank" href="http://baike.pcbaby.com.cn/qzbd/1037383.html">内分泌失调</a></span>
+
+                    <span><a title="黄体" target="_blank" href="http://baike.pcbaby.com.cn/qzbd/9795.html">黄体</a></span>
+
+                    <span><a title="雌激素" target="_blank"
+                             href="http://baike.pcbaby.com.cn/qzbd/12514.html">雌激素</a></span>
+
+                    <span><a title="泌乳素" target="_blank"
+                             href="http://baike.pcbaby.com.cn/qzbd/10574.html">泌乳素</a></span>
+
+                    <span><a title="子宫内膜" target="_blank"
+                             href="http://baike.pcbaby.com.cn/qzbd/9754.html">子宫内膜</a></span>
+
+                    <span><a title="泌尿系统疾病" target="_blank" href="http://baike.pcbaby.com.cn/qzbd/13028.html">泌尿系统疾病</a></span>
+
+                    <span><a title="白带" target="_blank" href="http://baike.pcbaby.com.cn/qzbd/13031.html">白带</a></span>
+
+                </dd>
+            </dl>
+        </div>
+
+    </div>
+
+</div>
+</body>
+</html>
