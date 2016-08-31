@@ -36,6 +36,7 @@ public class MVCConfig extends WebMvcConfigurerAdapter {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
         registry.addResourceHandler("/_resources/**").addResourceLocations("/_resources/");
+        registry.addResourceHandler("bdunion.txt").addResourceLocations("bdunion.txt");
     }
 
     @Override
