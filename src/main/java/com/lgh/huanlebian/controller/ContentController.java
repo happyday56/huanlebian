@@ -1,13 +1,16 @@
 package com.lgh.huanlebian.controller;
 
 import com.lgh.huanlebian.entity.News;
-import com.lgh.huanlebian.model.WebCategoryListModel;
-import com.lgh.huanlebian.model.WebNewsModel;
-import com.lgh.huanlebian.model.WebNewsPageModel;
+import com.lgh.huanlebian.entity.Wiki;
+import com.lgh.huanlebian.entity.WikiCategory;
+import com.lgh.huanlebian.model.*;
 import com.lgh.huanlebian.repository.NewsRepository;
+import com.lgh.huanlebian.repository.WikiCategoryRepository;
+import com.lgh.huanlebian.repository.WikiRepository;
 import com.lgh.huanlebian.service.NewsService;
 import com.lgh.huanlebian.service.StaticResourceService;
 import com.lgh.huanlebian.service.URIService;
+import com.lgh.huanlebian.service.WikiCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,6 +42,15 @@ public class ContentController {
     @Autowired
     private URIService uriService;
 
+    @Autowired
+    private WikiRepository wikiRepository;
+
+    @Autowired
+    private WikiCategoryRepository wikiCategoryRepository;
+
+    @Autowired
+    private WikiCategoryService wikiCategoryService;
+
     @RequestMapping(value = "/news/{id}.html", method = RequestMethod.GET)
     public String getNewsDetail(@PathVariable("id") Long id, Model model) throws URISyntaxException {
         WebNewsPageModel webNewsPageModel = new WebNewsPageModel();
@@ -54,5 +66,40 @@ public class ContentController {
 
         model.addAttribute("page", webNewsPageModel);
         return "news/detail";
+    }
+
+    @RequestMapping("/baikelist/{id}.html")
+    public String category(@PathVariable(value = "id") Long id, Model model) {
+        WikiCategory wikiCategory = wikiCategoryRepository.findOne(id);
+        WebBaikeListPageModel webBaikeListPageModel = new WebBaikeListPageModel();
+        webBaikeListPageModel.setTitle(wikiCategory.getTitle());
+        webBaikeListPageModel.setKeywords(wikiCategory.getKeywords());
+        webBaikeListPageModel.setDescription(wikiCategory.getDescription());
+
+        webBaikeListPageModel.setName(wikiCategory.getTitle());
+
+        WikiCategory wikiCategoryMain = wikiCategoryService.getMainCategory(wikiCategory);
+        if (wikiCategoryMain != null) {
+            webBaikeListPageModel.setCategoryTtitle(wikiCategoryMain.getTitle());
+            webBaikeListPageModel.setCategoryUrl(uriService.getWikiCategoryURI(wikiCategoryMain.getPath()));
+        }
+
+        model.addAttribute("page", webBaikeListPageModel);
+        return "baike/list";
+    }
+
+    @RequestMapping(value = "/baike/{id}.html", method = RequestMethod.GET)
+    public String getWikiDetail(@PathVariable("id") Long id, Model model) {
+
+        Wiki wiki = wikiRepository.findOne(id);
+
+        WebBaikeDetailPageModel webBaikeDetailPageModel = new WebBaikeDetailPageModel();
+        webBaikeDetailPageModel.setTitle(wiki.getTitle());
+        webBaikeDetailPageModel.setKeywords(wiki.getKeywords());
+        webBaikeDetailPageModel.setDescription(wiki.getDescription());
+
+
+        model.addAttribute("page", webBaikeDetailPageModel);
+        return "baike/detail";
     }
 }

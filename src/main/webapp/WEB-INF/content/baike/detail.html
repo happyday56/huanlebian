@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title th:text="${page.title}"></title>
+    <meta name="keywords" th:content="${page.keywords}" content=""/>
+    <meta name="description" th:content="${page.description}" content=""/>
+    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/baike_d.css}"/>
+    <script type="text/javascript" th:src="@{/resources/js/main.js}"></script>
+
+</head>
+<body>
+
+<div class="main">
+    <!-- topNav -->
+    <div class="topNav" th:include="fragments/top::top"></div>
+    <div class="position mb10 head-art">
+        <a href="/" target="_blank"><em class="head-title"></em></a>
+        <a th:href="${page.headUrl}" target="_blank"><em class="head-channel" th:text="${page.headName}"></em></a>
+        <em class="arr"></em><a href="/" target="_blank">首页</a>
+        <th:block th:each="item:${page.topNav}">
+            &nbsp;/&nbsp;<a th:href="${item.url}" th:text="${item.title}" target="_blank"></a>
+        </th:block>
+
+    </div>
+
+    <div class="l-box fl">
+        <div class=" shadow border">
+            <div class="l-th">
+                <p class="fl">不孕不育 </p>
+            </div>
+            <div class="l-tbody clearfix">
+                <div>
+                    <div class="fl anchor">
+                        <p class="first"><a href="#ldjc4ta=baby_tbody1">不孕不育检查</a></p>
+                        <p class=""><a href="#ldjc4ta=baby_tbody2">不孕不育症</a></p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- 推广位 -->
+
+        <!-- 内容-->
+        <div class="mb30 border shadow mt30">
+
+            <div id="ldjc4ta=baby_tbody1" class="bodyMark pt22"></div>
+            <div class="l-tbody">
+                <p class="m-th pt22"><i></i><a href="http://baike.pcbaby.com.cn/qzbd/4495.html"
+                                               target="_blank">不孕不育检查</a></p>
+
+                <p class="art-tit">不孕不育检查项目</p>
+
+                <div class="art-text"><p><strong></strong></p>
+                    <p>
+                        导致不孕不育的原因有很多，建议夫妻双方到正规医院做系统的不孕不育检查，从而确定不孕不育是男方因素、女方因素还是双方因素所导致的。一般女性会做阴道和子宫方面的检查，而男性会做精液检查、输精管造影等。</p>
+                    <p><strong>1、女性不孕检查项目</strong></p>
+                    <p>
+                        阴道检查、宫颈检查、子宫检查、输卵管检查、卵巢检查、盆腔检查、内分泌检查、免疫因素检查、全身性因素检查、精神因素及心理因素检查、先天性因素检查、排卵功能检查、B超检查、性激素检查、TORCH病毒检测。</p>
+                    <p><strong>2、男性不育检查项目</strong></p>
+                    <p>尿道检查、前列腺检查、精囊输精管检查、附睾检查、睾丸检查、性激素检查、性功能检查、射精功能检查、免疫因素检查、内分泌检查、精索静脉曲张检查、创伤检查、放射因素检查、精子质量检查。</p>
+                    <p></p></div>
+
+
+                <p class="view mb20"><a href="http://baike.pcbaby.com.cn/qzbd/4495.html" target="_blank" rel="nofollow">查看详情</a>
+                </p>
+                <!-- 图组 -->
+
+                <!-- 文字链 -->
+                <ul class="art-list clearfix">
+
+
+                    <li><a href="http://baike.pcbaby.com.cn/yycs/1503/2205835.html" target="_blank">婚检能查出不孕不育吗</a></li>
+
+                    <li><a href="http://baike.pcbaby.com.cn/yycs/1507/2396244.html" target="_blank">不孕不育能做人工授精吗</a></li>
+
+                    <li><a href="http://baike.pcbaby.com.cn/yycs/1604/2851425.html" target="_blank">不孕不育症需要做造影吗</a></li>
+
+                    <li><a href="http://baike.pcbaby.com.cn/yycs/1409/1815145.html" target="_blank">不孕不育怎么引起的</a></li>
+
+                    <li><a href="http://baike.pcbaby.com.cn/yycs/1408/1691505.html" target="_blank">不孕不育要做哪些检查</a></li>
+
+                    <li><a href="http://baike.pcbaby.com.cn/yycs/1407/1666925.html" target="_blank">不孕不育的症状是什么</a></li>
+
+                </ul>
+                <div class="dashed"></div>
+
+            </div>
+
+            <div id="ldjc4ta=baby_tbody2" class="bodyMark pt22"></div>
+            <div class="l-tbody">
+                <p class="m-th pt22"><i></i><a href="http://baike.pcbaby.com.cn/qzbd/1398.html"
+                                               target="_blank">不孕不育症</a></p>
+
+                <p class="art-tit">不孕不育症</p>
+
+                <div class="art-text"><p><a href="http://baike.pcbaby.com.cn/qzbd/1132261.html" target="_blank"
+                                            class="linkWordClass" id="linkWordSign_8201">不孕不育</a>是一组由多种病因导致的生育障碍状态，是育龄夫妇的生殖健康不良事件。一般认为，女性无避孕性生活至少12个月而未孕，称为不孕症，在男性则称为不育症。不孕症分为原发性和继发性两大类，既往从未有过妊娠史，无避孕而从未妊娠者为原发不孕，既往有过妊娠史，而后无避孕连续12个月未孕者，称为继发不孕。
+                </p>
+                    <p>女性卵母细胞、男性<a href="http://baike.pcbaby.com.cn/qzbd/4469.html" target="_blank"
+                                   class="linkWordClass" id="linkWordSign_8201">精子</a>和男女生殖道解剖与功能，任何一个环节的异常均可以导致不孕症或不育症的发生。不孕症发病率因国家、民族和地区不同存在差别，我国不孕症发病率约为7%-10%。
+                    </p>
+                    <p>查找导致不孕的原因是诊断不孕症的关键，<a href="http://baike.pcbaby.com.cn/qzbd/13035.html" target="_blank"
+                                             class="linkWordClass" id="linkWordSign_8201">女性不孕</a>症常见的原因有盆腔因素和<a
+                            href="http://baike.pcbaby.com.cn/qzbd/13342.html" target="_blank" class="linkWordClass"
+                            id="linkWordSign_8201">排卵障碍</a>。女性不孕症的治疗主要包括生殖道整形手术、诱导<a
+                            href="http://baike.pcbaby.com.cn/qzbd/1112356.html" target="_blank" class="linkWordClass"
+                            id="linkWordSign_8201">排卵</a>和辅助生殖技术。</p></div>
+
+
+                <p class="view mb20"><a href="http://baike.pcbaby.com.cn/qzbd/1398.html" target="_blank" rel="nofollow">查看详情</a>
+                </p>
+                <!-- 图组 -->
+
+                <!-- 文字链 -->
+                <ul class="art-list clearfix">
+
+
+                    <li><a href="http://zhuanjia.pcbaby.com.cn/2013/1119/zt1284413.html"
+                           target="_blank">李媛：防治不孕不育须知13要点</a></li>
+
+                    <li><a href="http://huaiyun.pcbaby.com.cn/126/1266952.html" target="_blank">精子畸形受孕难 小心4大坏习惯</a></li>
+
+                    <li><a href="http://huaiyun.pcbaby.com.cn/123/1236472.html" target="_blank">赵飞燕杨贵妃 为何难以怀孕？</a></li>
+
+                    <li><a href="http://huaiyun.pcbaby.com.cn/120/1207693.html" target="_blank">输卵管堵了 谁才是真正元凶？</a></li>
+
+                    <li><a href="http://bbs.pcbaby.com.cn/topic-874664.html" target="_blank">不孕两年 才可称为不孕不育症</a></li>
+
+                    <li><a href="http://kuaiwen.pcbaby.com.cn/question/155721.html" target="_blank">请问不孕不育症是怎么回事呢</a>
+                    </li>
+
+                </ul>
+                <div class="dashed"></div>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+    <div class="r-box">
+        <div id="JscrollBox">
+
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

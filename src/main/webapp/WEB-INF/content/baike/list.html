@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title th:text="${page.title}"></title>
+    <meta name="keywords" th:content="${page.keywords}" content=""/>
+    <meta name="description" th:content="${page.description}" content=""/>
+    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/baike_d.css}"/>
+    <script type="text/javascript" th:src="@{/resources/js/main.js}"></script>
+
+</head>
+<body>
+
+<div class="main">
+    <!-- topNav -->
+    <div class="topNav" th:include="fragments/top::top"></div>
+    <div class="position mb10 head-art">
+        <a href="/" target="_blank"><em class="head-title"></em></a>
+        <a href="/baike" target="_blank"><em class="head-channel">百科</em></a><em class="arr"></em>
+        <a th:href="${page.categoryUrl}" th:text="${page.categoryTtitle}" target="_blank"></a>&nbsp;/&nbsp;<i
+            th:text="${page.name}"></i>
+
+    </div>
+
+    <div class="l-box fl">
+        <div class="shadow border">
+            <div class="l-th">
+                <p class="fl" th:text="${page.name}"></p>
+            </div>
+            <div class="l-tbody clearfix">
+                <div>
+                    <div class="fl anchor">
+                        <p class="first"><a href="#ldjc4ta=baby_tbody1">不孕不育检查</a></p>
+                        <p class=""><a href="#ldjc4ta=baby_tbody2">不孕不育症</a></p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- 推广位 -->
+
+        <!-- 内容-->
+        <div class="mb30 border shadow mt30">
+            <div id="ldjc4ta=baby_tbody1" class="bodyMark pt22"></div>
+            <div class="l-tbody">
+                <p class="m-th pt22"><i></i><a href="http://baike.pcbaby.com.cn/qzbd/4495.html"
+                                               target="_blank">不孕不育检查</a></p>
+                <p class="art-tit">不孕不育检查项目</p>
+                <div class="art-text"></div>
+                <p class="view mb20"><a href="http://baike.pcbaby.com.cn/qzbd/4495.html" target="_blank" rel="nofollow">查看详情</a>
+                </p>
+                <div class="dashed"></div>
+            </div>
+        </div>
+    </div>
+    <div class="r-box">
+        <div id="JscrollBox">
+
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,4 +1,3 @@
-/* reset 重置样式 */
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td,hr,button,article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{margin:0;padding:0;}
 html{-webkit-text-size-adjust:none;}
 body{background:#f8f8f8;font:12px/1.5 "Microsoft YaHei","Arial Narrow",HELVETICA;text-align:left;color:#333}
@@ -34,20 +33,15 @@ input{background-color:none;}
 .mb30{ margin-bottom: 30px;}
 .tabTit { color: #ff4444;font-size: 20px;padding-left: 15px;}
 .tabTit a {color: #ff4444;}
-/* end 重置样式 */
-/* channelNav */
-.channelNav .logo{float:left;width:120px;height:60px;background:url("../images/b.png") no-repeat;}
-.channelNav .subNav{overflow:hidden;zoom:1;}
-.channelNav .subNav a{float:left;width:85px;text-align:center;font-size:14px;line-height:15px;margin:23px 0 0;border-left:1px solid #ededed;}
-.channelNav .subNav a.first{border:none;}
-.channelNav .subNav a.ps-r{width:100px;}
-.channelNav .icon-new{position:absolute;display:block;width:22px;height:7px;overflow:hidden;top:-4px;right:5px;background:url("http://www1.pcbaby.com.cn/2014/index/new.png") no-repeat;}
-.channelNav2{font-size: 12px;line-height:15px;height:15px;padding:15px 0;}
-.channelNav2 a{float:left;padding:0 9px;border-right:1px #ededed solid;color:#636363;}
-.channelNav2 a:hover{color:#f44;}
-.channelNav2 a.last{border-right: none;}
+
+/*顶部导航*/
+.topNav {font-size: 12px;line-height:15px;height:15px;padding:15px 0;}
+.topNav a{float:left;padding:0 9px;border-right:1px #ededed solid;color:#636363;}
+.topNav a:hover{color:#f44;}
+.topNav a.last{border-right: none;}
 
 
+/*nav*/
 select,select option{font-family:"Microsoft YaHei";}
 .nav{height:47px;border-top:2px #ff4444 solid;background-color:#fff;border-bottom:1px solid #dedede;margin-bottom:15px;}
 .nav .subNav{border-left:1px #ececec solid;}
@@ -55,11 +49,11 @@ select,select option{font-family:"Microsoft YaHei";}
 .nav .subNav a.long{width:165px;}
 .nav .th-b{line-height:47px;}
 .th-b a,.th-b em{float:left;font-size:14px;}
-.th-b em{background:url("http://www1.pcbaby.com.cn/2014/index/x.png") no-repeat 3px -74px;height:15px;width:15px;padding:0 3px}
+.th-b em{height:15px;width:15px;padding:0 3px}
 .nav .th-b em{margin-top:16px;}
 .nav .drop{position:relative;z-index: 1000;width:130px;height:47px;font-size:20px;text-align:center;display:inline-block;border-right:1px #ececec solid;float: left;}
 .nav .drop a{border-right:none;float:none;}
-.nav .drop-btn{width:7px;height:4px;position:absolute;background:url(http://www1.pcbaby.com.cn/2014/baike/images/icon-btn.png) no-repeat 0px -394px;right:11px;top:24px;overflow:hidden;transition:all 0.4s ease-in;-o-transition:all 0.4s ease-in;-ms-transition:all 0.4s ease-in;-webkit-transition:all 0.4s ease-in;-moz-transition:all 0.4s ease-in;}
+.nav .drop-btn{width:7px;height:4px;position:absolute;background:url(../images/btn.png) no-repeat 0px -394px;right:11px;top:24px;overflow:hidden;transition:all 0.4s ease-in;-o-transition:all 0.4s ease-in;-ms-transition:all 0.4s ease-in;-webkit-transition:all 0.4s ease-in;-moz-transition:all 0.4s ease-in;}
 .nav .drop-menu{position:absolute;width:130px;display:none;z-index: 10;top:47px;left:-1px;border:1px #ececec solid;border-top:none;}
 .nav .drop-menu li{ width: 100%;}
 .nav .drop-menu li a{font-size: 12px;height:35px;line-height:35px;display:block;background:#fff;color:#333; width: 100%;}
@@ -67,9 +61,11 @@ select,select option{font-family:"Microsoft YaHei";}
 .nav .current .drop-btn{-webkit-transform: rotate(180deg); -moz-transform: rotate(180deg); -o-transform: rotate(180deg); transform: rotate(180deg); filter: FlipV;}
 .nav .current .drop-menu{display:block;}
 .th-b a:hover{color:#656565;}
+
+
 /*head*/
-.head-favorite{float:left;width:38px;line-height:22px;height:23px;background:url(http://www1.pcbaby.com.cn/2014/channel/images/0901pic.png) no-repeat;_background:url(http://www1.pcbaby.com.cn/2014/channel/images/0901pic_ie.png) no-repeat;padding-left:23px;padding-right:8px;text-align:center;color:#999;margin-left:20px;margin-top:20px;position:relative;cursor:pointer;}
-.head-favorite em{position:absolute;width:15px;height:15px;background:url(http://www1.pcbaby.com.cn/2014/channel/images/0901pic.png) no-repeat 0 -23px;_background:url(http://www1.pcbaby.com.cn/2014/channel/images/0901pic_ie.png) no-repeat 0 -23px;left:8px;top:2px;}
+.head-favorite{float:left;width:38px;line-height:22px;height:23px;background:url(../images/head.png) no-repeat;_background:url(../images/head_ie.png) no-repeat;padding-left:23px;padding-right:8px;text-align:center;color:#999;margin-left:20px;margin-top:20px;position:relative;cursor:pointer;}
+.head-favorite em{position:absolute;width:15px;height:15px;background:url(../images/head.png) no-repeat 0 -23px;_background:url(../images/head_ie.png) no-repeat 0 -23px;left:8px;top:2px;}
 .head-zq{float:left;margin-left:10px;margin-top:20px;font-size: 18px;padding:0 3px;height:22px;line-height:22px;color:#333;text-align:center;vertical-align:middle;}
 .head-favorite:hover em{background-position: -16px -23px;}
 .head-favorite-after,.head-favorite-after:hover{color:#999; cursor:default;}
@@ -78,24 +74,22 @@ select,select option{font-family:"Microsoft YaHei";}
 
 .head .col{ margin: 18px 0 0 20px;}
 .head{height:58px;}
-.head .collect{width:30px;height:23px;padding-left:22px;margin-left:14px;margin-top:19px;line-height:23px;background:url(http://www1.pcbaby.com.cn/2014/channel/product/images/pic.png) no-repeat;_background:url(http://www1.pcbaby.com.cn/2014/channel/product/images/pic_ie.png) no-repeat;float:left;color:#fff;}
-.head .logo{float:left;width:110px;height:28px;background:url(http://www1.pcbaby.com.cn/2014/channel/images/0901pic.png) no-repeat 0 -48px; margin-top: 16px;}
+.head .logo{float:left;width:110px;height:28px;background:url(../images/head.png) no-repeat 0 -48px; margin-top: 16px;}
 .head .collect:hover{text-decoration:none;}
 .head .search{float:right;width:422px;}
 .head .search .form{display:inline;float:left;margin:17px 0 0 163px;position:relative;}
 .head .search .form .sbtn{left:152px;opacity:0;position:absolute;top:0;transition:left 0.4s ease-in 0s;}
-.head .search .input{background:url("http://www1.pcbaby.com.cn/2014/index/x.png") no-repeat 1px -228px;-moz-border-bottom-colors:none;-moz-border-left-colors:none;-moz-border-right-colors:none;-moz-border-top-colors:none;border-color:-moz-use-text-color -moz-use-text-color #ececec;border-image:none;border-style:none none solid;border-width:medium medium 1px;color:#adadad;float:left;height:24px;line-height:22px;padding-left:29px;width:175px;border-bottom-color: #ececec;}
-.head .search .form-active .sbtn{background:url("http://www1.pcbaby.com.cn/2014/index/s1.png") no-repeat 0 0;display:inline;float:left;height:25px;left:204px;opacity:1;width:52px;}
-.head .search .form-active .sbtn:hover{background:url("http://www1.pcbaby.com.cn/2014/index/s2.png") no-repeat 0 0;}
+.head .search .input{background:url(../images/b.png) no-repeat 1px -228px;-moz-border-bottom-colors:none;-moz-border-left-colors:none;-moz-border-right-colors:none;-moz-border-top-colors:none;border-color:-moz-use-text-color -moz-use-text-color #ececec;border-image:none;border-style:none none solid;border-width:medium medium 1px;color:#adadad;float:left;height:24px;line-height:22px;padding-left:29px;width:175px;border-bottom-color: #ececec;}
+.head .search .form-active .sbtn{background:url(../images/search1.png) no-repeat 0 0;display:inline;float:left;height:25px;left:204px;opacity:1;width:52px;}
+.head .search .form-active .sbtn:hover{background:url(../images/search2.png) no-repeat 0 0;}
 .head .search .hot-word{clear:both;padding:4px 0 0 163px;}
 .head .search .hot-word a{color:#adadad;margin-right:10px;}
 .head .name{height:22px;font:20px/20px "Microsoft YaHei";color:#fff;_line-height:22px; background-color: #ff4444;margin-top: 18px; padding: 0 4px;}
 .head .name:hover{color: #fff;}
 .head .collection{margin-top: 18px; margin-left: 20px;}
 
-
-/*tab1*/
-.tab{border:1px solid #ececec; background: #fff; border-radius: 2px;height: 350px;overflow: hidden; width: 998px; position:relative; margin: 0 auto; }
+/*轮播*/
+.tab{border:1px solid #ececec; background: #fff; border-radius: 2px;height: 350px;overflow: hidden; width: 998px; position:relative;  }
 .tab .c{width: 304px; padding-left: 694px; height: 350px;overflow: hidden; float: left;display: inline;}
 .tab .pic{float: left;display: inline;margin: 5px 0 0 -689px; width: 660px;height: 340px; overflow: hidden;}
 .tab .tips{height: 75px; line-height: 90px; overflow: hidden;color: #b2b2b2; overflow: hidden;font-size: 14px}
@@ -104,9 +98,9 @@ select,select option{font-family:"Microsoft YaHei";}
 .tab .tit{height: 52px; line-height: 48px;font-size: 22px; overflow: hidden;}
 .tab .des{width: 240px;line-height: 24px;color: #999}
 .tab .control{position: absolute; height: 12px; left: 695px;top: 319px; z-index: 333;}
-.tab .control a{width: 12px;height: 12px;overflow: hidden;float: left;display: inline;margin-right: 3px;background: url(http://www1.pcbaby.com.cn/2014/index/x.png) no-repeat 0 -304px;}
+.tab .control a{width: 12px;height: 12px;overflow: hidden;float: left;display: inline;margin-right: 3px;background: url(../images/b.png) no-repeat 0 -304px;}
 .tab .control a.current{background-position: 0 -290px;}
-.tab .btn{width: 24px; height: 46px; position: absolute;top: 151px;background: url(http://www1.pcbaby.com.cn/2014/index/x.png) no-repeat;z-index: 333;}
+.tab .btn{background:url("../images/b.png") no-repeat 0 0;height:46px;position:absolute;top:151px;width:24px;z-index:333;}
 .tab .btnL{left: 21px;display: none;}
 .tab .btnR{right:21px;display: none;}
 .tab-active .btnL{ background-position: 0 -356px;display: block;}
@@ -119,14 +113,15 @@ select,select option{font-family:"Microsoft YaHei";}
 .mt30{ margin-top: 30px;}
 
 /* baike */
-.box-baike{ background-color: #fff;}
-.baike-th{ height: 51px; background:url(http://www1.pcbaby.com.cn/2014/baike/images/icon-btn.png) repeat-x 0 bottom; margin: 20px auto 2px;}
+.box-baike{ background-color: #fff;
+    padding:15px;}
+.baike-th{ height: 51px; background:url(../images/btn.png) repeat-x 0 bottom; margin: 20px auto 2px;}
 .baike-th .baike-th-name,.baike-th em{ float: left;}
 .baike-th .baike-th-name{ font-size: 20px; color: #ff4444; border-bottom: 2px solid #ff4444;line-height: 49px; vertical-align: middle;}
 .baike-tb-dl-in,.baike-tb-dl:hover{position: relative;zoom:1;}
 .baike-tb-dl{display:inline;float: left;width:292px;height: 100px; margin:23px 20px 0px 20px; z-index: 110;}
 
-.baike-th em{ width: 172px; height: 22px; background: url(http://www1.pcbaby.com.cn/2014/baike/images/en-name.png) no-repeat; margin:16px 0 0 12px;}
+.baike-th em{ width: 172px; height: 22px;  margin:16px 0 0 12px;}
 .baike-th em.icon-tit1{ width: 276px; background-position:0 0;}
 .baike-th em.icon-tit2{ background-position: 0 -48px;}
 .baike-th em.icon-tit3{  background-position: 0px -72px;}
@@ -141,7 +136,7 @@ select,select option{font-family:"Microsoft YaHei";}
 .baike-tb-dl dl{float:left;display:inline;width:292px; height: 100px; overflow: hidden;}
 .baike-tb-dl-in dl,.baike-tb-dl:hover dl{z-index: 120; position: absolute; top:-16px; left: -20px; height: auto; background-color: #fff; border: 1px solid #ff4444; padding: 15px 20px 4px 19px;}
 .box-baike dt{height:42px;line-height:42px;overflow:hidden;border-bottom:1px dashed #ececec;font-size:14px; font-weight: 600;}
-.box-baike dt i{display:inline;float:left;width:31px;height:31px;overflow:hidden;margin:5px 12px 0 0;background:url(http://www1.pcbaby.com.cn/2014/baike/images/icon-baike.png) no-repeat;}
+.box-baike dt i{display:inline;float:left;width:31px;height:31px;overflow:hidden;margin:5px 12px 0 0;background:url(../images/baike.png) no-repeat;}
 .box-baike dt .icon1{background-position:0 0}
 .box-baike dt .icon4{background-position:-42px 0}
 .box-baike dt .icon7{background-position:-82px 0}
@@ -186,7 +181,16 @@ select,select option{font-family:"Microsoft YaHei";}
 .baike-tb-dl-in dl dt .icon18,.baike-tb-dl:hover dl dt .icon18{background-position:-680px -36px}
 .baike-tb-dl-in dl dt a,.baike-tb-dl:hover dl dt a{ color: #ff4444;}
 
-.box-baike .baike-tb-more{ height: 20px; background-color: #f8f8f8; margin: 27px 0 0px; text-align: center; line-height: 20px; padding: 10px 0;}
-.box-baike .up a{display:inline-block;background:url(http://www1.pcbaby.com.cn/2014/index/x.png) no-repeat 0px -709px; padding-left: 16px;}
-.box-baike .down a{display:inline-block;background:url(http://www1.pcbaby.com.cn/2014/baike/images/icon-btn.png) no-repeat -64px -245px; padding-left: 16px;}
-.more-box{ display: none; float: left;}
+
+
+/*底部*/
+.footer{padding-top:10px;text-align:left;line-height:20px;}
+.footer,.footer a{color:#333;}
+.footer a{text-decoration:none;}
+.footer a:hover{color:#f33;text-decoration:underline;}
+.footer img{border:0;-ms-interpolation-mode:bicubic;}
+.footer .ft-nav,.footer-hd,.footer-ft{text-align:center;}
+.footer-box{width:990px;margin:0 auto;padding-bottom:30px;}
+.footer-hd,.footer-bd,.footer-ft{padding-top:15px;}
+.footer-hd{padding-bottom:20px;}
+.footer-bd{border-top:1px solid #c2c2c2;padding:15px 22px 0;line-height:20px;_zoom:1;text-align: center;}

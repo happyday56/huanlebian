@@ -90,4 +90,9 @@ public class Wiki {
      * 浏览次数
      */
     private Long views;
+
+    /**
+     * 排序
+     */
+    private Long sort;
 }

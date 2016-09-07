@@ -38,5 +38,20 @@ public class URIServiceImpl implements URIService {
         return "/v/news/" + id + ".html";
     }
 
+    @Override
+    public String getWikiCategoryURI(String path) {
+        return "/baike/" + path;
+    }
+
+    @Override
+    public String getWikiListURI(Long id) {
+        return "/v/baikelist/" + id + ".html";
+    }
+
+    @Override
+    public String getWikiURI(Long id) {
+        return "/v/baike/" + id + ".html";
+    }
+
 
 }

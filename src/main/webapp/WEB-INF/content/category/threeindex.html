@@ -13,8 +13,7 @@
 <div class="topNav" th:include="fragments/top::top"></div>
 
 <div class="main position mb30 head-art">
-    <a href="http://www.huanlebian.com" title="育儿知识大全_欢乐变" rel="sidebar" onclick="addFav();"
-       class="head-favorite">收藏<em></em></a>
+
     <a href="/" target="_blank"><em class="head-title"></em></a>
     <a th:href="${page.headUrl}" target="_blank"><em class="head-channel" th:text="${page.headName}"></em></a>
     <em class="head-zq">列表页</em>
@@ -47,7 +46,7 @@
             </th:block>
         </div>
 
-        <div id="pages" class="pcbaby_page">
+        <div id="pages" class="page">
             <a target="_self" th:if="${page.paging.pageNumber} &gt; 0"
                th:href="${#strings.replace(page.paging.url,'[number]',#strings.toString(page.paging.pageNumber-1))}"
                class="prev">上一页</a>

@@ -22,10 +22,10 @@
         <div class="main">
             <div class="left665">
                 <div class="position mb10 head-art">
-                    <a href="http://www.huanlebian.com" title="育儿知识大全_欢乐变" rel="sidebar" onclick="addFav();"
-                       class="head-favorite">收藏<em></em></a>
+
                     <a href="/" target="_blank"><em class="head-title"></em></a>
-                    <a th:href="${page.headUrl}" target="_blank"><em class="head-channel" th:text="${page.headName}"></em></a>
+                    <a th:href="${page.headUrl}" target="_blank"><em class="head-channel"
+                                                                     th:text="${page.headName}"></em></a>
                     <em class="arr"></em><a href="/" target="_blank">首页</a>&nbsp;/&nbsp;
                     <th:block th:each="item:${page.topNav}">
                         <a th:href="${item.url}" th:text="${item.title}" target="_blank"></a>&nbsp;/&nbsp;
